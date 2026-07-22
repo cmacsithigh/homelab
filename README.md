@@ -1,2 +1,3 @@
 # homelab
-Code for majority of my homel lab setup
+
+Code for majority of my home lab setup
