@@ -58,7 +58,7 @@ spec:
             type: DirectoryOrCreate
           name: cachedir
         - hostPath:
-            path: /var/lib/mpd/playlists
+            path: /playlists
             type: DirectoryOrCreate
           name: playlists
         - hostPath:
