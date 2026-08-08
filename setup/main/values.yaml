@@ -3,3 +3,13 @@ reporting:
   interval: 30s
 web:
   enabled: true
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - host: ""
+        paths:
+          - path: /
+            pathType: Prefix
