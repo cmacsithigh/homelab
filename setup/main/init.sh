@@ -34,8 +34,7 @@ rm get_helm.sh
 
 # Install flux
 helm upgrade flux-operator oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator \
-  --namespace flux-system \
-  --create-namespace -f values.yaml
+  --namespace flux-system -f values.yaml
 
 sleep 15s
 
