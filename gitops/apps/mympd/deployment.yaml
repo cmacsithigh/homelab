@@ -48,19 +48,6 @@ spec:
             - mountPath: /var/lib/mympd/scripts
               name: lua-scripts
       hostname: mympd
-      initContainers:
-        - name: copy-playlists
-          image: ghcr.io/cmacsithigh/mympd:1.2.0
-          command: ["/bin/sh", "-c"]
-          args:
-            - |-
-              mkdir -p /var/lib/mpd/playlists
-              if [ -z "$(ls -A /var/lib/mpd/playlists 2>/dev/null)" ]; then
-                cp -a /playlists/. /var/lib/mpd/playlists/ 2>/dev/null || true
-              fi
-          volumeMounts:
-            - mountPath: /var/lib/mpd/playlists
-              name: playlists
       volumes:
         - hostPath:
             path: /var/lib/mympd/workdir

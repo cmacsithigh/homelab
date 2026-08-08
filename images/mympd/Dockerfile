@@ -7,9 +7,9 @@ RUN apk add bash tzdata
 RUN cp /usr/share/zoneinfo/Europe/Dublin /etc/localtime \
     && echo "Europe/Dublin" > /etc/timezone
 
-COPY scripts/ /scripts/
-
+COPY lua_scripts/ /lua_scripts/
 COPY playlists/ /playlists/
+COPY scripts/ /scripts/
 
 RUN umask 000
 
