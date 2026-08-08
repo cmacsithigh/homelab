@@ -1,0 +1,13 @@
+#EXTM3U
+#EXTINF:1,RTE One
+#EXTGENRE:
+#PLAYLIST:RTE One
+#EXTIMG:https___www_rte_ie_manifests_radio1_m3u8.jpg
+#HOMEPAGE:
+#COUNTRY:Ireland
+#STATE:
+#LANGUAGE:English
+#DESCRIPTION:
+#CODEC:MP3
+#BITRATE:192
+https://www.rte.ie/manifests/radio1.m3u8

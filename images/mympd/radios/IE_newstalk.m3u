@@ -1,0 +1,13 @@
+#EXTM3U
+#EXTINF:1,Newstalk
+#EXTGENRE:News
+#PLAYLIST:Newstalk
+#EXTIMG:https___stream_audioxi_com_NT.png
+#HOMEPAGE:
+#COUNTRY:Ireland
+#STATE:
+#LANGUAGE:English
+#DESCRIPTION:
+#CODEC:MP3
+#BITRATE:192
+https://stream.audioxi.com/NT
