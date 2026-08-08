@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cloudflared
+spec:
+  selector:
+    matchLabels:
+      app: cloudflared
+  template:
+    metadata:
+      labels:
+        app: cloudflared
+    spec:
+      containers:
+        - args:
+            - tunnel
+            - '--no-autoupdate'
+            - '--metrics'
+            - 0.0.0.0:60123
+            - run
+            - '--token'
+            - $(CLOUDFLARE_TOKEN)
+          env:
+            - name: CLOUDFLARE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: cloudflared-credentials
+          image: cloudflare/cloudflared:2026.7.3
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /metrics
+              port: metrics
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          name: cloudflared
+          ports:
+            - containerPort: 60123
+              name: metrics
+      volumes:
+        - name: cloudflared-credentials
+          secret:
+            items:
+              - key: token
+                path: token
+            secretName: cloudflared-credentials
