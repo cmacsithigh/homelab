@@ -1,9 +1,10 @@
-name: Build and Push with Semantic Release
+name: Build and Push MPD
 
 on:
   push:
     branches: [ "main" ]
     paths:
+      - '.github/workflows/build-push-mpd.yaml'
       - 'images/mpd/**'
 
 env:
@@ -61,6 +62,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ${{ env.BUILD_DIR }}
+          platforms: linux/amd64,linux/arm64
           file: ${{ env.BUILD_DIR }}/Dockerfile
           push: true
           tags: |
