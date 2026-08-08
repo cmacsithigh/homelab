@@ -2,7 +2,6 @@
 reporting:
   interval: 30s
 web:
-  enabled: true
   config:
     authentication:
       anonymous:
@@ -10,13 +9,4 @@ web:
           - flux-admin
         username: flux
       type: Anonymous
-  ingress:
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-    className: traefik
-    enabled: true
-    hosts:
-      - host: ''
-        paths:
-          - path: /
-            pathType: Prefix
+  enabled: true
