@@ -14,6 +14,10 @@ sudo chmod 644 /etc/rancher/k3s/k3s.yaml
 
 # Set config
 echo 'export KUBECONFIG=/etc/rancher/k3s/k3s.yaml' >> ~/.bashrc
+echo "alias k='k3s kubectl'" >> ~/.bashrc
+echo "alias kg='k3s kubectl get'" >> ~/.bashrc
+echo "alias kd='k3s kubectl describe'" >> ~/.bashrc
+echo "alias kdel='k3s kubectl delete'" >> ~/.bashrc
 
 source ~/.bashrc
 
