@@ -9,7 +9,7 @@ RUN cp /usr/share/zoneinfo/Europe/Dublin /etc/localtime \
 
 COPY scripts/ /scripts/
 
-COPY ../mpd/playlists /playlists
+COPY playlists/ /playlists/
 
 RUN umask 000
 
