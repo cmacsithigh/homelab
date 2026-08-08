@@ -1,4 +1,4 @@
-FROM ghcr.io/jcorporation/mympd/mympd:25.3.0
+FROM ghcr.io/jcorporation/mympd/mympd:24.0.3
 
 USER root
 
@@ -8,6 +8,8 @@ RUN cp /usr/share/zoneinfo/Europe/Dublin /etc/localtime \
     && echo "Europe/Dublin" > /etc/timezone
 
 COPY scripts/ /scripts/
+
+COPY ../mpd/playlists /playlists
 
 RUN umask 000
 

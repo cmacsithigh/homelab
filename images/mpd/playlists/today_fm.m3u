@@ -1,1 +1,13 @@
+#EXTM3U
+#EXTINF:1,Today FM
+#EXTGENRE:
+#PLAYLIST:Today FM
+#EXTIMG:today_fm.jpg
+#HOMEPAGE:
+#COUNTRY:Ireland
+#STATE:
+#LANGUAGE:English
+#DESCRIPTION:
+#CODEC:MP3
+#BITRATE:192
 https://stream.audioxi.com/TDAAC

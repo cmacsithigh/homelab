@@ -12,4 +12,4 @@ chmod -R 777 /var/lib/mympd/pics/thumbs
 chown -R 1000:1000 /var/lib/mympd/scripts
 chmod -R 777 /var/lib/mympd/scripts
 
-mv /mystate/view_browse_radio_webradiodb /var/lib/mympd/state/view_browse_radio_webradiodb
+mv /var/lib/mpd/playlists/*.{jpg,png} /var/lib/mympd/pics/playlists/
