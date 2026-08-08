@@ -5,4 +5,5 @@ namespace: mympd
 resources:
   - deployment.yaml
   - namespace.yaml
+  - pvc.yaml
   - service.yaml
