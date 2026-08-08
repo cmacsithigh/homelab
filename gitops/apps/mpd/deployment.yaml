@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mpd
+  name: mpd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mpd
+  template:
+    metadata:
+      labels:
+        app: mpd
+    spec:
+      containers:
+        - image: ghcr.io/cmacsithigh/mpd:1.0.0
+          name: mpd
+          ports:
+            - containerPort: 6600
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - mountPath: /fifo
+              name: fifo
+            - mountPath: /var/lib/mpd/playlists
+              name: playlists
+      hostname: mpd
+      volumes:
+        - hostPath:
+            path: /fifo
+            type: DirectoryOrCreate
+          name: fifo
+        - hostPath:
+            path: /var/lib/mpd/playlists
+            type: DirectoryOrCreate
+          name: playlists

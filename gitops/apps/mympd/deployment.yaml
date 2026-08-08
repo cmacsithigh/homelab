@@ -1,0 +1,78 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mympd
+  name: mympd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mympd
+  template:
+    metadata:
+      labels:
+        app: mympd
+    spec:
+      containers:
+        - env:
+            - name: UMASK_SET
+              value: '022'
+            - name: MPD_HOST
+              value: mpd
+            - name: MYMPD_SSL
+              value: 'false'
+            - name: MYMPD_HTTP_PORT
+              value: '8080'
+          image: ghcr.io/cmacsithigh/mympd:1.0.0
+          name: mympd
+          ports:
+            - containerPort: 8080
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - mountPath: /var/lib/mympd
+              name: workdir
+            - mountPath: /var/cache/mympd
+              name: cachedir
+            - mountPath: /playlists
+              name: playlists
+            - mountPath: /mystate
+              name: state
+            - mountPath: /var/lib/mympd/webradios
+              name: radios
+            - mountPath: /var/lib/mympd/pics/thumbs
+              name: pictures
+            - mountPath: /var/lib/mympd/scripts
+              name: lua-scripts
+      hostname: mympd
+      volumes:
+        - hostPath:
+            path: /var/lib/mympd/workdir
+            type: DirectoryOrCreate
+          name: workdir
+        - hostPath:
+            path: /var/lib/mympd/cachedir
+            type: DirectoryOrCreate
+          name: cachedir
+        - hostPath:
+            path: /var/lib/mpd/playlists
+            type: DirectoryOrCreate
+          name: playlists
+        - hostPath:
+            path: /var/lib/mympd/state
+            type: DirectoryOrCreate
+          name: state
+        - hostPath:
+            path: /var/lib/mympd/radios
+            type: DirectoryOrCreate
+          name: radios
+        - hostPath:
+            path: /var/lib/mympd/pictures
+            type: DirectoryOrCreate
+          name: pictures
+        - hostPath:
+            path: /var/lib/mympd/lua_scripts
+            type: DirectoryOrCreate
+          name: lua-scripts

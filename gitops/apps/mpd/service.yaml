@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mpd
+  name: mpd
+spec:
+  ports:
+    - name: mpd
+      port: 6600
+      targetPort: 6600
+  selector:
+    app: mpd
+  type: ClusterIP
