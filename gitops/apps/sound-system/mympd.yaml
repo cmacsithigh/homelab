@@ -19,7 +19,7 @@ spec:
         kubernetes.io/hostname: server
       initContainers:
         - name: init-copy-files
-          image: ghcr.io/cmacsithigh/mympd:1.1.1
+          image: ghcr.io/cmacsithigh/mympd:1.1.2
           imagePullPolicy: Always
           command:
             - sh
@@ -60,7 +60,7 @@ spec:
               value: 'false'
             - name: MYMPD_HTTP_PORT
               value: '8080'
-          image: ghcr.io/cmacsithigh/mympd:1.1.1
+          image: ghcr.io/cmacsithigh/mympd:1.1.2
           imagePullPolicy: Always
           name: mympd
           ports:

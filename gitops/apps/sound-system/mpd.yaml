@@ -18,7 +18,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: server
       containers:
-        - image: ghcr.io/cmacsithigh/mpd:1.1.1
+        - image: ghcr.io/cmacsithigh/mpd:1.1.2
           imagePullPolicy: Always
           name: mpd
           ports:
