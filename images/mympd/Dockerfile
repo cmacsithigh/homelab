@@ -8,6 +8,7 @@ RUN cp /usr/share/zoneinfo/Europe/Dublin /etc/localtime \
     && echo "Europe/Dublin" > /etc/timezone
 
 COPY lua_scripts/ /lua_scripts/
+COPY pictures/ /pictures/
 COPY playlists/ /playlists/
 COPY scripts/ /scripts/
 
