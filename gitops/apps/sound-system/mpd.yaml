@@ -28,13 +28,26 @@ spec:
               name: fifo
             - mountPath: /var/lib/mpd/playlists
               name: playlists
+              subPath: playlists
+      initContainers:
+        - name: init-fifo
+          image: ghcr.io/cmacsithigh/mpd:1.1.1
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /fifo || true
+              if [ ! -p /fifo/mpd.fifo ]; then mkfifo /fifo/mpd.fifo || true; fi
+              chown 1000:1000 /fifo || true
+              chown 1000:1000 /fifo/mpd.fifo || true
+          securityContext:
+            runAsUser: 0
       hostname: mpd
       volumes:
-        - hostPath:
-            path: /fifo
-            type: DirectoryOrCreate
+        - persistentVolumeClaim:
+            claimName: mpd-fifo
           name: fifo
-        - hostPath:
-            path: /var/lib/mpd/playlists
-            type: DirectoryOrCreate
+        - persistentVolumeClaim:
+            claimName: mympd
           name: playlists

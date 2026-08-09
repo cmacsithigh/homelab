@@ -6,7 +6,6 @@ chmod -R 777 /var/lib/mympd
 chown -R 1000:1000 /var/cache/mympd
 chmod -R 777 /var/cache/mympd
 
-mkdir -p /var/lib/mpd/playlists
 mkdir -p /var/lib/mympd/pics/playlists
 
 chown -R 1000:1000 /var/lib/mympd/pics/thumbs
