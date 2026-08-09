@@ -51,7 +51,7 @@ WORKDIR /
 ARG UID=100
 
 RUN apk --no-cache upgrade && \
-    apk add --no-cache dumb-init shadow python3 py3-websocket-client snapcast-server && \
+    apk add --no-cache dumb-init shadow python3 py3-websocket-client snapcast-server librespot && \
     rm -rf /tmp/*
 
 ENV DATA_DIR=/var/lib/snapcast
@@ -66,4 +66,4 @@ COPY snapserver.conf /etc/snapserver/snapserver.conf
 
 EXPOSE 1704 1705 1780 4900-4910
 
-ENTRYPOINT ["snapserver", "-c", "/etc/snapserver/snapserver.conf"]
+ENTRYPOINT ["/usr/bin/snapserver librespot --cache /var/lib/snapserver --enable-oauth --oauth-port 0"]
