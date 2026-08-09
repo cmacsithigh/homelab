@@ -1,9 +1,10 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: mympd
+namespace: sound-system
 resources:
-  - deployment.yaml
+  - mpd.yaml
+  - mympd.yaml
   - namespace.yaml
   - pvc.yaml
-  - service.yaml
+  - services.yaml
