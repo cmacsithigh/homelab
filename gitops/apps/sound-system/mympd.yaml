@@ -22,7 +22,7 @@ spec:
             - name: UMASK_SET
               value: '022'
             - name: MPD_HOST
-              value: mpd.mpd.svc.cluster.local
+              value: mpd.sound-system.svc.cluster.local
             - name: MYMPD_SSL
               value: 'false'
             - name: MYMPD_HTTP_PORT
