@@ -15,6 +15,8 @@ spec:
       labels:
         app: mpd
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: server
       containers:
         - image: ghcr.io/cmacsithigh/mpd:1.1.1
           imagePullPolicy: Always
@@ -27,27 +29,14 @@ spec:
             - mountPath: /fifo
               name: fifo
             - mountPath: /var/lib/mpd/playlists
-              name: playlists
+              name: mympd
               subPath: playlists
-      initContainers:
-        - name: init-fifo
-          image: ghcr.io/cmacsithigh/mpd:1.1.1
-          imagePullPolicy: IfNotPresent
-          command:
-            - sh
-            - -c
-            - |
-              mkdir -p /fifo || true
-              if [ ! -p /fifo/mpd.fifo ]; then mkfifo /fifo/mpd.fifo || true; fi
-              chown 1000:1000 /fifo || true
-              chown 1000:1000 /fifo/mpd.fifo || true
-          securityContext:
-            runAsUser: 0
       hostname: mpd
       volumes:
-        - persistentVolumeClaim:
-            claimName: mpd-fifo
+        - hostPath:
+            path: /fifo
+            type: DirectoryOrCreate
           name: fifo
         - persistentVolumeClaim:
             claimName: mympd
-          name: playlists
+          name: mympd
