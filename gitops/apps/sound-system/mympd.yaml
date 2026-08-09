@@ -20,8 +20,7 @@ spec:
           image: ghcr.io/cmacsithigh/mympd:1.1.0
           imagePullPolicy: Always
           command:
-            - /bin/sh
-            - -c
+            - sh
             - /scripts/copy-files.sh
           securityContext:
             runAsUser: 0

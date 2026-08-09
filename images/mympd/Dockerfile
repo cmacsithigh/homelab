@@ -11,6 +11,8 @@ COPY lua_scripts/ /lua_scripts/
 COPY playlists/ /playlists/
 COPY scripts/ /scripts/
 
+RUN chmod +x /scripts/*.sh || true
+
 RUN umask 000
 
 ENTRYPOINT ["/usr/bin/mympd"]
