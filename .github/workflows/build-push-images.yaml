@@ -85,7 +85,7 @@ jobs:
             ${{ steps.image_name.outputs.value }}:${{ env.RELEASE_VERSION }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-`
+
   docker-mympd:
     needs: semantic-dry-run
     if: needs.semantic-dry-run.outputs.new_release_published == 'true'
