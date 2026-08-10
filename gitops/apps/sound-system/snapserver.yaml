@@ -15,12 +15,16 @@ spec:
       labels:
         app: snapserver
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - image: ghcr.io/cmacsithigh/snapserver:1.1.4
           imagePullPolicy: Always
           name: snapserver
           ports:
+            - containerPort: 1704
             - containerPort: 1705
+            - containerPort: 1780
           securityContext:
             privileged: true
           volumeMounts:

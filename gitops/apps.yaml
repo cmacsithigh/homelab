@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./gitops/tools
+  path: ./gitops/apps/tools
   prune: true
   retryInterval: 1m0s
   sourceRef:
