@@ -30,8 +30,22 @@ spec:
           volumeMounts:
             - mountPath: /fifo
               name: fifo
+            - name: host-avahi-socket
+              mountPath: /run/avahi-daemon/socket
+              readOnly: true
+            - name: host-dbus-socket
+              mountPath: /var/run/dbus/system_bus_socket
+              readOnly: true
       hostname: snapserver
       volumes:
         - name: fifo
           persistentVolumeClaim:
             claimName: mpd-fifo
+        - name: host-avahi-socket
+          hostPath:
+            path: /run/avahi-daemon/socket
+            type: Socket
+        - name: host-dbus-socket
+          hostPath:
+            path: /var/run/dbus/system_bus_socket
+            type: Socket
