@@ -15,8 +15,6 @@ spec:
       labels:
         app: snapserver
     spec:
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - image: ghcr.io/cmacsithigh/snapserver:1.1.4
           imagePullPolicy: Always
@@ -30,22 +28,26 @@ spec:
           volumeMounts:
             - mountPath: /fifo
               name: fifo
-            - name: host-avahi-socket
-              mountPath: /run/avahi-daemon/socket
+            - mountPath: /run/avahi-daemon/socket
+              name: host-avahi-socket
               readOnly: true
-            - name: host-dbus-socket
-              mountPath: /var/run/dbus/system_bus_socket
+            - mountPath: /var/run/dbus/system_bus_socket
+              name: host-dbus-socket
               readOnly: true
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
       hostname: snapserver
+      nodeSelector:
+        kubernetes.io/hostname: server
       volumes:
         - name: fifo
           persistentVolumeClaim:
             claimName: mpd-fifo
-        - name: host-avahi-socket
-          hostPath:
+        - hostPath:
             path: /run/avahi-daemon/socket
             type: Socket
-        - name: host-dbus-socket
-          hostPath:
+          name: host-avahi-socket
+        - hostPath:
             path: /var/run/dbus/system_bus_socket
             type: Socket
+          name: host-dbus-socket

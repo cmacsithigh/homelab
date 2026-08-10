@@ -15,39 +15,6 @@ spec:
       labels:
         app: mympd
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: server
-      initContainers:
-        - name: init-copy-files
-          image: ghcr.io/cmacsithigh/mympd:1.1.2
-          imagePullPolicy: Always
-          command:
-            - sh
-            - /scripts/copy-files.sh
-          securityContext:
-            runAsUser: 0
-          volumeMounts:
-            - mountPath: /var/lib/mympd
-              name: mympd
-              subPath: workdir
-            - mountPath: /var/cache/mympd
-              name: mympd
-              subPath: cachedir
-            - mountPath: /var/lib/mpd/playlists
-              name: mympd
-              subPath: playlists
-            - mountPath: /mystate
-              name: mympd
-              subPath: state
-            - mountPath: /var/lib/mympd/webradios
-              name: mympd
-              subPath: radios
-            - mountPath: /var/lib/mympd/pics/thumbs
-              name: mympd
-              subPath: pictures
-            - mountPath: /var/lib/mympd/scripts
-              name: mympd
-              subPath: lua_scripts
       containers:
         - env:
             - name: TZ
@@ -90,7 +57,40 @@ spec:
               name: mympd
               subPath: lua_scripts
       hostname: mympd
+      initContainers:
+        - command:
+            - sh
+            - /scripts/copy-files.sh
+          image: ghcr.io/cmacsithigh/mympd:1.1.2
+          imagePullPolicy: Always
+          name: init-copy-files
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - mountPath: /var/lib/mympd
+              name: mympd
+              subPath: workdir
+            - mountPath: /var/cache/mympd
+              name: mympd
+              subPath: cachedir
+            - mountPath: /var/lib/mpd/playlists
+              name: mympd
+              subPath: playlists
+            - mountPath: /mystate
+              name: mympd
+              subPath: state
+            - mountPath: /var/lib/mympd/webradios
+              name: mympd
+              subPath: radios
+            - mountPath: /var/lib/mympd/pics/thumbs
+              name: mympd
+              subPath: pictures
+            - mountPath: /var/lib/mympd/scripts
+              name: mympd
+              subPath: lua_scripts
+      nodeSelector:
+        kubernetes.io/hostname: server
       volumes:
-        - persistentVolumeClaim:
+        - name: mympd
+          persistentVolumeClaim:
             claimName: mympd
-          name: mympd

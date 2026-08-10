@@ -15,8 +15,6 @@ spec:
       labels:
         app: mpd
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: server
       containers:
         - image: ghcr.io/cmacsithigh/mpd:1.1.2
           imagePullPolicy: Always
@@ -32,11 +30,13 @@ spec:
               name: mympd
               subPath: playlists
       hostname: mpd
+      nodeSelector:
+        kubernetes.io/hostname: server
       volumes:
         - hostPath:
             path: /fifo
             type: DirectoryOrCreate
           name: fifo
-        - persistentVolumeClaim:
+        - name: mympd
+          persistentVolumeClaim:
             claimName: mympd
-          name: mympd
