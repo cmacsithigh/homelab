@@ -3,8 +3,8 @@ LABEL Author="cian-sheehy"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ARG snapcast_version=0.28.0
-ARG target_arch=amd64-bookworm
+ARG snapcast_version=0.35.0
+ARG target_arch=arm64_trixie
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
@@ -17,17 +17,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN cp /usr/share/zoneinfo/Europe/Dublin /etc/localtime \
     && echo "Europe/Dublin" > /etc/timezone
 
-RUN curl -sL https://github.com/dtcooper/raspotify/releases/download/0.45.0/raspotify_0.45.0.librespot.v0.5.0-84d28e8_amd64.deb -o /tmp/raspotify.deb \
-    && dpkg -i /tmp/raspotify.deb || true \
-    && apt-get update \
-    && apt-get -f install -y \
-    && rm -f /tmp/raspotify.deb \
-    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
 
 RUN curl -sL https://github.com/badaix/snapcast/releases/download/v${snapcast_version}/snapserver_${snapcast_version}-1_${target_arch}.deb -o /tmp/snapserver.deb \
-    && dpkg -i /tmp/snapserver.deb || true \
-    && apt-get update \
-    && apt-get -f install -y \
+    && apt-get install -y --no-install-recommends /tmp/snapserver.deb \
     && rm -f /tmp/snapserver.deb \
     && rm -rf /var/lib/apt/lists/*
 
