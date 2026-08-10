@@ -2,11 +2,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: eraser
+  name: tools
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./gitops/apps/eraser
+  path: ./gitops/tools
   prune: true
   retryInterval: 1m0s
   sourceRef:
