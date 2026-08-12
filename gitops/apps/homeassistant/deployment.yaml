@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: homeassistant
+  name: homeassistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homeassistant
+  template:
+    metadata:
+      labels:
+        app: homeassistant
+    spec:
+      initContainers:
+        - name: copy-config
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              echo "Copying Home Assistant config from ConfigMap into PVC /config";
+              mkdir -p /config;
+              cp -a /tmp/homeassistant-config/* /config/ || true;
+              echo "Copy complete";
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /config/homeassistant-config
+              name: homeassistant-config
+      containers:
+        - env:
+            - name: TZ
+              value: Europe/Dublin
+          image: ghcr.io/home-assistant/home-assistant:2026.8.1
+          imagePullPolicy: IfNotPresent
+          name: homeassistant
+          ports:
+            - containerPort: 8123
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /etc/localtime
+              name: localtime
+              readOnly: true
+            - mountPath: /run/dbus
+              name: dbus
+              readOnly: true
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: homeassistant
+        - name: homeassistant-config
+          configMap:
+            name: homeassistant-config
+        - hostPath:
+            path: /etc/localtime
+            type: File
+          name: localtime
+        - hostPath:
+            path: /run/dbus
+            type: Directory
+          name: dbus

@@ -1,0 +1,255 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homeassistant-config
+  labels:
+    app: homeassistant
+data:
+  automations.yaml: |-
+    ---
+    - actions:
+        - action: media_player.select_source
+          data:
+            source: Radio
+          metadata: {}
+          target:
+            area_id:
+              - hallway
+              - bedroom
+      alias: Speakers - Set source to Radio
+      conditions: []
+      description: ''
+      id: '1737837812789'
+      mode: single
+      triggers:
+        - at: '05:00:00'
+          trigger: time
+    - actions:
+        - action: media_player.volume_set
+          data:
+            volume_level: 0.2
+          metadata: {}
+          target:
+            area_id: hallway
+      alias: Hallway speaker - Set morning volume
+      conditions: []
+      description: ''
+      id: '1737837864723'
+      mode: single
+      triggers:
+        - at: '06:00:00'
+          trigger: time
+    - actions:
+        - action: media_player.volume_mute
+          data:
+            is_volume_muted: false
+          metadata: {}
+          target:
+            area_id: bedroom
+      alias: Bedroom speaker - Unmute
+      conditions: []
+      description: ''
+      id: '1741799476593'
+      mode: single
+      triggers:
+        - at: '06:00:00'
+          trigger: time
+    - actions:
+        - action: light.turn_off
+          data: {}
+          metadata: {}
+          target:
+            area_id:
+              - living_room
+              - hallway
+        - action: script.all_lights_off
+          data: {}
+          metadata: {}
+      alias: Lights - Turn off
+      conditions: []
+      description: ''
+      id: '1745318078223'
+      mode: single
+      triggers:
+        - at: '23:00:00'
+          trigger: time
+        - event: sunrise
+          offset: '+01:00:00'
+          trigger: sun
+    - actions:
+        - action: media_player.volume_mute
+          data:
+            is_volume_muted: false
+          metadata: {}
+          target:
+            area_id: hallway
+      alias: Hallway speaker - Unmute
+      conditions: []
+      description: ''
+      id: '1746819491925'
+      mode: single
+      triggers:
+        - at: '07:00:00'
+          trigger: time
+    - actions:
+        - action: media_player.volume_mute
+          data:
+            is_volume_muted: true
+          metadata: {}
+          target:
+            area_id:
+              - bedroom
+              - hallway
+      alias: Speakers - Mute
+      conditions: []
+      description: ''
+      id: '1746819680520'
+      mode: single
+      triggers:
+        - at: '23:00:00'
+          trigger: time
+    - actions:
+        - action: media_player.volume_set
+          data:
+            volume_level: 0.5
+          metadata: {}
+          target:
+            area_id: bedroom
+      alias: Bedroom speaker - Morning volume
+      conditions: []
+      description: ''
+      id: '1749156182427'
+      mode: single
+      triggers:
+        - at: '05:00:00'
+          trigger: time
+    - actions:
+        - action: media_player.volume_set
+          data:
+            volume_level: 0.5
+          metadata: {}
+          target:
+            area_id: bedroom
+      alias: Bedroom speaker - Set work volume
+      conditions:
+        - condition: time
+          weekday:
+            - mon
+            - tue
+            - wed
+            - thu
+            - fri
+      description: ''
+      id: '1763715242657'
+      mode: single
+      triggers:
+        - at: '09:00:00'
+          trigger: time
+    - actions:
+        - action: light.turn_on
+          data:
+            brightness_pct: 44
+            kelvin: 2000
+          metadata: {}
+          target:
+            area_id:
+              - living_room
+              - stairway
+      alias: Lights - Turn on
+      conditions:
+        - after: '06:00:00'
+          before: '22:00:00'
+          condition: time
+      description: ''
+      id: '1769024245390'
+      mode: single
+      triggers:
+        - event: sunset
+          offset: '-01:00:00'
+          trigger: sun
+        - event: sunrise
+          offset: '-01:00:00'
+          trigger: sun
+    - actions:
+        - action: light.turn_on
+          data:
+            brightness_pct: 20
+          metadata: {}
+          target:
+            area_id:
+              - living_room
+              - hallway
+      alias: Lights - Turn down
+      conditions: []
+      description: ''
+      id: '1769467026597'
+      mode: single
+      triggers:
+        - at: '22:30:00'
+          trigger: time
+  configuration.yaml: |-
+    default_config: # assuming you have only one non-system user
+
+    homeassistant:
+      external_url: https://home.ciansheehy.co
+      internal_url: http://localhost:8123
+      auth_providers:
+        # LAN only: trusted_networks (user picker). External: homeassistant (username/password).
+        - type: trusted_networks
+          trusted_networks:
+            - "192.168.0.0/19"
+            - "172.21.0.0/20"
+          allow_bypass_login: true
+        - type: homeassistant
+
+    automation: !include automations.yaml
+    script: !include scripts.yaml
+
+    http:
+      use_x_forwarded_for: true
+      ip_ban_enabled: false
+      trusted_proxies:
+        - 127.0.0.0/8
+        - "::1/128"
+        - 192.168.0.0/16
+        - 172.16.0.0/12
+        - "::ffff:127.0.0.0/104"
+        - 10.0.0.0/8
+  scripts.yaml: |-
+    # Scripts to switch Snapcast source (workaround if UI dropdown doesn't work)
+    snapcast_radio:
+      alias: Snapcast - Switch to Radio
+      sequence:
+        - action: media_player.select_source
+          target:
+            area_id:
+              - hallway
+              - bedroom
+          data:
+            source: Radio
+
+    snapcast_spotify:
+      alias: Snapcast - Switch to Spotify
+      sequence:
+        - action: media_player.select_source
+          target:
+            area_id:
+              - hallway
+              - bedroom
+          data:
+            source: Spotify
+
+    # Turn all lights on/off
+    all_lights_on:
+      alias: All lights on
+      sequence:
+        - action: light.turn_on
+          target:
+            entity_id: "{{ states.light | map(attribute='entity_id') | list }}"
+
+    all_lights_off:
+      alias: All lights off
+      sequence:
+        - action: light.turn_off
+          target:
+            entity_id: "{{ states.light | map(attribute='entity_id') | list }}"
