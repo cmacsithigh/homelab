@@ -29,7 +29,7 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: config
-            - mountPath: /config/homeassistant-config
+            - mountPath: /tmp/homeassistant-config
               name: homeassistant-config
       containers:
         - env:
