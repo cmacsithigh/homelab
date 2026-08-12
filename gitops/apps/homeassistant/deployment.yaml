@@ -24,8 +24,10 @@ spec:
             - |
               echo "Copying Home Assistant config from ConfigMap into PVC /config";
               mkdir -p /config;
-              cp -a /tmp/homeassistant-config/* /config/ || true;
+              cp -aL /tmp/homeassistant-config/. /config/;
               echo "Copy complete";
+              echo "Config files in /config:";
+              ls -la /config;
           volumeMounts:
             - mountPath: /config
               name: config
