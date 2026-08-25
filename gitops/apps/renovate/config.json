@@ -1,0 +1,39 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "commitMessagePrefix": "chore:",
+    "automerge": false,
+    "extends": [
+        "config:recommended",
+        ":dependencyDashboard"
+    ],
+    "semanticCommits": "enabled",
+    "platform": "github",
+    "autodiscover": true,
+    "autodiscoverFilter": [
+        "cmacsithigh/*"
+    ],
+    "labels": [
+        "renovate"
+    ],
+    "repositoryCache": "enabled",
+    "enabledManagers": [
+        "dockerfile",
+        "helmfile",
+        "crossplane",
+        "azure-pipelines",
+        "nuget",
+        "helmv3",
+        "helm-values",
+        "kubernetes",
+        "kustomize",
+        "npm",
+        "custom.regex",
+        "terraform",
+        "flux"
+    ],
+    "prBodyTemplate": "{{{header}}}{{{table}}}{{{warnings}}}{{{notes}}}{{{changelogs}}}",
+    "prHourlyLimit": 0,
+    "git-submodules": {
+        "enabled": true
+    }
+}
