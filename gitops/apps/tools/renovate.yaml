@@ -53,7 +53,7 @@ metadata:
 spec:
   provider:
     vault:
-      server: http://openbao.openbao-system.svc.cluster.local:8200
+      server: http://openbao-system-openbao.openbao-system.svc.cluster.local:8200
       path: secret
       version: v2
       auth:
