@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - eraser.yaml
   - headlamp.yaml
-  # - openbao.yaml
+  - openbao.yaml
