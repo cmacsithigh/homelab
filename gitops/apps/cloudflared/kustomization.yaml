@@ -4,4 +4,5 @@ kind: Kustomization
 namespace: cloudflared
 resources:
   - daemonset.yaml
+  - external-secret.yaml
   - namespace.yaml

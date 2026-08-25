@@ -1,0 +1,83 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: renovate
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: renovate
+  namespace: renovate
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: renovate
+  namespace: renovate
+spec:
+  schedule: "0 2 * * *"
+  timeZone: Europe/Dublin
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          automountServiceAccountToken: false
+          restartPolicy: Never
+          containers:
+            - name: renovate
+              image: ghcr.io/renovatebot/renovate:44.44.0
+              imagePullPolicy: Always
+              env:
+                - name: RENOVATE_PLATFORM
+                  value: github
+                - name: RENOVATE_AUTODISCOVER
+                  value: "true"
+                - name: RENOVATE_AUTODISCOVER_FILTER
+                  value: cmacsithigh/*
+                - name: RENOVATE_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: renovate-token
+                      key: token
+---
+apiVersion: external-secrets.io/v1
+kind: SecretStore
+metadata:
+  name: openbao
+  namespace: renovate
+spec:
+  provider:
+    vault:
+      server: http://openbao.openbao-system.svc.cluster.local:8200
+      path: secret
+      version: v2
+      auth:
+        kubernetes:
+          mountPath: kubernetes
+          role: eso-renovate
+          serviceAccountRef:
+            name: renovate
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: renovate-token
+  namespace: renovate
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: openbao
+    kind: SecretStore
+  target:
+    name: renovate-token
+    creationPolicy: Owner
+  data:
+    - secretKey: token
+      remoteRef:
+        key: renovate-token
+        property: token

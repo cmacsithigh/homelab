@@ -6,3 +6,4 @@ resources:
   - external-secrets.yaml
   - headlamp.yaml
   - openbao.yaml
+  - renovate.yaml
