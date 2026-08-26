@@ -31,7 +31,7 @@ spec:
       adminUser: admin
       existingSecret: keycloak-credentials
       passwordSecretKey: password
-    production: true
+    production: false
     hostname: keycloak.ciansheehy.co
     proxyHeaders: xforwarded
     httpEnabled: true
@@ -39,5 +39,10 @@ spec:
     ingress:
       enabled: false
     postgresql:
-      auth:
-        existingSecret: keycloak-postgresql
+      enabled: false
+    persistence:
+      enabled: true
+      storageClass: local-path
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
