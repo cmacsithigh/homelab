@@ -5,4 +5,5 @@ resources:
   - eraser.yaml
   - external-secrets.yaml
   - headlamp.yaml
+  - keycloak.yaml
   - openbao.yaml
