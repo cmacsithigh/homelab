@@ -66,6 +66,22 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: keycloak
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./gitops/apps/keycloak
+  prune: true
+  retryInterval: 1m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m0s
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: renovate
   namespace: flux-system
 spec:
