@@ -27,7 +27,7 @@ spec:
               value: 'false'
             - name: MYMPD_HTTP_PORT
               value: '8080'
-          image: ghcr.io/cmacsithigh/mympd:1.1.2
+          image: ghcr.io/cmacsithigh/mympd:1.2.o
           imagePullPolicy: Always
           name: mympd
           ports:
@@ -61,7 +61,7 @@ spec:
         - command:
             - sh
             - /scripts/copy-files.sh
-          image: ghcr.io/cmacsithigh/mympd:1.1.2
+          image: ghcr.io/cmacsithigh/mympd:1.2.0
           imagePullPolicy: Always
           name: init-copy-files
           securityContext:
