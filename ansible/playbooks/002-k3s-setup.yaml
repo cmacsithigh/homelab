@@ -50,6 +50,7 @@
 
 - name: Setup k3s on server
   hosts: server
+  become: yes
   gather_facts: yes
   tasks:
     - name: Download and install K3s
@@ -67,6 +68,9 @@
       command: systemctl is-active --quiet k3s
       changed_when: false
 
+    - name: Set permissions for K3s kubeconfig
+      command: chmod 644 /etc/rancher/k3s/k3s.yaml
+
     - name: Get node join token
       become: yes
       ansible.builtin.fetch:
@@ -81,13 +85,18 @@
     - name: Check if k3s is already installed
       ansible.builtin.stat:
         path: /usr/local/bin/k3s
-      register: k3s
 
     - name: Extract k3s server node token from control node
       local_action:
         module: shell
         cmd: cat node_join_token
       register: node_join_token
+
+    - name: Extract hostname of node
+      local_action:
+        module: shell
+        cmd: hostname
+      register: hostname
 
     - name: Install k3s on agent
       become: yes
@@ -96,8 +105,14 @@
         K3S_TOKEN: "{{ node_join_token.stdout }}"
         # Select the first host in the group of k3s servers as the server for the agent
         K3S_URL: "https://{{ groups['server'] | first }}:6443"
-        K3S_NODE_NAME: "{{ inventory_hostname }}"
-      when: not k3s.stat.exists
+        K3S_NODE_NAME: "{{ hostname.stdout }}"
+
+    - name: Verify the K3s service is active
+      command: systemctl is-active --quiet k3s-agent
+      changed_when: false
+
+    - name: Restart k3s-agent service to ensure it picks up the new configuration
+      command: systemctl restart k3s-agent
 
     - name: Remove node join token
       ansible.builtin.file:

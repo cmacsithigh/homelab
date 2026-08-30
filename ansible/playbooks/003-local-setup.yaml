@@ -35,7 +35,7 @@
     - name: Copy k3s kube config to $HOME/.kube directory
       ansible.builtin.copy:
         src: .kube/k3s-config
-        dest: $HOME/.kube
+        dest: $HOME/.kube/config
         mode: '600'
 
     - name: Remove node join token
@@ -120,12 +120,12 @@
 
     - name: Verify K3s is running
       shell: kubectl get nodes
-      register: k3s_nodes
+      register: k3s_all_nodes
       changed_when: false
 
     - name: Show K3s nodes
       debug:
-        msg: "{{ k3s_nodes.stdout }}"
+        msg: "{{ k3s_all_nodes.stdout }}"
 
     - name: Verify Helm version
       shell: helm version --short

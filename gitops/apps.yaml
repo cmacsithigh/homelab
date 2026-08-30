@@ -6,6 +6,8 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
+  dependsOn:
+    - name: base
   path: ./gitops/apps/tools
   prune: true
   retryInterval: 1m0s
@@ -22,6 +24,8 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
+  dependsOn:
+    - name: tools
   path: ./gitops/apps/cloudflared
   prune: true
   retryInterval: 1m0s
@@ -38,6 +42,8 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
+  dependsOn:
+    - name: tools
   path: ./gitops/apps/sound-system
   prune: true
   retryInterval: 1m0s
@@ -54,6 +60,8 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
+  dependsOn:
+    - name: tools
   path: ./gitops/apps/homeassistant
   prune: true
   retryInterval: 1m0s
@@ -70,6 +78,8 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
+  dependsOn:
+    - name: tools
   path: ./gitops/apps/keycloak
   prune: true
   retryInterval: 1m0s
@@ -86,6 +96,8 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
+  dependsOn:
+    - name: tools
   path: ./gitops/apps/renovate
   prune: true
   retryInterval: 1m0s
