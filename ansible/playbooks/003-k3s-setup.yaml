@@ -1,0 +1,105 @@
+- name: Setup baseline for all k3s nodes
+  hosts: k3s
+  become: yes
+  gather_facts: yes
+  tasks:
+    # Raspberry Pi Kernel Tasks
+    - name: Check the newer Raspberry Pi cmdline path
+      stat:
+        path: /boot/firmware/cmdline.txt
+      register: newer_cmdline
+
+    - name: Check the older Raspberry Pi cmdline path
+      stat:
+        path: /boot/cmdline.txt
+      register: older_cmdline
+
+    - name: Ensure a Raspberry Pi cmdline file exists
+      assert:
+        that:
+          - newer_cmdline.stat.exists or older_cmdline.stat.exists
+        fail_msg: Neither /boot/firmware/cmdline.txt nor /boot/cmdline.txt exists.
+
+    - name: Select the Raspberry Pi cmdline file
+      set_fact:
+        cmdline_path: "{{ '/boot/firmware/cmdline.txt' if newer_cmdline.stat.exists else '/boot/cmdline.txt' }}"
+
+    - name: Normalize kernel cmdline to single line
+      shell: |
+        content=$(cat "{{ cmdline_path }}" | tr '\n' ' ' | sed 's/  */ /g' | sed 's/ *$//')
+        echo -n "$content" > "{{ cmdline_path }}"
+      changed_when: false
+
+    - name: Add required cgroup kernel options
+      replace:
+        path: "{{ cmdline_path }}"
+        regexp: "^(?!.*{{ item }})(.+)$"
+        replace: "\\1 {{ item }}"
+      loop:
+        - cgroup_enable=cpuset
+        - cgroup_memory=1
+        - cgroup_enable=memory
+      register: cgroup_options
+
+    - name: Reboot after changing kernel options
+      reboot:
+        msg: Reboot initiated by Ansible after updating Raspberry Pi kernel options.
+        reboot_timeout: 600
+        post_reboot_delay: 10
+      when: cgroup_options is changed
+
+- name: Setup k3s on server
+  hosts: server
+  gather_facts: yes
+  tasks:
+    - name: Download and install K3s
+      shell: curl -sfL https://get.k3s.io | sh -
+      args:
+        creates: /usr/local/bin/k3s
+
+    - name: Wait for K3s to be ready
+      wait_for:
+        path: /etc/rancher/k3s/k3s.yaml
+        state: present
+        timeout: 60
+
+    - name: Verify the K3s service is active
+      command: systemctl is-active --quiet k3s
+      changed_when: false
+
+    - name: Get node join token
+      become: yes
+      ansible.builtin.fetch:
+        src: /var/lib/rancher/k3s/server/token
+        dest: 'node_join_token'
+        flat: yes
+
+- name: Setup k3s agents
+  hosts: k3s_nodes
+  gather_facts: yes
+  tasks:
+    - name: Check if k3s is already installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/k3s
+      register: k3s
+
+    - name: Extract k3s server node token from control node
+      local_action:
+        module: shell
+        cmd: cat node_join_token
+      register: node_join_token
+
+    - name: Install k3s on agent
+      become: yes
+      shell: curl -sfL https://get.k3s.io | sh -
+      environment:
+        K3S_TOKEN: "{{ node_join_token.stdout }}"
+        # Select the first host in the group of k3s servers as the server for the agent
+        K3S_URL: "https://{{ groups['server'] | first }}:6443"
+        K3S_NODE_NAME: "{{ inventory_hostname }}"
+      when: not k3s.stat.exists
+
+    - name: Remove node join token
+      ansible.builtin.file:
+        path: node_join_token
+        state: absent

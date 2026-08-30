@@ -1,0 +1,42 @@
+- name: Install Flux
+  hosts: localhost
+  vars:
+    flux_operator_release: flux-operator
+    flux_operator_chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
+    flux_values_source: "{{ playbook_dir }}/../data/flux-values.yaml"
+    flux_manifest_source: "{{ playbook_dir }}/../data/flux-instance.yaml"
+
+  tasks:
+    - name: Copy Flux operator values
+      copy:
+        src: "{{ flux_values_source }}"
+        dest: /tmp/flux-values.yaml
+        mode: '0644'
+
+    - name: Install Flux operator
+      command:
+        cmd: >-
+          helm upgrade --install {{ flux_operator_release }}
+          {{ flux_operator_chart }}
+          --namespace flux-system
+          --create-namespace
+          --values /tmp/flux-values.yaml
+
+    - name: Copy Flux instance manifest
+      copy:
+        src: "{{ flux_manifest_source }}"
+        dest: /tmp/flux.yaml
+        mode: '0644'
+
+    - name: Wait for the Flux instance CRD
+      command:
+        cmd: kubectl get crd fluxinstances.fluxcd.controlplane.io
+      register: flux_crd
+      retries: 6
+      delay: 5
+      until: flux_crd.rc == 0
+      changed_when: false
+
+    - name: Apply Flux instance manifest
+      command:
+        cmd: kubectl apply --filename /tmp/flux.yaml

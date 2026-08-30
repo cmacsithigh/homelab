@@ -1,0 +1,45 @@
+---
+- name: Distribute SSH Keys to Hosts
+  hosts: localhost
+  gather_facts: yes
+  vars:
+    ansible_key_path: "~/.ssh/ansible_key.pub"
+    ansible_user: "pi"
+    target_hosts:
+      - 192.168.18.7 # server
+      - 192.168.18.13 # rc0
+      - 192.168.18.14 # desktop/camera
+      - 192.168.18.17 # rc2
+  
+  tasks:
+    - name: Check if SSH key exists
+      stat:
+        path: "{{ ansible_key_path }}"
+      register: ssh_key_stat
+
+    - name: Fail if SSH key not found
+      fail:
+        msg: "SSH key not found at {{ ansible_key_path }}"
+      when: not ssh_key_stat.stat.exists
+
+    - name: Read SSH public key
+      slurp:
+        src: "{{ ansible_key_path }}"
+      register: ssh_key_content
+
+    - name: Distribute SSH key to all hosts
+      shell: |
+        ssh-copy-id -i {{ ansible_key_path }} {{ ansible_user }}@{{ item }}
+      loop: "{{ target_hosts }}"
+      register: ssh_copy_result
+      changed_when: "'Number of key(s) added' in ssh_copy_result.stderr"
+      failed_when: 
+        - ssh_copy_result.rc != 0
+        - "'already authorized' not in ssh_copy_result.stderr"
+      environment:
+        ANSIBLE_HOST_KEY_CHECKING: "False"
+
+    - name: Display results
+      debug:
+        msg: "Key distribution to {{ item }} completed"
+      loop: "{{ target_hosts }}"

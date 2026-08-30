@@ -1,0 +1,138 @@
+- name: Fetch data from k3s server node
+  hosts: server
+  gather_facts: yes
+  tasks:
+    - name: Get node join token
+      become: yes
+      ansible.builtin.fetch:
+        src: /var/lib/rancher/k3s/server/token
+        dest: 'node_join_token'
+        flat: yes
+
+    - name: Copy kubectl config from server to temp .kube directory on control node 
+      become: yes
+      ansible.builtin.fetch:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: .kube/k3s-config
+        # The kubeconfig should be identical for all servers
+        flat: yes
+
+- name: Setup kubectl on localhost with new context
+  hosts: localhost
+  tasks:
+    - name: Create $HOME/.kube directory if not present
+      ansible.builtin.file:
+        path: $HOME/.kube
+        state: directory
+
+    - name: Replace the server reference in k3s kube config with IP of a server node
+      ansible.builtin.replace:
+        path: .kube/k3s-config
+        regexp: '127\.0\.0\.1'
+        replace: "{{ groups['server'] | first }}" 
+        backup: yes
+
+    - name: Copy k3s kube config to $HOME/.kube directory
+      ansible.builtin.copy:
+        src: .kube/k3s-config
+        dest: $HOME/.kube
+        mode: '600'
+
+    - name: Remove node join token
+      ansible.builtin.file:
+        path: node_join_token
+        state: absent
+
+    - name: Remove temporary kube config directory
+      ansible.builtin.file:
+        path: .kube
+        state: absent
+
+    - name: Configure Kubernetes aliases
+      lineinfile:
+        path: "~/.config/fish/config.fish"
+        line: "{{ item.line }}"
+        regexp: "{{ item.regexp }}"
+        create: yes
+        state: present
+      loop:
+        - line: "alias kubectl='kubecolor'"
+          regexp: "^alias k="
+        - line: "alias k='kubectl'"
+          regexp: "^alias k="
+        - line: "alias kg='kubectl get'"
+          regexp: "^alias kg="
+        - line: "alias kd='kubectl describe'"
+          regexp: "^alias kd="
+        - line: "alias kdel='kubectl delete'"
+          regexp: "^alias kdel="
+        - line: "set -x ANSIBLE_CONFIG /mnt/c/dev/personal/homelab/ansible/ansible.cfg"
+          regexp: "^set -x ANSIBLE_CONFIG"
+
+    - name: Check if kubectl is already installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/kubectl
+      register: kubectl
+
+    - name: Install kubectl from official release
+      shell: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$(dpkg --print-architecture)/kubectl"
+        chmod +x ./kubectl
+        sudo mv ./kubectl /usr/local/bin/kubectl
+      args:
+        creates: /usr/local/bin/kubectl
+      when: not kubectl.stat.exists
+
+    - name: Check if helm is already installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/helm
+      register: helm
+
+    - name: Download Helm install script
+      get_url:
+        url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+        dest: /tmp/get-helm.sh
+        mode: '0755'
+      when: not helm.stat.exists
+
+    - name: Install Helm
+      shell: /tmp/get-helm.sh
+      args:
+        creates: /usr/local/bin/helm
+      when: not helm.stat.exists
+
+    - name: Check if kubecolor is already installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/kubecolor
+      register: kubecolor
+
+    - name: Install kubecolor
+      shell: |
+        KUBECOLOR_VERSION=$(curl -s https://api.github.com/repos/kubecolor/kubecolor/releases/latest | grep tag_name | cut -d '"' -f 4)
+        curl -L "https://github.com/kubecolor/kubecolor/releases/download/${KUBECOLOR_VERSION}/kubecolor_${KUBECOLOR_VERSION:1}_linux_$(dpkg --print-architecture).tar.gz" -o /tmp/kubecolor.tar.gz
+        tar -xzf /tmp/kubecolor.tar.gz -C /tmp/
+        sudo mv /tmp/kubecolor /usr/local/bin/kubecolor
+        rm /tmp/kubecolor.tar.gz
+      args:
+        creates: /usr/local/bin/kubecolor
+        executable: /bin/bash
+      when: not kubecolor.stat.exists
+
+    - name: Verify K3s is running
+      shell: kubectl get nodes
+      register: k3s_nodes
+      changed_when: false
+
+    - name: Show K3s nodes
+      debug:
+        msg: "{{ k3s_nodes.stdout }}"
+
+    - name: Verify Helm version
+      shell: helm version --short
+      register: helm_version
+      become: no
+      changed_when: false
+
+    - name: Show Helm version
+      debug:
+        msg: "{{ helm_version.stdout }}"

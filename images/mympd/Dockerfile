@@ -11,6 +11,7 @@ COPY lua_scripts/ /lua_scripts/
 COPY pictures/ /pictures/
 COPY playlists/ /playlists/
 COPY scripts/ /scripts/
+COPY state/ /state/
 
 RUN chmod +x /scripts/*.sh || true
 
