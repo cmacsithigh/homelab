@@ -210,11 +210,11 @@ data:
       ip_ban_enabled: false
       trusted_proxies:
         - 127.0.0.1
-        - "::1"
-        - "10.42.0.0/16"
-        - "10.43.0.0/16"
-        - "192.168.0.0/16"
-        - "172.16.0.0/12"
+        - ::1
+        - 10.42.0.0/16
+        - 10.43.0.0/16
+        - 192.168.0.0/16
+        - 172.16.0.0/12
   scripts.yaml: |-
     snapcast_radio:
       alias: Snapcast - Switch to Radio
