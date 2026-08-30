@@ -31,7 +31,7 @@ spec:
               subPath: playlists
       hostname: mpd
       nodeSelector:
-        kubernetes.io/hostname: server
+        kubernetes.io/hostname: pi4-server
       volumes:
         - name: fifo
           persistentVolumeClaim:
