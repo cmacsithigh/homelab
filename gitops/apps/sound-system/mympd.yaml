@@ -27,7 +27,7 @@ spec:
               value: 'false'
             - name: MYMPD_HTTP_PORT
               value: '8080'
-          image: ghcr.io/cmacsithigh/mympd:1.2.o
+          image: ghcr.io/cmacsithigh/mympd:1.2.0
           imagePullPolicy: Always
           name: mympd
           ports:
