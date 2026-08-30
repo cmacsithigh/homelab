@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: homeassistant-config
+  namespace: homeassistant
   labels:
     app: homeassistant
 data:
@@ -188,13 +189,12 @@ data:
         - at: '22:30:00'
           trigger: time
   configuration.yaml: |-
-    default_config: # assuming you have only one non-system user
+    default_config:
 
     homeassistant:
       external_url: https://home.ciansheehy.co
       internal_url: http://localhost:8123
       auth_providers:
-        # LAN only: trusted_networks (user picker). External: homeassistant (username/password).
         - type: trusted_networks
           trusted_networks:
             - "192.168.0.0/19"
@@ -209,14 +209,13 @@ data:
       use_x_forwarded_for: true
       ip_ban_enabled: false
       trusted_proxies:
-        - 127.0.0.1          # IPv4 loopback
-        - "::1"              # IPv6 loopback
-        - 10.42.0.0/16       # K3s Service Network
-        - 10.43.0.0/16       # K3s Pod Network
-        - 192.168.0.0/16     # Your physical LAN subnet
-        - 172.16.0.0/12      # Docker/Kube bridge fallback ranges
+        - 127.0.0.1
+        - "::1"
+        - "10.42.0.0/16"
+        - "10.43.0.0/16"
+        - "192.168.0.0/16"
+        - "172.16.0.0/12"
   scripts.yaml: |-
-    # Scripts to switch Snapcast source (workaround if UI dropdown doesn't work)
     snapcast_radio:
       alias: Snapcast - Switch to Radio
       sequence:
@@ -239,7 +238,6 @@ data:
           data:
             source: Spotify
 
-    # Turn all lights on/off
     all_lights_on:
       alias: All lights on
       sequence:
