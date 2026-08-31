@@ -34,8 +34,8 @@ spec:
             - mountPath: /var/run/dbus/system_bus_socket
               name: host-dbus-socket
               readOnly: true
-      # dnsPolicy: ClusterFirstWithHostNet
-      # hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
       hostname: snapserver
       nodeSelector:
         kubernetes.io/hostname: pi4-server

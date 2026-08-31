@@ -28,24 +28,3 @@ spec:
   selector:
     app: mympd
   type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: snapserver
-  name: snapserver
-spec:
-  ports:
-    - name: tcp
-      port: 1704
-      targetPort: 1704
-    - name: tcp-rpc
-      port: 1705
-      targetPort: 1705
-    - name: http
-      port: 1780
-      targetPort: 1780
-  selector:
-    app: snapserver
-  type: LoadBalancer
