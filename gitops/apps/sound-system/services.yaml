@@ -37,9 +37,12 @@ metadata:
   name: snapserver
 spec:
   ports:
-    - name: http
-      port: 1705
+    - port: 1704
+      targetPort: 1704
+    - port: 1705
       targetPort: 1705
+    - port: 1780
+      targetPort: 1780
   selector:
     app: snapserver
   type: LoadBalancer
