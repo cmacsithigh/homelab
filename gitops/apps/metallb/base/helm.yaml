@@ -26,3 +26,17 @@ spec:
       retries: 3
   interval: 60m
   targetNamespace: metallb-system
+  values:
+    # Fix for the controller deployment schema error
+    controller:
+      securityContext: 
+        allowPrivilegeEscalation: null # Clears the invalid pod-level field
+      containerSecurityContext:
+        allowPrivilegeEscalation: false # Sets it at the correct container level
+
+    # Fix for the speaker daemonset schema error
+    speaker:
+      securityContext:
+        allowPrivilegeEscalation: null # Clears the invalid pod-level field
+      containerSecurityContext:
+        allowPrivilegeEscalation: false # Sets it at the correct container level
