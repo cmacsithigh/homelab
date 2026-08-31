@@ -30,6 +30,8 @@ spec:
       retries: 3
   values:
     replicaCount: 1
+    service:
+      type: LoadBalancer
     config:
       inCluster: true
     serviceAccount:
