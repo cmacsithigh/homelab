@@ -37,11 +37,14 @@ metadata:
   name: snapserver
 spec:
   ports:
-    - port: 1704
+    - name: tcp
+      port: 1704
       targetPort: 1704
-    - port: 1705
+    - name: tcp-rpc
+      port: 1705
       targetPort: 1705
-    - port: 1780
+    - name: http
+      port: 1780
       targetPort: 1780
   selector:
     app: snapserver
