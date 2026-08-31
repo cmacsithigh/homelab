@@ -8,7 +8,7 @@ spec:
   interval: 120m
   url: oci://registry.suse.com/edge/charts/metallb
   ref:
-    tag: 305.0.1+up0.15.2
+    tag: 305.0.1_up0.15.2
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
