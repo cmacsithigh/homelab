@@ -40,3 +40,9 @@ When running this playbook you will be asked to ensure the password at runtime. 
 ```bash
 ansible-playbook ./ansible/playbooks/001-distribute_ssh_keys.yaml
 ```
+
+### Wifi Ip range
+
+As we're using MetalLB we need to set boundries for our local internet in the route settings. We have updated the end IP to 192.168.18.200
+
+![alt text](images/route-settings.png)
