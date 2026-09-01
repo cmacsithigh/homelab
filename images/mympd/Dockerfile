@@ -17,8 +17,8 @@ RUN chmod +x /scripts/*.sh || true
 
 RUN umask 000
 
-ENTRYPOINT ["/usr/bin/mympd"]
-
 RUN /bin/sh /scripts/run.sh
 
-CMD [ "/bin/sh", "/code/cmd.sh"]
+USER 1000
+
+ENTRYPOINT ["/usr/bin/mympd"]
