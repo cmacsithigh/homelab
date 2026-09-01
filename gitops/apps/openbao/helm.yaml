@@ -30,14 +30,14 @@ spec:
   targetNamespace: openbao-system
   postRenderers:
     - kustomize:
-        patchesJson6902:
+        patches:
           - target:
               group: ""
               version: v1
               kind: Service
               name: openbao-system-openbao
               namespace: openbao-system
-            patch:
+            patch: |-
               - op: replace
                 path: /spec/type
                 value: LoadBalancer
