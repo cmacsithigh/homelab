@@ -1,0 +1,32 @@
+---
+- name: Validate inputs
+  assert:
+    that:
+      - secret_name | length > 0
+      - secret_key | length > 0
+      - secret_value | length > 0
+    fail_msg: "Secret name, key, and value are required"
+
+- name: Create secret in OpenBao
+  shell: |
+    bao kv put secret/{{ secret_name }} {{ secret_key }}="{{ secret_value }}"
+  environment:
+    VAULT_ADDR: "{{ vault_addr }}"
+    VAULT_TOKEN: "{{ vault_token }}"
+  register: secret_result
+
+- name: Display result
+  debug:
+    msg: "Secret '{{ secret_name }}' created successfully with key '{{ secret_key }}'"
+
+- name: Verify secret was created
+  shell: |
+    bao kv get secret/{{ secret_name }}
+  environment:
+    VAULT_ADDR: "{{ vault_addr }}"
+    VAULT_TOKEN: "{{ vault_token }}"
+  register: verify_result
+
+- name: Show secret details
+  debug:
+    var: verify_result.stdout
