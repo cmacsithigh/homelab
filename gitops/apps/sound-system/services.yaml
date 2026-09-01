@@ -17,6 +17,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.18.201
   labels:
     app: mympd
   name: mympd
