@@ -16,7 +16,7 @@ spec:
         app: mpd
     spec:
       containers:
-        - image: ghcr.io/cmacsithigh/mpd:1.2.2
+        - image: ghcr.io/cmacsithigh/mpd:1.3.0
           imagePullPolicy: Always
           name: mpd
           ports:
