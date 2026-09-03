@@ -30,3 +30,24 @@ spec:
   selector:
     app: mympd
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: snapserver
+  name: snapserver
+spec:
+  clusterIP: None
+  ports:
+    - name: snapcast
+      port: 1704
+      targetPort: 1704
+    - name: control
+      port: 1705
+      targetPort: 1705
+    - name: http
+      port: 1780
+      targetPort: 1780
+  selector:
+    app: snapserver

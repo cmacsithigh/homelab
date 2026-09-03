@@ -1,12 +1,13 @@
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   labels:
     app: snapserver
   name: snapserver
 spec:
   replicas: 1
+  serviceName: snapserver
   selector:
     matchLabels:
       app: snapserver
