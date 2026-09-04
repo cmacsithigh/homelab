@@ -1,0 +1,52 @@
+apiVersion: external-secrets.io/v1
+kind: SecretStore
+metadata:
+  name: headlamp
+  namespace: headlamp-system
+spec:
+  provider:
+    vault:
+      server: http://openbao-system-openbao.openbao-system.svc.cluster.local:8200
+      path: secret
+      version: v2
+      auth:
+        kubernetes:
+          mountPath: kubernetes
+          role: headlamp-reader
+          serviceAccountRef:
+            name: headlamp
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: headlamp-oidc
+  namespace: headlamp-system
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: headlamp
+    kind: SecretStore
+  target:
+    name: headlamp-oidc
+    creationPolicy: Owner
+  data:
+    - secretKey: OIDC_CLIENT_ID
+      remoteRef:
+        key: headlamp-oidc
+        property: clientID
+    - secretKey: OIDC_CLIENT_SECRET
+      remoteRef:
+        key: headlamp-oidc
+        property: clientSecret
+    - secretKey: OIDC_ISSUER_URL
+      remoteRef:
+        key: headlamp-oidc
+        property: issuerURL
+    - secretKey: OIDC_SCOPES
+      remoteRef:
+        key: headlamp-oidc
+        property: scopes
+    - secretKey: OIDC_CALLBACK_URL
+      remoteRef:
+        key: headlamp-oidc
+        property: callbackURL
