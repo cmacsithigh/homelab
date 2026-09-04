@@ -43,7 +43,7 @@ spec:
                 value: LoadBalancer
               - op: add
                 path: /metadata/annotations/metallb.io~1loadBalancerIPs
-                value: 192.168.18.207
+                value: 192.168.18.205
   values:
     ui:
       enabled: true
