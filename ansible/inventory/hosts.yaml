@@ -1,0 +1,33 @@
+all:
+  children:
+    homelab:
+      hosts:
+        server:
+        rc0:
+        desktop:
+        rc2:
+
+    k3s:
+      hosts:
+        server:
+        desktop:
+
+    k3s_nodes:
+      hosts:
+        desktop:
+
+    server:
+      hosts:
+        192.168.18.10:
+
+    rc0:
+      hosts:
+        192.168.18.13: # bedroom speaker
+
+    desktop:
+      hosts:
+        192.168.18.14: # desktop/camera
+
+    rc2:
+      hosts:
+        192.168.18.11: # hallway speaker
