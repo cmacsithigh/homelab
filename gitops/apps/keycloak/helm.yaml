@@ -26,23 +26,10 @@ spec:
       retries: 3
   interval: 60m
   targetNamespace: keycloak-system
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              group: apps
-              version: v1
-              kind: StatefulSet
-              name: keycloak-system-keycloak
-              namespace: keycloak-system
-            patch: |-
-              - op: replace
-                path: /spec/template/spec/initContainers/0/image
-                value: quay.io/keycloak/keycloak:26.7.3
-              - op: replace
-                path: /spec/template/spec/containers/0/image
-                value: quay.io/keycloak/keycloak:26.7.3
   values:
+    image:
+      repository: bitnamilegacy/keycloak
+      tag: 26.3.3-debian-12-r0
     auth:
       adminUser: admin
       existingSecret: keycloak-credentials
