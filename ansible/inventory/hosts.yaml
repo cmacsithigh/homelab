@@ -3,9 +3,13 @@ all:
     homelab:
       hosts:
         server:
+          ansible_host: 192.168.18.10
         rc0:
+          ansible_host: 192.168.18.13
         desktop:
+          ansible_host: 192.168.18.14
         rc2:
+          ansible_host: 192.168.18.11
 
     k3s:
       hosts:
@@ -16,18 +20,6 @@ all:
       hosts:
         desktop:
 
-    server:
+    k3s_server:
       hosts:
-        192.168.18.10:
-
-    rc0:
-      hosts:
-        192.168.18.13: # bedroom speaker
-
-    desktop:
-      hosts:
-        192.168.18.14: # desktop/camera
-
-    rc2:
-      hosts:
-        192.168.18.11: # hallway speaker
+        server:
