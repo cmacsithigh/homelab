@@ -40,10 +40,10 @@ spec:
         callbackURL: https://headlamp.ciansheehy.co/oidc-callback
         secret:
           create: false
-          externalSecret:
-            enabled: true
-            name: headlamp-oidc
-            hasScopes: true
+        externalSecret:
+          enabled: true
+          name: headlamp-oidc
+          hasScopes: true
     serviceAccount:
       create: false
       name: headlamp
