@@ -28,22 +28,22 @@ spec:
       retries: 10
   interval: 60m
   targetNamespace: openbao-system
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              group: ""
-              version: v1
-              kind: Service
-              name: openbao-system-openbao
-              namespace: openbao-system
-            patch: |-
-              - op: replace
-                path: /spec/type
-                value: LoadBalancer
-              - op: add
-                path: /metadata/annotations/metallb.io~1loadBalancerIPs
-                value: 192.168.18.205
+  # postRenderers:
+  #   - kustomize:
+  #       patches:
+  #         - target:
+  #             group: ""
+  #             version: v1
+  #             kind: Service
+  #             name: openbao-system-openbao
+  #             namespace: openbao-system
+  #           patch: |-
+  #             - op: replace
+  #               path: /spec/type
+  #               value: LoadBalancer
+  #             - op: add
+  #               path: /metadata/annotations/metallb.io~1loadBalancerIPs
+  #               value: 192.168.18.205
   values:
     ui:
       enabled: true
