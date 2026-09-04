@@ -27,7 +27,7 @@ spec:
                 secretKeyRef:
                   key: token
                   name: cloudflared-credentials
-          image: cloudflare/cloudflared:2026.7.3
+          image: cloudflare/cloudflared:2026.8.3
           livenessProbe:
             failureThreshold: 3
             httpGet:
