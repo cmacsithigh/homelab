@@ -74,7 +74,7 @@
             - servicelb
           kube-apiserver-arg:
             - oidc-issuer-url=https://keycloak.ciansheehy.co/realms/master
-            - oidc-client-id=kubernetes
+            - oidc-client-id=headlamp
             - oidc-username-claim=preferred_username
             - oidc-groups-claim=groups
 
@@ -130,6 +130,8 @@
 
     - name: Restart k3s-agent service to ensure it picks up the new configuration
       command: systemctl restart k3s-agent
+      async: 180
+      poll: 5
 
     - name: Remove node join token
       ansible.builtin.file:
