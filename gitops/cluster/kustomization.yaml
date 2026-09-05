@@ -12,6 +12,5 @@ resources:
   - cloudflared.yaml
   - sound-system.yaml
   - homeassistant.yaml
-  - metallb-base.yaml
-  - metallb-deploy.yaml
+  - metallb.yaml
   - renovate.yaml
