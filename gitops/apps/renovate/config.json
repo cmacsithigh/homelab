@@ -35,5 +35,35 @@
     "prHourlyLimit": 0,
     "git-submodules": {
         "enabled": true
+    },
+    "kubernetes": {
+        "fileMatch": [
+            "^.*\\.yaml$"
+        ]
+    },
+    "kustomize": {
+        "fileMatch": [
+            "^.*\\.yaml$"
+        ]
+    },
+    "flux": {
+        "fileMatch": [
+            "^.*\\.yaml$"
+        ]
+    },
+    "helm-values": {
+        "fileMatch": [
+            "^.*\\.yaml$"
+        ]
+    },
+    "helmv3": {
+        "fileMatch": [
+            "^.*\\.yaml$"
+        ]
+    },
+    "helmfile": {
+        "fileMatch": [
+            "^.*\\.yaml$"
+        ]
     }
 }
