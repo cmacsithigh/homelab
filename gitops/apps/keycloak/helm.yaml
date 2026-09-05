@@ -30,6 +30,7 @@ spec:
     image:
       repository: bitnamilegacy/keycloak
       tag: 26.3.3-debian-12-r0
+    service:
       annotations:
         metallb.io/loadBalancerIPs: 192.168.18.208
       type: LoadBalancer
