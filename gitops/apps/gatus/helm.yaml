@@ -55,7 +55,7 @@ spec:
             - type: ntfy
         - name: Keycloak
           group: infrastructure
-          url: http://keycloak.keycloak-system.svc.cluster.local/health/ready
+          url: http://keycloak.keycloak-system-keycloak.svc.cluster.local/health/ready
           interval: 30s
           conditions:
             - "[STATUS] == 200"
