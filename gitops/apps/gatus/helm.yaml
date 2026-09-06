@@ -79,7 +79,7 @@ spec:
             - type: ntfy
         - name: metallb-controller
           group: infrastructure
-          url: http://metallb-controller.metallb-system.svc.cluster.local:9443
+          url: http://metallb-controller.metallb-system.svc.cluster.local:17472
           interval: 30s
           conditions:
             - "[STATUS] == 200"
