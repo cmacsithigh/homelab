@@ -28,3 +28,6 @@ spec:
       retries: 3
   interval: 60m
   targetNamespace: trivy-system
+  values:
+    operator:
+      scanJobsConcurrentLimit: 1
