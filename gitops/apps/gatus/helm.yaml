@@ -50,6 +50,7 @@ spec:
           group: infrastructure
           url: http://cloudnative-pg-metrics.cloudnative-pg-system.svc.cluster.local:8080/metrics
           interval: 30s
+          priority: 4
           conditions:
             - "[STATUS] == 200"
           alerts:
@@ -58,6 +59,7 @@ spec:
           group: infrastructure
           url: http://cloudflared.cloudflared.svc.cluster.local:60123/metrics
           interval: 30s
+          priority: 5
           conditions:
             - "[STATUS] == 200"
           alerts:
@@ -66,6 +68,8 @@ spec:
           group: infrastructure
           url: http://openbao-system-openbao.openbao-system.svc.cluster.local:8200/v1/sys/health
           interval: 30s
+          click: https://openbao.ciansheehy.co
+          priority: 4
           conditions:
             - "[STATUS] == any(200, 429, 472, 473, 501, 503)"
           alerts:
@@ -74,6 +78,7 @@ spec:
           group: infrastructure
           url: http://external-secrets-system-external-secrets-metrics.external-secrets-system.svc.cluster.local:8080/metrics
           interval: 30s
+          priority: 3
           conditions:
             - "[STATUS] == 200"
           alerts:
@@ -82,6 +87,8 @@ spec:
           group: infrastructure
           url: "http://keycloak-system-keycloak.keycloak-system.svc.cluster.local"
           interval: 30s
+          click: https://keycloak.ciansheehy.co
+          priority: 4
           conditions:
             - "[CONNECTED] == true"
           alerts:
@@ -90,6 +97,8 @@ spec:
           group: applications
           url: http://headlamp.headlamp-system.svc.cluster.local/
           interval: 30s
+          click: https://headlamp.ciansheehy.co
+          priority: 2
           conditions:
             - "[STATUS] == 200"
           alerts:
@@ -98,6 +107,8 @@ spec:
           group: applications
           url: http://homeassistant.homeassistant.svc.cluster.local/
           interval: 30s
+          click: https://home.ciansheehy.co
+          priority: 4
           conditions:
             - "[STATUS] == 200"
           alerts:
@@ -106,6 +117,8 @@ spec:
           group: applications
           url: http://mympd.sound-system.svc.cluster.local/
           interval: 30s
+          click: https://radio.ciansheehy.co
+          priority: 4
           conditions:
             - "[STATUS] == 200"
           alerts:
@@ -114,6 +127,7 @@ spec:
           group: applications
           url: tcp://mpd.sound-system.svc.cluster.local:6600
           interval: 30s
+          priority: 4
           conditions:
             - "[CONNECTED] == true"
           alerts:
@@ -122,6 +136,7 @@ spec:
           group: applications
           url: http://snapserver.sound-system.svc.cluster.local:1780/
           interval: 30s
+          priority: 4
           conditions:
             - "[STATUS] == 200"
           alerts:
@@ -130,6 +145,8 @@ spec:
           group: applications
           url: http://ntfy-system-ntfy-ntfy.ntfy-system.svc.cluster.local/v1/health
           interval: 30s
+          click: https://ntfy.ciansheehy.co
+          priority: 3
           conditions:
             - "[STATUS] == 200"
           alerts:
@@ -140,5 +157,5 @@ spec:
           topic: homelab
           default-alert:
             failure-threshold: 3
-            success-threshold: 2
+            success-threshold: 3
             send-on-resolved: true
