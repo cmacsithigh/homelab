@@ -79,7 +79,7 @@ spec:
             - type: ntfy
         - name: metallb-controller
           group: infrastructure
-          url: https://metallb-controller.metallb-system.svc.cluster.local:9443
+          url: http://metallb-controller.metallb-system.svc.cluster.local:9443
           interval: 30s
           conditions:
             - "[STATUS] == 200"
@@ -89,7 +89,7 @@ spec:
             - type: ntfy
         - name: keycloak
           group: infrastructure
-          url: "tcp://keycloak.keycloak-system-keycloak.svc.cluster.local"
+          url: "http://keycloak-system-keycloak.keycloak-system.svc.cluster.local"
           interval: 30s
           conditions:
             - "[CONNECTED] == true"
