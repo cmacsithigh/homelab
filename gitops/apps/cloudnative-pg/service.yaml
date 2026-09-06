@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: cloudnative-pg
+  name: cloudnative-pg-metrics
+  namespace: cloudnative-pg-system
+spec:
+  ports:
+    - name: metrics
+      port: 8080
+      targetPort: metrics
+  selector:
+    app.kubernetes.io/name: cloudnative-pg
+  type: ClusterIP

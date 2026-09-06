@@ -37,6 +37,14 @@ spec:
       size: 500Mi
     config:
       endpoints:
+        - name: CloudNativePG
+          group: infrastructure
+          url: http://cloudnative-pg-metrics.cloudnative-pg-system.svc.cluster.local:8080/metrics
+          interval: 30s
+          conditions:
+            - "[STATUS] == 200"
+          alerts:
+            - type: ntfy
         - name: Cloudflared
           group: infrastructure
           url: http://cloudflared.cloudflared.svc.cluster.local:60123/metrics
@@ -53,12 +61,40 @@ spec:
             - "[STATUS] == any(200, 429, 472, 473, 501, 503)"
           alerts:
             - type: ntfy
-        - name: Keycloak
+        - name: External Secrets
           group: infrastructure
-          url: http://keycloak.keycloak-system-keycloak.svc.cluster.local/health/ready
+          url: http://external-secrets-metrics.external-secrets-system.svc.cluster.local:8080/metrics
           interval: 30s
           conditions:
             - "[STATUS] == 200"
+          alerts:
+            - type: ntfy
+        - name: MetalLB Controller
+          group: infrastructure
+          url: https://metallb-controller-metrics.metallb-system.svc.cluster.local:9120/metrics
+          interval: 30s
+          conditions:
+            - "[STATUS] == 200"
+          client:
+            insecure: true
+          alerts:
+            - type: ntfy
+        - name: MetalLB Speaker
+          group: infrastructure
+          url: https://metallb-speaker-metrics.metallb-system.svc.cluster.local:9120/metrics
+          interval: 30s
+          conditions:
+            - "[STATUS] == 200"
+          client:
+            insecure: true
+          alerts:
+            - type: ntfy
+        - name: Keycloak
+          group: infrastructure
+          url: "tcp://keycloak.keycloak-system-keycloak.svc.cluster.local"
+          interval: 30s
+          conditions:
+            - "[CONNECTED] == true"
           alerts:
             - type: ntfy
         - name: Headlamp

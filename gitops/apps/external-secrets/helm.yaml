@@ -31,3 +31,6 @@ spec:
     crds:
       enabled: true
       keep: true
+    metrics:
+      service:
+        enabled: true
