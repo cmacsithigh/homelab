@@ -37,7 +37,7 @@ spec:
       size: 500Mi
     config:
       endpoints:
-        - name: CloudNativePG
+        - name: cloudnative-pg
           group: infrastructure
           url: http://cloudnative-pg-metrics.cloudnative-pg-system.svc.cluster.local:8080/metrics
           interval: 30s
@@ -45,7 +45,7 @@ spec:
             - "[STATUS] == 200"
           alerts:
             - type: ntfy
-        - name: Cloudflared
+        - name: cloudflared
           group: infrastructure
           url: http://cloudflared.cloudflared.svc.cluster.local:60123/metrics
           interval: 30s
@@ -53,6 +53,14 @@ spec:
             - "[STATUS] == 200"
           alerts:
             - type: ntfy
+        # - name: eraser
+        #   group: infrastructure
+        #   url: http://cloudflared.eraser-system.svc.cluster.local/healthz
+        #   interval: 30s
+        #   conditions:
+        #     - "[STATUS] == 200"
+        #   alerts:
+        #     - type: ntfy
         - name: OpenBao
           group: infrastructure
           url: http://openbao-system-openbao.openbao-system.svc.cluster.local:8200/v1/sys/health
@@ -63,7 +71,7 @@ spec:
             - type: ntfy
         - name: External Secrets
           group: infrastructure
-          url: http://external-secrets-metrics.external-secrets-system.svc.cluster.local:8080/metrics
+          url: http://external-secrets-system-external-secrets-metrics.external-secrets-system.svc.cluster.local:8080/metrics
           interval: 30s
           conditions:
             - "[STATUS] == 200"
