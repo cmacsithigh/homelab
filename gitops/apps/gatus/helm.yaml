@@ -140,7 +140,7 @@ spec:
       alerting:
         ntfy:
           url: http://ntfy.ntfy-system.svc.cluster.local
-          topic: status.ciansheehy.co
+          topic: status_ciansheehy_co
           default-alert:
             failure-threshold: 3
             success-threshold: 2
