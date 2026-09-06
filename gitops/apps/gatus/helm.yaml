@@ -37,6 +37,14 @@ spec:
       size: 500Mi
     config:
       endpoints:
+        - name: Cloudflared
+          group: infrastructure
+          url: http://cloudflared.cloudflared.svc.cluster.local:60123/metrics
+          interval: 30s
+          conditions:
+            - "[STATUS] == 200"
+          alerts:
+            - type: ntfy
         - name: OpenBao
           group: infrastructure
           url: http://openbao-system-openbao.openbao-system.svc.cluster.local:8200/v1/sys/health
@@ -72,6 +80,22 @@ spec:
         - name: myMPD
           group: applications
           url: http://mympd.sound-system.svc.cluster.local/
+          interval: 30s
+          conditions:
+            - "[STATUS] == 200"
+          alerts:
+            - type: ntfy
+        - name: MPD
+          group: applications
+          url: tcp://mpd.sound-system.svc.cluster.local:6600
+          interval: 30s
+          conditions:
+            - "[CONNECTED] == true"
+          alerts:
+            - type: ntfy
+        - name: Snapserver
+          group: applications
+          url: http://snapserver.sound-system.svc.cluster.local:1780/
           interval: 30s
           conditions:
             - "[STATUS] == 200"

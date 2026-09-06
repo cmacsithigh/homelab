@@ -6,3 +6,4 @@ resources:
   - daemonset.yaml
   - external-secret.yaml
   - namespace.yaml
+  - service.yaml

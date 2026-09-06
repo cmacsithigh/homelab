@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: cloudflared
+  name: cloudflared
+spec:
+  ports:
+    - name: metrics
+      port: 60123
+      targetPort: metrics
+  selector:
+    app: cloudflared
+  type: ClusterIP
