@@ -1,0 +1,49 @@
+- name: Setup baseline for all k3s nodes
+  hosts: k3s
+  become: yes
+  gather_facts: yes
+  tasks:
+    # Raspberry Pi Kernel Tasks
+    - name: Check the newer Raspberry Pi cmdline path
+      stat:
+        path: /boot/firmware/cmdline.txt
+      register: newer_cmdline
+
+    - name: Check the older Raspberry Pi cmdline path
+      stat:
+        path: /boot/cmdline.txt
+      register: older_cmdline
+
+    - name: Ensure a Raspberry Pi cmdline file exists
+      assert:
+        that:
+          - newer_cmdline.stat.exists or older_cmdline.stat.exists
+        fail_msg: Neither /boot/firmware/cmdline.txt nor /boot/cmdline.txt exists.
+
+    - name: Select the Raspberry Pi cmdline file
+      set_fact:
+        cmdline_path: "{{ '/boot/firmware/cmdline.txt' if newer_cmdline.stat.exists else '/boot/cmdline.txt' }}"
+
+    - name: Normalize kernel cmdline to single line
+      shell: |
+        content=$(cat "{{ cmdline_path }}" | tr '\n' ' ' | sed 's/  */ /g' | sed 's/ *$//')
+        echo -n "$content" > "{{ cmdline_path }}"
+      changed_when: false
+
+    - name: Add required cgroup kernel options
+      replace:
+        path: "{{ cmdline_path }}"
+        regexp: "^(?!.*{{ item }})(.+)$"
+        replace: "\\1 {{ item }}"
+      loop:
+        - cgroup_enable=cpuset
+        - cgroup_memory=1
+        - cgroup_enable=memory
+      register: cgroup_options
+
+    - name: Reboot after changing kernel options
+      reboot:
+        msg: Reboot initiated by Ansible after updating Raspberry Pi kernel options.
+        reboot_timeout: 600
+        post_reboot_delay: 10
+      when: cgroup_options is changed

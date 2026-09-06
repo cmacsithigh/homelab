@@ -21,7 +21,7 @@ In order for us to connect seurly to our hosts without user:password we need to 
 ssh-keygen -t ed25519 -C "ansible-control-node" -f ~/.ssh/ansible_key
 ```
 
-Once this is created ensure you have the hosts and user set in the `001-distribute_ssh_keys.yaml` playbook
+Once this is created ensure you have the hosts and user set in the `distribute_ssh_keys.yaml` playbook
 
 ```yaml
 ---
@@ -38,7 +38,7 @@ Once this is created ensure you have the hosts and user set in the `001-distribu
 When running this playbook you will be asked to ensure the password at runtime. This is ideal for this initial one time setup.
 
 ```bash
-ansible-playbook ./ansible/playbooks/001-distribute_ssh_keys.yaml
+ansible-playbook ./ansible/playbooks/distribute_ssh_keys.yaml
 ```
 
 ### Wifi Ip range

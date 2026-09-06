@@ -1,0 +1,71 @@
+- name: Grab node token
+  hosts: k3s_server
+  become: yes
+  gather_facts: yes
+  tasks:
+    - name: Get node join token
+      become: yes
+      ansible.builtin.fetch:
+        src: /var/lib/rancher/k3s/server/token
+        dest: 'node_join_token'
+        flat: yes
+
+- name: Setup k3s agents
+  hosts: k3s_nodes
+  gather_facts: yes
+  tasks:
+    - name: Check if k3s is already installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/k3s
+
+    - name: Extract k3s server node token from control node
+      local_action:
+        module: shell
+        cmd: cat node_join_token
+      register: node_join_token
+
+    - name: Extract hostname of node
+      local_action:
+        module: shell
+        cmd: hostname
+      register: hostname
+
+    - name: Install k3s on agent
+      become: yes
+      shell: curl -sfL https://get.k3s.io | sh -
+      environment:
+        K3S_TOKEN: "{{ node_join_token.stdout }}"
+        # Select the first host in the group of k3s servers as the server for the agent
+        K3S_URL: "https://{{ hostvars[groups['k3s_server'] | first]['ansible_host'] }}:6443"
+        K3S_NODE_NAME: "{{ hostname.stdout }}"
+
+    - name: Verify the K3s service is active
+      command: systemctl is-active --quiet k3s-agent
+      changed_when: false
+
+    - name: Ensure k4s config.yaml exists
+      become: yes
+      command: |
+        mkdir -p /etc/rancher/k3s
+      changed_when: false
+
+    - name: Ensure we enable strict ARP in config.yaml
+      become: yes
+      ansible.builtin.blockinfile:
+        path: /etc/rancher/k3s/config.yaml
+        create: yes  # Creates the file if it does not exist
+        mode: '0644'
+        block: |
+          kube-proxy-arg:
+            - ipvs-strict-arp=true
+
+    - name: Restart k3s-agent service to ensure it picks up the new configuration
+      become: yes
+      command: systemctl restart k3s-agent
+      async: 180
+      poll: 5
+
+    - name: Remove node join token
+      ansible.builtin.file:
+        path: node_join_token
+        state: absent
