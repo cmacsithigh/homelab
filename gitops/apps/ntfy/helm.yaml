@@ -30,7 +30,7 @@ spec:
   targetNamespace: ntfy-system
   values:
     ntfy:
-      baseUrl: http://192.168.18.210
+      baseUrl: https://nfty.ciansheehy.co
       authDefaultAccess: read-write
       behindProxy: true
       enableMetrics: true
