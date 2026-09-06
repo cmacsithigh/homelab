@@ -135,6 +135,14 @@ spec:
             - "[STATUS] == 200"
           alerts:
             - type: ntfy
+        - name: ntfy
+          group: applications
+          url: http://ntfy-system-ntfy-ntfy.ntfy-system.svc.cluster.local/v1/health
+          interval: 30s
+          conditions:
+            - "[STATUS] == 200"
+          alerts:
+            - type: ntfy
       alerting:
         ntfy:
           url: http://192.168.18.211
