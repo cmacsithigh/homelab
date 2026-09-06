@@ -104,7 +104,7 @@ spec:
       alerting:
         ntfy:
           url: http://ntfy.ntfy-system.svc.cluster.local
-          topic: homelab
+          topic: status.ciansheehy.co
           default-alert:
             failure-threshold: 3
             success-threshold: 2
