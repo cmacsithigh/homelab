@@ -6,9 +6,9 @@ metadata:
   namespace: metallb-system
 spec:
   ports:
-    - name: webhook-server
-      port: 9443
-      targetPort: webhook-server
+    - name: healthz
+      port: 17472
+      targetPort: healthz
   selector:
     app: metallb
     component: controller

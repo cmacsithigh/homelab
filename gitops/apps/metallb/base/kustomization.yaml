@@ -4,3 +4,22 @@ kind: Kustomization
 namespace: metallb-system
 resources:
   - https://raw.githubusercontent.com/metallb/metallb/v0.16.0/config/manifests/metallb-native.yaml
+patches:
+  # Patch 1: Remove loopback restriction from Controller Deployment Probes
+  - target:
+      kind: Deployment
+      name: controller
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: controller
+      spec:
+        template:
+          spec:
+            containers:
+              - name: controller
+                ports:
+                  - containerPort: 17472
+                    name: healthz
+                    protocol: TCP
