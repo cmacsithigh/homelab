@@ -18,3 +18,7 @@ spec:
       retries: 3
   interval: 60m
   targetNamespace: falco
+  values:
+    webui:
+      enabled: true
+      replicaCount: 1
