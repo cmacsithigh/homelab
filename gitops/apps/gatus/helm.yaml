@@ -35,7 +35,16 @@ spec:
     persistence:
       enabled: true
       size: 500Mi
+    env:
+      POSTGRES_PASSWORD:
+        valueFrom:
+          secretKeyRef:
+            name: gatus-postgresql-app
+            key: password
     config:
+      storage:
+        type: postgres
+        path: "postgres://gatus:${POSTGRES_PASSWORD}@gatus-postgresql-rw.gatus-system.svc.cluster.local:5432/gatus?sslmode=disable"
       endpoints:
         - name: cloudnative-pg
           group: infrastructure
@@ -53,14 +62,6 @@ spec:
             - "[STATUS] == 200"
           alerts:
             - type: ntfy
-        # - name: eraser
-        #   group: infrastructure
-        #   url: http://cloudflared.eraser-system.svc.cluster.local/healthz
-        #   interval: 30s
-        #   conditions:
-        #     - "[STATUS] == 200"
-        #   alerts:
-        #     - type: ntfy
         - name: openbao
           group: infrastructure
           url: http://openbao-system-openbao.openbao-system.svc.cluster.local:8200/v1/sys/health
@@ -75,16 +76,6 @@ spec:
           interval: 30s
           conditions:
             - "[STATUS] == 200"
-          alerts:
-            - type: ntfy
-        - name: metallb-controller
-          group: infrastructure
-          url: http://metallb-controller.metallb-system.svc.cluster.local:17472/healthz
-          interval: 30s
-          conditions:
-            - "[STATUS] == 200"
-          client:
-            insecure: true
           alerts:
             - type: ntfy
         - name: keycloak
