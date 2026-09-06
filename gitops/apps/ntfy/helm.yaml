@@ -40,7 +40,7 @@ spec:
     service:
       type: LoadBalancer
       annotations:
-        metallb.io/loadBalancerIPs: 192.168.18.210
+        metallb.io/loadBalancerIPs: 192.168.18.211
     resources:
       requests:
         cpu: 25m
