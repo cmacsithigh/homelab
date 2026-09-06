@@ -72,6 +72,8 @@
         block: |
           disable:
             - servicelb
+          kube-proxy-arg:
+            - ipvs-strict-arp=true
           kube-apiserver-arg:
             - oidc-issuer-url=https://keycloak.ciansheehy.co/realms/master
             - oidc-client-id=headlamp
@@ -127,6 +129,15 @@
     - name: Verify the K3s service is active
       command: systemctl is-active --quiet k3s-agent
       changed_when: false
+
+    - name: Ensure K3s ServiceLB is disabled in config.yaml
+      ansible.builtin.blockinfile:
+        path: /etc/rancher/k3s/config.yaml
+        create: yes  # Creates the file if it does not exist
+        mode: '0644'
+        block: |
+          kube-proxy-arg:
+            - ipvs-strict-arp=true
 
     - name: Restart k3s-agent service to ensure it picks up the new configuration
       command: systemctl restart k3s-agent
