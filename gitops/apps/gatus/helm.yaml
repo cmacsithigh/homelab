@@ -61,7 +61,7 @@ spec:
         #     - "[STATUS] == 200"
         #   alerts:
         #     - type: ntfy
-        - name: openabo
+        - name: openbao
           group: infrastructure
           url: http://openbao-system-openbao.openbao-system.svc.cluster.local:8200/v1/sys/health
           interval: 30s
