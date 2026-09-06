@@ -1,0 +1,36 @@
+name: Apply Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs: null
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/infrastructure.yaml
+      - infrastructure/**
+
+jobs:
+  infrastructure:
+    runs-on: ubuntu-latest
+    name: Deploy Infrastructure
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+      - name: Deploy Infrastructure
+        uses: dflook/tofu-apply@v2
+        with:
+          path: infrastructure
+          auto_approve: true
+          variables: |
+            cloudflare = {
+              api_token  = "${{ secrets.CLOUDFLARE_API_TOKEN }}"
+              account_id = "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"
+              tunnel_id  = "${{ secrets.CLOUDFLARE_TUNNEL_ID }}"
+            }
