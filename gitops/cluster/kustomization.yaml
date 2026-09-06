@@ -14,3 +14,5 @@ resources:
   - homeassistant.yaml
   - metallb.yaml
   - renovate.yaml
+  - gatus.yaml
+  - ntfy.yaml
