@@ -62,7 +62,6 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k8s" {
         hostname = "ansible.ciansheehy.co"
         service  = "http://192.168.18.212:3000"
       },
-      },
       {
         hostname = "status.ciansheehy.co"
         service  = "http://192.168.18.209"
