@@ -33,3 +33,6 @@ spec:
       type: LoadBalancer
       annotations:
         metallb.io/loadBalancerIPs: 192.168.18.212
+    admin:
+      create: true
+      password: "changeme"
