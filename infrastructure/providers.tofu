@@ -8,10 +8,6 @@ terraform {
       source  = "cloudflare/cloudflare"
       version = "5.24.0"
     }
-    keycloak = {
-      source  = "keycloak/keycloak"
-      version = "5.9.0"
-    }
   }
 
   backend "s3" {
