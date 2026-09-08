@@ -1,12 +1,16 @@
 terraform {
   required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "6.57.1"
+    }
     cloudflare = {
       source  = "cloudflare/cloudflare"
       version = "5.24.0"
     }
-    aws = {
-      source  = "hashicorp/aws"
-      version = "6.57.1"
+    keycloak = {
+      source  = "keycloak/keycloak"
+      version = "5.9.0"
     }
   }
 
