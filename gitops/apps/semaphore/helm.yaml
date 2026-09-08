@@ -27,7 +27,7 @@ spec:
     remediation:
       retries: 10
   interval: 60m
-  targetNamespace: 
+  targetNamespace: semaphore
   values:
     service:
       type: LoadBalancer
