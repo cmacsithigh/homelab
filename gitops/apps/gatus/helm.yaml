@@ -156,6 +156,6 @@ spec:
           url: http://192.168.18.211
           topic: homelab
           default-alert:
-            failure-threshold: 3
+            failure-threshold: 5
             success-threshold: 3
             send-on-resolved: true
