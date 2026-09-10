@@ -1,0 +1,69 @@
+---
+- name: Initialise Adafruit I2S Speaker Bonnet
+  hosts: speakers
+  become: yes
+  gather_facts: yes
+  tasks:
+    - name: Install system dependencies
+      ansible.builtin.apt:
+        name:
+          - python3-pip
+          - python3-pexpect
+          - wget
+        state: present
+        update_cache: yes
+
+    - name: Install adafruit-python-shell via pip
+      ansible.builtin.pip:
+        name:
+          - adafruit-python-shell
+          - pexpect
+        state: present
+        extra_args: --break-system-packages
+
+    - name: Download Adafruit I2S installer script
+      ansible.builtin.get_url:
+        url: https://github.com/adafruit/Raspberry-Pi-Installer-Scripts/raw/main/i2samp.py
+        dest: /tmp/i2samp.py
+        mode: '0755'
+
+    - name: Execute I2S installer non-interactively
+      ansible.builtin.expect:
+        command: python3 /tmp/i2samp.py
+        responses:
+          'What would you like to do': '1'
+          'Do you wish to continue\?': 'y'
+          'Activate .*/dev/zero.* playback': 'y'
+          'Do you wish to test your system now\?': 'n'
+          'REBOOT NOW\?': 'n'
+        timeout: 120
+      register: i2s_install
+      changed_when: "'All done!' in i2s_install.stdout"
+
+    - name: Reboot system to apply kernel overlays
+      ansible.builtin.reboot:
+        msg: "Rebooting to apply I2S audio kernel overlays"
+      when: i2s_install.changed
+
+    - name: Execute I2S installer non-interactively a second time after reboot
+      ansible.builtin.expect:
+        command: python3 /tmp/i2samp.py
+        responses:
+          'What would you like to do': '1'
+          'Do you wish to continue\?': 'y'
+          'Activate .*/dev/zero.* playback': 'y'
+          'Do you wish to test your system now\?': 'n'
+          'REBOOT NOW\?': 'n'
+        timeout: 120
+      register: i2s_install_number_2
+      changed_when: "'All done!' in i2s_install_number_2.stdout"
+
+    - name: Cleanup installer script
+      ansible.builtin.file:
+        path: /tmp/i2samp.py
+        state: absent
+
+    - name: Reboot system to apply kernel overlays
+      ansible.builtin.reboot:
+        msg: "Rebooting to apply I2S audio kernel overlays"
+      when: i2s_install_number_2.changed

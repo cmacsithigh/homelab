@@ -4,12 +4,14 @@ all:
       hosts:
         server:
           ansible_host: 192.168.18.10
-        rc0:
-          ansible_host: 192.168.18.13
         desktop:
           ansible_host: 192.168.18.14
+        rc0:
+          ansible_host: 192.168.18.13
         rc2:
           ansible_host: 192.168.18.11
+        rc3:
+          ansible_host: 192.168.18.19
 
     k3s:
       hosts:
@@ -23,3 +25,9 @@ all:
     k3s_server:
       hosts:
         server:
+
+    speakers:
+      hosts:
+        rc0:
+        rc2:
+        rc3:

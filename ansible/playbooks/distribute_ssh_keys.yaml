@@ -6,10 +6,11 @@
     ansible_key_path: "~/.ssh/ansible_key.pub"
     ansible_user: "pi"
     target_hosts:
-      - 192.168.18.7 # server
-      - 192.168.18.13 # rc0
+      - 192.168.18.10 # server
       - 192.168.18.14 # desktop/camera
-      - 192.168.18.17 # rc2
+      - 192.168.18.13 # rc0
+      - 192.168.18.11 # rc2
+      - 192.168.18.19 # rc3
   
   tasks:
     - name: Check if SSH key exists
@@ -32,6 +33,7 @@
         ssh-copy-id -i {{ ansible_key_path }} {{ ansible_user }}@{{ item }}
       loop: "{{ target_hosts }}"
       register: ssh_copy_result
+      become: yes
       changed_when: "'Number of key(s) added' in ssh_copy_result.stderr"
       failed_when: 
         - ssh_copy_result.rc != 0
