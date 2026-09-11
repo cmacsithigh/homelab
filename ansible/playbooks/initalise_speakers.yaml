@@ -21,12 +21,12 @@
         state: present
         extra_args: --break-system-packages
 
-    - name: Download Adafruit I2S installer script
-      ansible.builtin.get_url:
-        url: https://github.com/adafruit/Raspberry-Pi-Installer-Scripts/raw/main/i2samp.py
-        dest: /tmp/i2samp.py
-        mode: '0755'
-
+    - name: Download Adafruit I2S installer script via curl
+      ansible.builtin.command:
+        cmd: curl -fsSL https://github.com/adafruit/Raspberry-Pi-Installer-Scripts/raw/main/i2samp.py -o /tmp/i2samp.py
+      args:
+        creates: /tmp/i2samp.py
+    
     - name: Execute I2S installer non-interactively
       ansible.builtin.expect:
         command: python3 /tmp/i2samp.py

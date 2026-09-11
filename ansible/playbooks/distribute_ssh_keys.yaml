@@ -33,7 +33,6 @@
         ssh-copy-id -i {{ ansible_key_path }} {{ ansible_user }}@{{ item }}
       loop: "{{ target_hosts }}"
       register: ssh_copy_result
-      become: yes
       changed_when: "'Number of key(s) added' in ssh_copy_result.stderr"
       failed_when: 
         - ssh_copy_result.rc != 0
