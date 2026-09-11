@@ -1,0 +1,107 @@
+---
+- name: Deploy Snapcast (Snapserver & Snapclient) with Specific Version
+  hosts: all
+  gather_facts: true
+  become: true
+  vars:
+    snapcast_version: "0.35.0"
+    snapcast_arch_map:
+      x86_64: "amd64"
+      aarch64: "arm64"
+      armv7l: "armhf"
+      armv6l: "armhf"
+
+  tasks:
+    - name: Ensure curl and ca-certificates are installed
+      ansible.builtin.apt:
+        name:
+          - curl
+          - ca-certificates
+        state: present
+        update_cache: yes
+
+    - name: Map host architecture and OS codename
+      ansible.builtin.set_fact:
+        snapcast_arch: "{{ snapcast_arch_map[ansible_architecture] | default('amd64') }}"
+        snapcast_codename: "{{ ansible_distribution_release }}"
+        snapcast_version: "{{ snapcast_version }}"
+
+# -------------------------------------------------------------------
+# SNAPSERVER INSTALLATION
+# -------------------------------------------------------------------
+- name: Install and Configure Snapserver
+  hosts: server
+  become: true
+  tasks:
+    - name: Download snapserver .deb package using curl
+      ansible.builtin.command:
+        cmd: >
+          curl -fL
+          "https://github.com/badaix/snapcast/releases/download/v{{ snapcast_version }}/snapserver_{{ snapcast_version }}-1_{{ snapcast_arch }}_{{ snapcast_codename }}.deb"
+          -o "/tmp/snapserver_{{ snapcast_version }}_{{ snapcast_arch }}.deb"
+      args:
+        creates: "/tmp/snapserver_{{ snapcast_version }}_{{ snapcast_arch }}.deb"
+
+    - name: Install snapserver package
+      ansible.builtin.apt:
+        deb: "/tmp/snapserver_{{ snapcast_version }}_{{ snapcast_arch }}.deb"
+        state: present
+
+    - name: Ensure snapserver service is enabled and running
+      ansible.builtin.systemd:
+        name: snapserver
+        state: started
+        enabled: yes
+
+    - name: Clean up downloaded .deb file
+      ansible.builtin.file:
+        path: "/tmp/snapserver_{{ snapcast_version }}_{{ snapcast_arch }}.deb"
+        state: absent
+
+# -------------------------------------------------------------------
+# SNAPCLIENT INSTALLATION & CONFIGURATION
+# -------------------------------------------------------------------
+- name: Install and Configure Snapclient
+  hosts: speakers
+  become: true
+  tasks:
+    - name: Download snapclient .deb package using curl
+      ansible.builtin.command:
+        cmd: >
+          curl -fL
+          "https://github.com/badaix/snapcast/releases/download/v{{ snapcast_version }}/snapclient_{{ snapcast_version }}-1_{{ snapcast_arch }}_{{ snapcast_codename }}.deb"
+          -o "/tmp/snapclient_{{ snapcast_version }}_{{ snapcast_arch }}.deb"
+      args:
+        creates: "/tmp/snapclient_{{ snapcast_version }}_{{ snapcast_arch }}.deb"
+
+    - name: Install snapclient package
+      ansible.builtin.apt:
+        deb: "/tmp/snapclient_{{ snapcast_version }}_{{ snapcast_arch }}.deb"
+        state: present
+
+    - name: Set SNAPCLIENT_OPTS host in /etc/default/snapclient
+      ansible.builtin.lineinfile:
+        path: /etc/default/snapclient
+        regexp: '^SNAPCLIENT_OPTS='
+        line: 'SNAPCLIENT_OPTS="--host {{ hostvars[groups["snapserver_hosts"][0]]["ansible_host"] | default(hostvars[groups["snapserver_hosts"][0]]["ansible_default_ipv4"]["address"]) }}"'
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart snapclient
+
+    - name: Ensure snapclient service is enabled and running
+      ansible.builtin.systemd:
+        name: snapclient
+        state: started
+        enabled: yes
+
+    - name: Clean up downloaded .deb file
+      ansible.builtin.file:
+        path: "/tmp/snapclient_{{ snapcast_version }}_{{ snapcast_arch }}.deb"
+        state: absent
+
+  handlers:
+    - name: Restart snapclient
+      ansible.builtin.systemd:
+        name: snapclient
+        state: restarted

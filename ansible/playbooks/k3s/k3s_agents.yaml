@@ -1,10 +1,10 @@
 - name: Grab node token
   hosts: k3s_server
-  become: yes
+  become: true
   gather_facts: yes
   tasks:
     - name: Get node join token
-      become: yes
+      become: true
       ansible.builtin.fetch:
         src: /var/lib/rancher/k3s/server/token
         dest: 'node_join_token'
@@ -31,7 +31,7 @@
       register: hostname
 
     - name: Install k3s on agent
-      become: yes
+      become: true
       shell: curl -sfL https://get.k3s.io | sh -
       environment:
         K3S_TOKEN: "{{ node_join_token.stdout }}"
@@ -44,13 +44,13 @@
       changed_when: false
 
     - name: Ensure k4s config.yaml exists
-      become: yes
+      become: true
       command: |
         mkdir -p /etc/rancher/k3s
       changed_when: false
 
     - name: Ensure we enable strict ARP in config.yaml
-      become: yes
+      become: true
       ansible.builtin.blockinfile:
         path: /etc/rancher/k3s/config.yaml
         create: yes  # Creates the file if it does not exist
@@ -60,7 +60,7 @@
             - ipvs-strict-arp=true
 
     - name: Restart k3s-agent service to ensure it picks up the new configuration
-      become: yes
+      become: true
       command: systemctl restart k3s-agent
       async: 180
       poll: 5

@@ -1,6 +1,6 @@
 - name: Setup k3s on server
   hosts: k3s_server
-  become: yes
+  become: true
   gather_facts: yes
   tasks:
     - name: Download and install K3s
@@ -38,7 +38,7 @@
       command: chmod 644 /etc/rancher/k3s/k3s.yaml
 
     - name: Get node join token
-      become: yes
+      become: true
       ansible.builtin.fetch:
         src: /var/lib/rancher/k3s/server/token
         dest: 'node_join_token'

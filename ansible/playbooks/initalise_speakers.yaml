@@ -1,7 +1,7 @@
 ---
 - name: Initialise Adafruit I2S Speaker Bonnet
   hosts: speakers
-  become: yes
+  become: true
   gather_facts: yes
   tasks:
     - name: Install system dependencies
