@@ -8,7 +8,14 @@ metadata:
 data:
   automations.yaml: |-
     ---
-    - actions:
+    - id: '1737837812789'
+      alias: Speakers - Set source to Radio
+      description: ''
+      triggers:
+      - at: 05:00:00
+        trigger: time
+      conditions: []
+      actions:
       - action: media_player.select_source
         data:
           source: Radio
@@ -17,14 +24,8 @@ data:
           area_id:
           - hallway
           - bedroom
-      alias: Speakers - Set source to Radio
-      conditions: []
-      description: ''
-      id: '1737837812789'
+          - cian_office
       mode: single
-      triggers:
-      - at: 05:00:00
-        trigger: time
     - actions:
       - action: media_player.volume_set
         data:
@@ -36,21 +37,6 @@ data:
       conditions: []
       description: ''
       id: '1737837864723'
-      mode: single
-      triggers:
-      - at: 06:00:00
-        trigger: time
-    - actions:
-      - action: media_player.volume_mute
-        data:
-          is_volume_muted: false
-        metadata: {}
-        target:
-          area_id: bedroom
-      alias: Bedroom speaker - Unmute
-      conditions: []
-      description: ''
-      id: '1741799476593'
       mode: single
       triggers:
       - at: 06:00:00
@@ -74,22 +60,32 @@ data:
           - living_room
           - hallway
       mode: single
-    - actions:
+    - id: '1746819491925'
+      alias: Speakers - Unmute
+      description: ''
+      triggers:
+      - at: 06:55:00
+        trigger: time
+      conditions: []
+      actions:
       - action: media_player.volume_mute
         data:
           is_volume_muted: false
         metadata: {}
         target:
-          area_id: hallway
-      alias: Hallway speaker - Unmute
-      conditions: []
-      description: ''
-      id: '1746819491925'
+          area_id:
+          - hallway
+          - cian_office
+          - bedroom
       mode: single
+    - id: '1746819680520'
+      alias: Speakers - Mute
+      description: ''
       triggers:
-      - at: 07:00:00
+      - at: '23:00:00'
         trigger: time
-    - actions:
+      conditions: []
+      actions:
       - action: media_player.volume_mute
         data:
           is_volume_muted: true
@@ -98,37 +94,29 @@ data:
           area_id:
           - bedroom
           - hallway
-      alias: Speakers - Mute
-      conditions: []
-      description: ''
-      id: '1746819680520'
+          - cian_office
       mode: single
-      triggers:
-      - at: '23:00:00'
-        trigger: time
-    - actions:
-      - action: media_player.volume_set
-        data:
-          volume_level: 0.5
-        metadata: {}
-        target:
-          area_id: bedroom
+    - id: '1749156182427'
       alias: Bedroom speaker - Morning volume
-      conditions: []
       description: ''
-      id: '1749156182427'
-      mode: single
       triggers:
       - at: 05:00:00
         trigger: time
-    - actions:
+      conditions: []
+      actions:
       - action: media_player.volume_set
         data:
-          volume_level: 0.5
+          volume_level: 0.4
         metadata: {}
         target:
           area_id: bedroom
-      alias: Bedroom speaker - Set work volume
+      mode: single
+    - id: '1763715242657'
+      alias: Speakers - Set work volume
+      description: ''
+      triggers:
+      - at: 09:00:00
+        trigger: time
       conditions:
       - condition: time
         weekday:
@@ -137,12 +125,26 @@ data:
         - wed
         - thu
         - fri
-      description: ''
-      id: '1763715242657'
+      actions:
+      - action: media_player.volume_set
+        data:
+          volume_level: 0.1
+        metadata: {}
+        target:
+          area_id: cian_office
+      - action: media_player.volume_set
+        data:
+          volume_level: 0.2
+        metadata: {}
+        target:
+          area_id: hallway
+      - action: media_player.volume_mute
+        metadata: {}
+        target:
+          area_id: bedroom
+        data:
+          is_volume_muted: true
       mode: single
-      triggers:
-      - at: 09:00:00
-        trigger: time
     - id: '1769024245390'
       alias: Lights - Turn on
       description: ''
@@ -200,6 +202,7 @@ data:
           area_id:
           - hallway
           - bedroom
+          - cian_office
       mode: single
     - id: '1789106917350'
       alias: Lights Off - Again
