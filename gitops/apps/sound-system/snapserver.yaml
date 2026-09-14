@@ -17,7 +17,7 @@ spec:
         app: snapserver
     spec:
       containers:
-        - image: ghcr.io/cmacsithigh/snapserver:1.4.0
+        - image: ghcr.io/cmacsithigh/snapserver:1.4.2
           imagePullPolicy: Always
           name: snapserver
           ports:
