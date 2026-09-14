@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: sound-system
 resources:
   - mpd.yaml
+  - musicassistant.yaml
   - mympd.yaml
   - namespace.yaml
   - pvcs.yaml
