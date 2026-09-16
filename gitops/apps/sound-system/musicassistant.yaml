@@ -56,7 +56,8 @@ spec:
           args:
             - |
               mkdir -p /data/radios
-              cp /config-radios/* /data/radios/
+              # Copying the directory contents explicitly prevents the shell expansion error
+              cp -RL /config-radios/. /data/radios/
               echo "Radio playlist files successfully updated inside the PVC storage."
           volumeMounts:
             - name: data
