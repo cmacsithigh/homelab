@@ -3,6 +3,8 @@
   hosts: k3s, rc2 # only hosts which can handle pat update. OTher hosts (pi 0's) can't handle it.
   serial: 1
   become: yes
+  vars:
+    ansible_become_pass: ""
   tasks:
     - name: Verify the host uses a Debian-family operating system
       assert:
