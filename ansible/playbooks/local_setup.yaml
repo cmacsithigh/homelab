@@ -1,6 +1,7 @@
 - name: Fetch data from k3s server node
   hosts: server
   gather_facts: yes
+  become: yes
   tasks:
     - name: Get node join token
       ansible.builtin.fetch:
@@ -17,6 +18,7 @@
 
 - name: Setup kubectl on localhost with new context
   hosts: localhost
+  become: yes
   tasks:
     - name: Create $HOME/.kube directory if not present
       ansible.builtin.file:

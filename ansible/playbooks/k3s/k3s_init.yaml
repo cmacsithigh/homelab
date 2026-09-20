@@ -1,6 +1,7 @@
 - name: Setup baseline for all k3s nodes
   hosts: k3s
   gather_facts: yes
+  become: yes
   tasks:
     # Raspberry Pi Kernel Tasks
     - name: Check the newer Raspberry Pi cmdline path

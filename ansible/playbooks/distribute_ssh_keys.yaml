@@ -4,8 +4,6 @@
   gather_facts: yes
   vars:
     ansible_key_path: "~/.ssh/ansible_key.pub"
-    new_ansible_user: "ansible"
-
   tasks:
     - name: Check if local SSH public key exists
       stat:
