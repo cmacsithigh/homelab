@@ -1,10 +1,8 @@
 ---
 - name: Update Debian-based packages on desktop and server
-  hosts: k3s, rc2 # only hosts which can handle pat update. OTher hosts (pi 0's) can't handle it.
+  hosts: k3s, rc2 # only hosts which can handle package updates
   serial: 1
   become: yes
-  vars:
-    ansible_become_pass: ""
   tasks:
     - name: Verify the host uses a Debian-family operating system
       assert:
@@ -12,11 +10,22 @@
           - ansible_facts.os_family == 'Debian'
         fail_msg: This role supports Debian-based operating systems only.
 
-    - name: Update all installed packages
-      apt:
-        update_cache: yes
-        cache_valid_time: 3600
-        upgrade: dist
+    - name: Update and upgrade packages with automatic lock recovery
+      block:
+        - name: Update all installed packages
+          apt:
+            update_cache: yes
+            cache_valid_time: 3600
+            upgrade: dist
+      rescue:
+        - name: Remove stale apt locks on failure
+          shell: rm -f /var/lib/dpkg/lock-frontend /var/cache/apt/archives/lock /var/lib/apt/lists/lock
+
+        - name: Retry updating packages after clearing locks
+          apt:
+            update_cache: yes
+            cache_valid_time: 0
+            upgrade: dist
 
     - name: Remove unused packages and cached package files
       apt:

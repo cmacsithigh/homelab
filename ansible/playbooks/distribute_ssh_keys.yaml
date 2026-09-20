@@ -47,6 +47,6 @@
         path: "/etc/sudoers.d/{{ new_ansible_user }}"
         state: present
         create: yes
-        mode: '0440'
+        mode: "0440"
         line: "{{ new_ansible_user }} ALL=(ALL) NOPASSWD: ALL"
         validate: "visudo -cf %s"
