@@ -3,51 +3,13 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: mpd
-  name: mpd
+    app: music-assistant
+  name: music-assistant
 spec:
   ports:
-    - name: mpd
-      port: 6600
-      targetPort: 6600
+    - name: music-assistant
+      port: 8095
+      targetPort: 8095
   selector:
-    app: mpd
+    app: music-assistant
   type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    metallb.io/loadBalancerIPs: 192.168.18.201
-  labels:
-    app: mympd
-  name: mympd
-spec:
-  ports:
-    - name: http
-      port: 80
-      targetPort: 8080
-  selector:
-    app: mympd
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: snapserver
-  name: snapserver
-spec:
-  clusterIP: None
-  ports:
-    - name: snapcast
-      port: 1704
-      targetPort: 1704
-    - name: control
-      port: 1705
-      targetPort: 1705
-    - name: http
-      port: 1780
-      targetPort: 1780
-  selector:
-    app: snapserver

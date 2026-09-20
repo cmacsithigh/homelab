@@ -113,40 +113,12 @@ spec:
             - "[STATUS] == 200"
           alerts:
             - type: ntfy
-        - name: mympd
+        - name: music-assistant
           group: applications
-          url: http://mympd.sound-system.svc.cluster.local/
+          url: http://music-assistant.sound-system.svc.cluster.local:8095/
           interval: 30s
-          click: https://radio.ciansheehy.co
+          click: https://music.ciansheehy.co
           priority: 4
-          conditions:
-            - "[STATUS] == 200"
-          alerts:
-            - type: ntfy
-        - name: mpd
-          group: applications
-          url: tcp://mpd.sound-system.svc.cluster.local:6600
-          interval: 30s
-          priority: 4
-          conditions:
-            - "[CONNECTED] == true"
-          alerts:
-            - type: ntfy
-        - name: snapserver
-          group: applications
-          url: http://snapserver.sound-system.svc.cluster.local:1780/
-          interval: 30s
-          priority: 4
-          conditions:
-            - "[STATUS] == 200"
-          alerts:
-            - type: ntfy
-        - name: ntfy
-          group: applications
-          url: http://ntfy-system-ntfy-ntfy.ntfy-system.svc.cluster.local/v1/health
-          interval: 30s
-          click: https://ntfy.ciansheehy.co
-          priority: 3
           conditions:
             - "[STATUS] == 200"
           alerts:
