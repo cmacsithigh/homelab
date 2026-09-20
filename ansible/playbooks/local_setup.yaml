@@ -3,14 +3,12 @@
   gather_facts: yes
   tasks:
     - name: Get node join token
-      become: true
       ansible.builtin.fetch:
         src: /var/lib/rancher/k3s/server/token
         dest: 'node_join_token'
         flat: yes
 
     - name: Copy kubectl config from server to temp .kube directory on control node 
-      become: true
       ansible.builtin.fetch:
         src: /etc/rancher/k3s/k3s.yaml
         dest: .kube/k3s-config
@@ -130,7 +128,6 @@
     - name: Verify Helm version
       shell: helm version --short
       register: helm_version
-      become: no
       changed_when: false
 
     - name: Show Helm version

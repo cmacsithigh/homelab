@@ -30,7 +30,8 @@ Once this is created ensure you have the hosts and user set in the `distribute_s
   gather_facts: yes
   vars:
     ansible_key_path: "~/.ssh/ansible_key.pub"
-    ansible_user: "pi"
+    ansible_user: "ansible"
+    root_user: "pi"
     target_hosts:
       - 192.168.18.7
 ```
@@ -38,7 +39,7 @@ Once this is created ensure you have the hosts and user set in the `distribute_s
 When running this playbook you will be asked to ensure the password at runtime. This is ideal for this initial one time setup.
 
 ```bash
-ansible-playbook ./ansible/playbooks/distribute_ssh_keys.yaml
+ansible-playbook ./ansible/playbooks/distribute_ssh_keys.yaml -u pi --ask-become-pass
 ```
 
 ### Wifi Ip range

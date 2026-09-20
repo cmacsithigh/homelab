@@ -1,46 +1,54 @@
 ---
-- name: Distribute SSH Keys to Hosts
+- name: Setup Ansible User and Distribute SSH Keys
   hosts: localhost
   gather_facts: yes
   vars:
     ansible_key_path: "~/.ssh/ansible_key.pub"
-    ansible_user: "pi"
-    target_hosts:
-      - 192.168.18.10 # server
-      - 192.168.18.14 # desktop/camera
-      - 192.168.18.13 # rc0
-      - 192.168.18.11 # rc2
-      - 192.168.18.19 # rc3
-  
+    new_ansible_user: "ansible"
+
   tasks:
-    - name: Check if SSH key exists
+    - name: Check if local SSH public key exists
       stat:
         path: "{{ ansible_key_path }}"
       register: ssh_key_stat
 
-    - name: Fail if SSH key not found
+    - name: Fail if local SSH public key not found
       fail:
         msg: "SSH key not found at {{ ansible_key_path }}"
       when: not ssh_key_stat.stat.exists
 
-    - name: Read SSH public key
+    - name: Read local SSH public key content
       slurp:
         src: "{{ ansible_key_path }}"
       register: ssh_key_content
 
-    - name: Distribute SSH key to all hosts
-      shell: |
-        ssh-copy-id -i {{ ansible_key_path }} {{ ansible_user }}@{{ item }}
-      loop: "{{ target_hosts }}"
-      register: ssh_copy_result
-      changed_when: "'Number of key(s) added' in ssh_copy_result.stderr"
-      failed_when: 
-        - ssh_copy_result.rc != 0
-        - "'already authorized' not in ssh_copy_result.stderr"
-      environment:
-        ANSIBLE_HOST_KEY_CHECKING: "False"
+- name: Configure Target Hosts
+  hosts: all
+  gather_facts: yes
+  become: yes
+  vars:
+    new_ansible_user: "ansible"
+    ssh_key_pub: "{{ hostvars['localhost']['ssh_key_content']['content'] | b64decode | trim }}"
 
-    - name: Display results
-      debug:
-        msg: "Key distribution to {{ item }} completed"
-      loop: "{{ target_hosts }}"
+  tasks:
+    - name: Ensure the new ansible user exists
+      user:
+        name: "{{ new_ansible_user }}"
+        shell: /bin/bash
+        create_home: yes
+        state: present
+
+    - name: Ensure the SSH public key is added to the ansible user
+      authorized_key:
+        user: "{{ new_ansible_user }}"
+        state: present
+        key: "{{ ssh_key_pub }}"
+
+    - name: Ensure passwordless sudo for the ansible user
+      lineinfile:
+        path: "/etc/sudoers.d/{{ new_ansible_user }}"
+        state: present
+        create: yes
+        mode: '0440'
+        line: "{{ new_ansible_user }} ALL=(ALL) NOPASSWD: ALL"
+        validate: "visudo -cf %s"

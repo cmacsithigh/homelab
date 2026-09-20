@@ -2,7 +2,6 @@
 - name: Deploy Snapcast (Snapserver & Snapclient) with Specific Version
   hosts: all
   gather_facts: true
-  become: true
   vars:
     snapcast_version: "0.35.0"
     snapcast_arch_map:
@@ -31,7 +30,6 @@
 # -------------------------------------------------------------------
 - name: Install and Configure Snapserver
   hosts: server
-  become: true
   tasks:
     - name: Download snapserver .deb package using curl
       ansible.builtin.command:
@@ -63,7 +61,6 @@
 # -------------------------------------------------------------------
 - name: Install and Configure Snapclient
   hosts: speakers
-  become: true
   tasks:
     - name: Download snapclient .deb package using curl
       ansible.builtin.command:

@@ -1,6 +1,5 @@
 - name: Setup baseline for all k3s nodes
   hosts: k3s
-  become: true
   gather_facts: yes
   tasks:
     # Raspberry Pi Kernel Tasks
