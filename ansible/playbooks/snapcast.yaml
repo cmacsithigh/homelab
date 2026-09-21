@@ -1,6 +1,6 @@
 ---
 - name: Deploy Snapcast (Snapserver & Snapclient) with Specific Version
-  hosts: all
+  hosts: speakers
   gather_facts: true
   become: yes
   vars:
@@ -27,38 +27,6 @@
         snapcast_version: "{{ snapcast_version }}"
 
 # -------------------------------------------------------------------
-# SNAPSERVER INSTALLATION
-# -------------------------------------------------------------------
-- name: Install and Configure Snapserver
-  hosts: server
-  become: yes
-  tasks:
-    - name: Download snapserver .deb package using curl
-      ansible.builtin.command:
-        cmd: >
-          curl -fL
-          "https://github.com/badaix/snapcast/releases/download/v{{ snapcast_version }}/snapserver_{{ snapcast_version }}-1_{{ snapcast_arch }}_{{ snapcast_codename }}.deb"
-          -o "/tmp/snapserver_{{ snapcast_version }}_{{ snapcast_arch }}.deb"
-      args:
-        creates: "/tmp/snapserver_{{ snapcast_version }}_{{ snapcast_arch }}.deb"
-
-    - name: Install snapserver package
-      ansible.builtin.apt:
-        deb: "/tmp/snapserver_{{ snapcast_version }}_{{ snapcast_arch }}.deb"
-        state: present
-
-    - name: Ensure snapserver service is enabled and running
-      ansible.builtin.systemd:
-        name: snapserver
-        state: started
-        enabled: yes
-
-    - name: Clean up downloaded .deb file
-      ansible.builtin.file:
-        path: "/tmp/snapserver_{{ snapcast_version }}_{{ snapcast_arch }}.deb"
-        state: absent
-
-# -------------------------------------------------------------------
 # SNAPCLIENT INSTALLATION & CONFIGURATION
 # -------------------------------------------------------------------
 - name: Install and Configure Snapclient
@@ -83,7 +51,7 @@
       ansible.builtin.lineinfile:
         path: /etc/default/snapclient
         regexp: '^SNAPCLIENT_OPTS='
-        line: 'SNAPCLIENT_OPTS="--host {{ hostvars[groups["snapserver_hosts"][0]]["ansible_host"] | default(hostvars[groups["snapserver_hosts"][0]]["ansible_default_ipv4"]["address"]) }}"'
+        line: 'SNAPCLIENT_OPTS="--host {{ hostvars[groups["speaker_server"][0]]["ansible_host"] }}"'
         owner: root
         group: root
         mode: '0644'

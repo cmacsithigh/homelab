@@ -2,12 +2,14 @@
 - name: Initialise Adafruit I2S Speaker Bonnet
   hosts: speakers
   gather_facts: yes
+  become: yes
   tasks:
     - name: Install system dependencies
       ansible.builtin.apt:
         name:
           - python3-pip
           - python3-pexpect
+          - python3-setuptools
           - wget
         state: present
         update_cache: yes
@@ -43,6 +45,12 @@
       ansible.builtin.reboot:
         msg: "Rebooting to apply I2S audio kernel overlays"
       when: i2s_install.changed
+
+    - name: Download Adafruit I2S installer script via curl
+      ansible.builtin.command:
+        cmd: curl -fsSL https://github.com/adafruit/Raspberry-Pi-Installer-Scripts/raw/main/i2samp.py -o /tmp/i2samp.py
+      args:
+        creates: /tmp/i2samp.py
 
     - name: Execute I2S installer non-interactively a second time after reboot
       ansible.builtin.expect:

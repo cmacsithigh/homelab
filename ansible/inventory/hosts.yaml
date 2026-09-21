@@ -17,12 +17,18 @@ all:
       hosts:
         server:
         desktop:
+        rc2:
 
     k3s_nodes:
       hosts:
         desktop:
+        rc2:
 
     k3s_server:
+      hosts:
+        server:
+
+    speaker_server:
       hosts:
         server:
 

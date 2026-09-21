@@ -21,7 +21,7 @@
       register: ssh_key_content
 
 - name: Configure Target Hosts
-  hosts: all
+  hosts: homelab
   gather_facts: yes
   become: yes
   vars:

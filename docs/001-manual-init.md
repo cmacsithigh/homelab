@@ -39,7 +39,7 @@ Once this is created ensure you have the hosts and user set in the `distribute_s
 When running this playbook you will be asked to ensure the password at runtime. This is ideal for this initial one time setup.
 
 ```bash
-ansible-playbook ./ansible/playbooks/distribute_ssh_keys.yaml -u pi --ask-become-pass
+ansible-playbook ./ansible/playbooks/distribute_ssh_keys.yaml -u pi --ask-pass -K
 ```
 
 ### Wifi Ip range

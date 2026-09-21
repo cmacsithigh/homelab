@@ -24,25 +24,19 @@
         cmd: cat node_join_token
       register: node_join_token
 
-    - name: Extract hostname of node
-      local_action:
-        module: shell
-        cmd: hostname
-      register: hostname
-
     - name: Install k3s on agent
       shell: curl -sfL https://get.k3s.io | sh -
       environment:
         K3S_TOKEN: "{{ node_join_token.stdout }}"
         # Select the first host in the group of k3s servers as the server for the agent
         K3S_URL: "https://{{ hostvars[groups['k3s_server'] | first]['ansible_host'] }}:6443"
-        K3S_NODE_NAME: "{{ hostname.stdout }}"
+        K3S_NODE_NAME: "{{ inventory_hostname }}"
 
     - name: Verify the K3s service is active
       command: systemctl is-active --quiet k3s-agent
       changed_when: false
 
-    - name: Ensure k4s config.yaml exists
+    - name: Ensure k3s config.yaml exists
       command: |
         mkdir -p /etc/rancher/k3s
       changed_when: false
