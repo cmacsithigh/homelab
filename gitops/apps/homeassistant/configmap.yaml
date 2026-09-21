@@ -9,7 +9,7 @@ data:
   automations.yaml: |-
     ---
     - id: '1737837864723'
-      alias: Speakers - Set morning volume
+      alias: Speakers - Set volume - Morning
       description: ''
       triggers:
       - at: 06:00:00
@@ -49,7 +49,7 @@ data:
           - hallway
       mode: single
     - id: '1763715242657'
-      alias: Speakers - Set work volume
+      alias: Speakers - Set volume - Work
       description: ''
       triggers:
       - at: 09:00:00
@@ -117,7 +117,7 @@ data:
           - hallway
       mode: single
     - id: '1789106917350'
-      alias: Lights Off - Again
+      alias: Lights - Turn off - Again
       description: ''
       triggers:
       - at: '23:30:00'
@@ -129,7 +129,7 @@ data:
         data: {}
       mode: single
     - id: '1789972700788'
-      alias: Speakers - Join bedroom to sound system
+      alias: Speakers - Join - Bedroom
       description: ''
       triggers:
       - trigger: time
@@ -153,18 +153,21 @@ data:
           - media_player.rc0
       mode: single
     - id: '1789972772761'
-      alias: Speakers - Join office to sound system
+      alias: Speakers - Join  - Office
       description: ''
       triggers:
-      - trigger: time
-        at: 09:00:00
+      - trigger: time_pattern
+        minutes: /30
+      conditions:
+      - condition: time
+        after: 09:00:00
+        before: '17:00:00'
         weekday:
-        - mon
-        - tue
-        - wed
-        - thu
         - fri
-      conditions: []
+        - thu
+        - wed
+        - tue
+        - mon
       actions:
       - action: media_player.join
         metadata: {}
@@ -175,7 +178,7 @@ data:
           - media_player.pi0_rc3
       mode: single
     - id: '1789972837370'
-      alias: Speakers - Remove bedroom from sound system
+      alias: Speakers - Unjoin - Bedroom
       description: ''
       triggers:
       - trigger: time
@@ -198,11 +201,11 @@ data:
         data: {}
       mode: single
     - id: '1789972898752'
-      alias: Speakers - Remove office from sound system
+      alias: Speakers - Unjoin - Office
       description: ''
       triggers:
       - trigger: time
-        at: '17:00:00'
+        at: '17:30:00'
         weekday:
         - mon
         - tue
@@ -218,7 +221,7 @@ data:
           area_id: cian_office
       mode: single
     - id: '1789972990047'
-      alias: Speakers - Morning - Play Lyric
+      alias: Speakers - Play - Morning - Lyric FM radio
       description: ''
       triggers:
       - trigger: time
@@ -266,7 +269,7 @@ data:
               browse_entity_id: media_player.rc2
       mode: single
     - id: '1789973052234'
-      alias: Speakers - Work - Play FIP
+      alias: Speakers - Play - Work start - FIP Radio
       description: ''
       triggers:
       - trigger: time
@@ -299,6 +302,42 @@ data:
               - {}
               - media_content_type: music_assistant
                 media_content_id: radio
+              browse_entity_id: media_player.rc2
+      mode: single
+    - id: '1790004515553'
+      alias: Speakers - Play - Work end - P.I.M.P instrumental
+      description: ''
+      triggers:
+      - trigger: time
+        at: '17:00:00'
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+      conditions: []
+      actions:
+      - action: media_player.play_media
+        metadata: {}
+        target:
+          area_id:
+          - hallway
+          - cian_office
+        data:
+          enqueue: replace
+          media:
+            media_content_id: qobuz--QVxyCdMJ://track/42967874
+            media_content_type: music
+            metadata:
+              title: Radio Dj - P.I.M.P. (Originally Performed by 50 Cent)
+              thumbnail: https://static.qobuz.com/images/covers/53/55/0191515665553_600.jpg
+              media_class: track
+              children_media_class:
+              navigateIds:
+              - {}
+              - media_content_type: music_assistant
+                media_content_id: tracks
               browse_entity_id: media_player.rc2
       mode: single
   configuration.yaml: |-
