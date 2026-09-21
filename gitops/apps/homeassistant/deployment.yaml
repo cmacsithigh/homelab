@@ -4,6 +4,8 @@ kind: Deployment
 metadata:
   labels:
     app: homeassistant
+  annotations:
+    reloader.stakater.com/auto: "true"
   name: homeassistant
 spec:
   replicas: 1
