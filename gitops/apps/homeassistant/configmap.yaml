@@ -8,39 +8,27 @@ metadata:
 data:
   automations.yaml: |-
     ---
-    - id: '1737837812789'
-      alias: Speakers - Set source to Radio
+    - id: '1737837864723'
+      alias: Speakers - Set morning volume
       description: ''
       triggers:
-      - at: 05:00:00
+      - at: 06:00:00
         trigger: time
       conditions: []
       actions:
-      - action: media_player.select_source
-        data:
-          source: Radio
-        metadata: {}
-        target:
-          area_id:
-          - hallway
-          - bedroom
-          - cian_office
-      mode: single
-    - actions:
       - action: media_player.volume_set
         data:
           volume_level: 0.2
         metadata: {}
         target:
           area_id: hallway
-      alias: Hallway speaker - Set morning volume
-      conditions: []
-      description: ''
-      id: '1737837864723'
+      - action: media_player.volume_set
+        metadata: {}
+        target:
+          area_id: bedroom
+        data:
+          volume_level: 0.3
       mode: single
-      triggers:
-      - at: 06:00:00
-        trigger: time
     - id: '1745318078223'
       alias: Lights - Turn off
       description: ''
@@ -60,75 +48,23 @@ data:
           - living_room
           - hallway
       mode: single
-    - id: '1746819491925'
-      alias: Speakers - Unmute
-      description: ''
-      triggers:
-      - at: 06:55:00
-        trigger: time
-      conditions: []
-      actions:
-      - action: media_player.volume_mute
-        data:
-          is_volume_muted: false
-        metadata: {}
-        target:
-          area_id:
-          - hallway
-          - cian_office
-          - bedroom
-      mode: single
-    - id: '1746819680520'
-      alias: Speakers - Mute
-      description: ''
-      triggers:
-      - at: '23:00:00'
-        trigger: time
-      conditions: []
-      actions:
-      - action: media_player.volume_mute
-        data:
-          is_volume_muted: true
-        metadata: {}
-        target:
-          area_id:
-          - bedroom
-          - hallway
-          - cian_office
-      mode: single
-    - id: '1749156182427'
-      alias: Bedroom speaker - Morning volume
-      description: ''
-      triggers:
-      - at: 05:00:00
-        trigger: time
-      conditions: []
-      actions:
-      - action: media_player.volume_set
-        data:
-          volume_level: 0.4
-        metadata: {}
-        target:
-          area_id: bedroom
-      mode: single
     - id: '1763715242657'
       alias: Speakers - Set work volume
       description: ''
       triggers:
       - at: 09:00:00
         trigger: time
-      conditions:
-      - condition: time
         weekday:
-        - mon
-        - tue
-        - wed
-        - thu
         - fri
+        - thu
+        - wed
+        - tue
+        - mon
+      conditions: []
       actions:
       - action: media_player.volume_set
         data:
-          volume_level: 0.1
+          volume_level: 0.05
         metadata: {}
         target:
           area_id: cian_office
@@ -138,12 +74,6 @@ data:
         metadata: {}
         target:
           area_id: hallway
-      - action: media_player.volume_mute
-        metadata: {}
-        target:
-          area_id: bedroom
-        data:
-          is_volume_muted: true
       mode: single
     - id: '1769024245390'
       alias: Lights - Turn on
@@ -186,24 +116,6 @@ data:
           - living_room
           - hallway
       mode: single
-    - id: '1788806019512'
-      alias: Speakers - Set source to Spotify
-      description: ''
-      triggers:
-      - at: 04:55:00
-        trigger: time
-      conditions: []
-      actions:
-      - action: media_player.select_source
-        data:
-          source: Spotify
-        metadata: {}
-        target:
-          area_id:
-          - hallway
-          - bedroom
-          - cian_office
-      mode: single
     - id: '1789106917350'
       alias: Lights Off - Again
       description: ''
@@ -215,6 +127,179 @@ data:
       - action: script.all_lights_off
         metadata: {}
         data: {}
+      mode: single
+    - id: '1789972700788'
+      alias: Speakers - Join bedroom to sound system
+      description: ''
+      triggers:
+      - trigger: time
+        at: 06:00:00
+        weekday:
+        - sun
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+      conditions: []
+      actions:
+      - action: media_player.join
+        metadata: {}
+        target:
+          area_id: hallway
+        data:
+          group_members:
+          - media_player.rc0
+      mode: single
+    - id: '1789972772761'
+      alias: Speakers - Join office to sound system
+      description: ''
+      triggers:
+      - trigger: time
+        at: 09:00:00
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+      conditions: []
+      actions:
+      - action: media_player.join
+        metadata: {}
+        target:
+          area_id: hallway
+        data:
+          group_members:
+          - media_player.pi0_rc3
+      mode: single
+    - id: '1789972837370'
+      alias: Speakers - Remove bedroom from sound system
+      description: ''
+      triggers:
+      - trigger: time
+        at: 09:00:00
+        weekday:
+        - sun
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+      conditions: []
+      actions:
+      - action: media_player.unjoin
+        metadata: {}
+        target:
+          area_id:
+          - bedroom
+        data: {}
+      mode: single
+    - id: '1789972898752'
+      alias: Speakers - Remove office from sound system
+      description: ''
+      triggers:
+      - trigger: time
+        at: '17:00:00'
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+      conditions: []
+      actions:
+      - action: media_player.unjoin
+        metadata: {}
+        data: {}
+        target:
+          area_id: cian_office
+      mode: single
+    - id: '1789972990047'
+      alias: Speakers - Morning - Play Lyric
+      description: ''
+      triggers:
+      - trigger: time
+        at: 07:00:00
+        weekday:
+        - sun
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+      - trigger: time
+        at: 08:00:00
+        weekday:
+        - sun
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+      conditions: []
+      actions:
+      - action: media_player.play_media
+        metadata: {}
+        target:
+          area_id:
+          - hallway
+          - bedroom
+        data:
+          enqueue: replace
+          media:
+            media_content_id: library://radio/3
+            media_content_type: music
+            metadata:
+              title: Lyric FM
+              thumbnail: https://media.info/l/o/2/23.1386005631.png
+              media_class: music
+              children_media_class:
+              navigateIds:
+              - {}
+              - media_content_type: music_assistant
+                media_content_id: radio
+              browse_entity_id: media_player.rc2
+      mode: single
+    - id: '1789973052234'
+      alias: Speakers - Work - Play FIP
+      description: ''
+      triggers:
+      - trigger: time
+        at: 09:00:00
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+      conditions: []
+      actions:
+      - action: media_player.play_media
+        metadata: {}
+        target:
+          area_id:
+          - hallway
+          - cian_office
+        data:
+          enqueue: replace
+          media:
+            media_content_id: library://radio/1
+            media_content_type: music
+            metadata:
+              title: FIP
+              thumbnail: https://upload.wikimedia.org/wikipedia/commons/1/16/FIP_logo_2021.svg
+              media_class: music
+              children_media_class:
+              navigateIds:
+              - {}
+              - media_content_type: music_assistant
+                media_content_id: radio
+              browse_entity_id: media_player.rc2
       mode: single
   configuration.yaml: |-
     default_config:
