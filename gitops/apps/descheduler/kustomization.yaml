@@ -10,7 +10,7 @@ patches:
       apiVersion: batch/v1
       kind: CronJob
       metadata:
-        name: descheduler
+        name: descheduler-cronjob
       spec:
         schedule: "*/15 * * * *"
   - patch: |-
