@@ -35,7 +35,7 @@ spec:
             patch: |-
               - op: add
                 path: /metadata/annotations/metallb.io~1loadBalancerIPs
-                value: 192.168.18.212
+                value: 192.168.18.213
   values:
     config:
       repo: github://cmacsithigh/homelab
