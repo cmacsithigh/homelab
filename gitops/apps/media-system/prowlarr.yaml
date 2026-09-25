@@ -42,6 +42,16 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+        - name: flaresolverr
+          image: ghcr.io/flaresolverr/flaresolverr:3.5.2
+          env:
+            - name: LOG_LEVEL
+              value: "info"
+            - name: TZ
+              value: "Etc/UTC"
+          ports:
+            - containerPort: 8191
+              name: flaresolverr
       volumes:
         - name: config
           persistentVolumeClaim:
