@@ -75,6 +75,17 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: seerr-config
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: media-storage-pvc
 spec:
   accessModes:

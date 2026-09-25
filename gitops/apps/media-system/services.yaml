@@ -68,3 +68,17 @@ spec:
       name: http
   selector:
     app: prowlarr
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seerr
+spec:
+  type: NodePort
+  ports:
+    - port: 5055
+      targetPort: 5055
+      nodePort: 32271
+      name: http
+  selector:
+    app: seerr

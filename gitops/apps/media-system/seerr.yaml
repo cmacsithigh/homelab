@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seerr
+  namespace: media-system
+  labels:
+    app: seerr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seerr
+  template:
+    metadata:
+      labels:
+        app: seerr
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - pi4-server
+      containers:
+        - name: seerr
+          image: seerr/seerr:sha-103976d
+          ports:
+            - containerPort: 5055
+              name: http
+          env:
+            - name: LOG_LEVEL
+              value: "info"
+            - name: TZ
+              value: "Etc/UTC"
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: seerr-config
