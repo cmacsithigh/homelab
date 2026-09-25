@@ -7,4 +7,6 @@ resources:
   - namespace.yaml
   - pvcs.yaml
   - qtorrent.yaml
+  - radarr.yaml
   - services.yaml
+  - sonarr.yaml

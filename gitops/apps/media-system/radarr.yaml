@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  namespace: media-system
+  labels:
+    app: radarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - pi4-server
+    spec:
+      containers:
+        - name: radarr
+          image: lscr.io/linuxserver/radarr:latest
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "UTC"
+          ports:
+            - containerPort: 7878
+              name: http
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media-storage
+              mountPath: /data # Shared root folder across all apps
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 1Gi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: radarr-config-pvc
+        - name: media-storage
+          persistentVolumeClaim:
+            claimName: media-storage-pvc
