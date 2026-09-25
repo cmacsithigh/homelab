@@ -39,7 +39,7 @@ spec:
             - name: FIREWALL_OUTBOUND_SUBNETS
               value: "10.42.0.0/16,10.43.0.0/16,192.168.0.0/16"
             - name: VPN_PORT_FORWARDING
-              value: "off"
+              value: "on"
             - name: VPN_SERVICE_PROVIDER
               value: "protonvpn"
             - name: VPN_TYPE

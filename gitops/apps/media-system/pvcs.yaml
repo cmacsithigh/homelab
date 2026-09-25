@@ -59,6 +59,18 @@ spec:
   resources:
     requests:
       storage: 2Gi
+--
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prowlarr-config
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

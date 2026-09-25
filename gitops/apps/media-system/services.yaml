@@ -54,3 +54,17 @@ spec:
       name: http
   selector:
     app: radarr
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prowlarr
+spec:
+  type: NodePort
+  ports:
+    - port: 9696
+      targetPort: 9696
+      nodePort: 32270
+      name: http
+  selector:
+    app: prowlarr
