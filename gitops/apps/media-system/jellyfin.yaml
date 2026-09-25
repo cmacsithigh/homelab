@@ -37,9 +37,9 @@ spec:
               mountPath: /config
             - name: cache
               mountPath: /cache
-            - name: media
+            - name: media-storage
               mountPath: /media
-              readOnly: true
+              subPath: media
           resources:
             requests:
               cpu: 250m
@@ -63,7 +63,6 @@ spec:
         - name: cache
           emptyDir:
             sizeLimit: 10Gi
-        - name: media
-          hostPath:
-            path: /mnt/media
-            type: DirectoryOrCreate
+        - name: media-storage
+          persistentVolumeClaim:
+            claimName: media-storage-pvc

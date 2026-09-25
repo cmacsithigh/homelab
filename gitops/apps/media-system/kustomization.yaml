@@ -6,4 +6,5 @@ resources:
   - jellyfin.yaml
   - namespace.yaml
   - pvcs.yaml
+  - qtorrent.yaml
   - services.yaml
