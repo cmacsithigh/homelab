@@ -23,6 +23,9 @@ spec:
                   values:
                     - pi4-server
     spec:
+      hostNetwork: true
+      hostIPC: true
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: jellyfin
           image: jellyfin/jellyfin:12.1
