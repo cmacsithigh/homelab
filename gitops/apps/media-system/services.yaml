@@ -25,7 +25,7 @@ spec:
       nodePort: 32267
       name: http
   selector:
-    app: qbittorrententent
+    app: qbittorrent
 ---
 apiVersion: v1
 kind: Service
