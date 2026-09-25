@@ -16,7 +16,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: qtorrent
+  name: qbittorrent
 spec:
   type: NodePort
   ports:
@@ -25,7 +25,7 @@ spec:
       nodePort: 32267
       name: http
   selector:
-    app: qtorrent
+    app: qbittorrententent
 ---
 apiVersion: v1
 kind: Service
