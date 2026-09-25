@@ -6,14 +6,19 @@ resources:
   - namespace.yaml
 
 patches:
-  - patch: |-
+  - target:
+      kind: CronJob
+    patch: |-
       apiVersion: batch/v1
       kind: CronJob
       metadata:
         name: descheduler-cronjob
       spec:
         schedule: "*/15 * * * *"
-  - patch: |-
+  - target:
+      kind: ConfigMap
+      name: descheduler-policy-configmap
+    patch: |-
       apiVersion: v1
       kind: ConfigMap
       metadata:
