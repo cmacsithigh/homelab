@@ -5,7 +5,7 @@ namespace: metallb-system
 resources:
   - https://raw.githubusercontent.com/metallb/metallb/v0.16.0/config/manifests/metallb-native.yaml
 patches:
-  # Patch 1: Remove loopback restriction from Controller Deployment Probes
+  # Patch 1: Controller ports & stable resource guarantees
   - target:
       kind: Deployment
       name: controller
@@ -23,3 +23,30 @@ patches:
                   - containerPort: 17472
                     name: healthz
                     protocol: TCP
+                resources:
+                  requests:
+                    cpu: 50m
+                    memory: 64Mi
+                  limits:
+                    cpu: 200m
+                    memory: 256Mi
+  - target:
+      kind: DaemonSet
+      name: speaker
+    patch: |-
+      apiVersion: apps/v1
+      kind: DaemonSet
+      metadata:
+        name: speaker
+      spec:
+        template:
+          spec:
+            containers:
+              - name: speaker
+                resources:
+                  requests:
+                    cpu: 100m
+                    memory: 128Mi
+                  limits:
+                    cpu: 300m
+                    memory: 512Mi
