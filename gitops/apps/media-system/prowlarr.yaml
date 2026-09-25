@@ -24,38 +24,6 @@ spec:
                     - pi4-server
     spec:
       containers:
-        - name: gluetun
-          image: qmcgaw/gluetun:v3.41.3
-          securityContext:
-            capabilities:
-              add:
-                - NET_ADMIN # Required to create VPN tunnel interface
-          envFrom:
-            - secretRef:
-                name: gluetun-vpn-secret
-          env:
-            - name: FIREWALL_INPUT_PORTS
-              value: "9696"
-            - name: FIREWALL_OUTBOUND_SUBNETS
-              value: "10.42.0.0/16,10.43.0.0/16,192.168.0.0/16"
-            - name: VPN_PORT_FORWARDING
-              value: "on"
-            - name: VPN_SERVICE_PROVIDER
-              value: "protonvpn"
-            - name: VPN_TYPE
-              value: "openvpn"
-            - name: SERVER_COUNTRIES
-              value: "Netherlands,Germany,Sweden,Switzerland"
-          ports:
-            - containerPort: 9696
-              name: http
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 500m
-              memory: 256Mi
         - name: prowlarr
           image: lscr.io/linuxserver/prowlarr:2.6.5
           env:
@@ -67,9 +35,22 @@ spec:
               value: "Etc/UTC"
             - name: DOTNET_SYSTEM_NET_DISABLEIPV6
               value: "1"
+          ports:
+            - containerPort: 9696
+              name: http
           volumeMounts:
             - name: config
               mountPath: /config
+        - name: flaresolverr
+          image: ghcr.io/flaresolverr/flaresolverr:v3.5.2
+          env:
+            - name: LOG_LEVEL
+              value: "info"
+            - name: TZ
+              value: "Etc/UTC"
+          ports:
+            - containerPort: 8191
+              name: flaresolverr
       volumes:
         - name: config
           persistentVolumeClaim:
