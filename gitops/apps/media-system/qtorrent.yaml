@@ -13,6 +13,15 @@ spec:
     metadata:
       labels:
         app: qbittorrent
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - pi4-server
     spec:
       containers:
         - name: gluetun
