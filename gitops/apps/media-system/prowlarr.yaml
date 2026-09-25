@@ -43,7 +43,7 @@ spec:
             - name: config
               mountPath: /config
         - name: flaresolverr
-          image: ghcr.io/flaresolverr/flaresolverr:3.5.2
+          image: ghcr.io/flaresolverr/flaresolverr:v3.5.2
           env:
             - name: LOG_LEVEL
               value: "info"
