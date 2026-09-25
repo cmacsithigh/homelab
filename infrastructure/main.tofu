@@ -8,6 +8,10 @@ terraform {
       source  = "cloudflare/cloudflare"
       version = "5.25.0"
     }
+    keycloak = {
+      source  = "keycloak/keycloak"
+      version = "5.9.0"
+    }
   }
 
   backend "s3" {
@@ -25,4 +29,10 @@ provider "cloudflare" {
 
 provider "aws" {
   region = local.aws_region
+}
+
+provider "keycloak" {
+  client_id     = "tofu"
+  client_secret = var.keycloak.client_secret
+  url           = var.keycloak.url
 }

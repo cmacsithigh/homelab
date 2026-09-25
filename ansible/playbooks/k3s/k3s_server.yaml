@@ -25,7 +25,7 @@
           kube-proxy-arg:
             - ipvs-strict-arp=true
           kube-apiserver-arg:
-            - oidc-issuer-url=https://keycloak.ciansheehy.co/realms/master
+            - oidc-issuer-url=https://keycloak.ciansheehy.co/realms/homelab
             - oidc-client-id=headlamp
             - oidc-username-claim=preferred_username
             - oidc-groups-claim=groups

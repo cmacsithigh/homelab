@@ -6,3 +6,11 @@ variable "cloudflare" {
     tunnel_id  = string
   })
 }
+
+variable "keycloak" {
+  description = "keycloak object"
+  type = object({
+    client_secret = string
+    url           = string
+  })
+}
