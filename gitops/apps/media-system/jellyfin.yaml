@@ -59,8 +59,8 @@ spec:
             claimName: jellyfin-config-pvc
         - name: cache
           emptyDir:
-            sizeLimit: 20Gi
+            sizeLimit: 10Gi
         - name: media
           hostPath:
             path: /mnt/media
-            type: Directory
+            type: DirectoryOrCreate
