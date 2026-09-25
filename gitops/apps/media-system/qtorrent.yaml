@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: gluetun
-          image: qmcgaw/gluetun:v3.39.0
+          image: qmcgaw/gluetun:v3.41.3
           securityContext:
             capabilities:
               add:
