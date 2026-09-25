@@ -3,6 +3,5 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - oidc.yaml
-  - rbac.yaml
   - helm.yaml
   - serviceaccount.yaml
