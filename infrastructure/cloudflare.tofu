@@ -78,26 +78,26 @@ resource "cloudflare_zero_trust_access_application" "wildcard" {
   type                       = "self_hosted"
 }
 
-# resource "cloudflare_zero_trust_access_application" "keycloak" {
-#   name                      = "keycloak"
-#   account_id                = var.cloudflare.account_id
-#   domain                    = "keycloak.ciansheehy.co"
-#   auto_redirect_to_identity = true
-#   enable_binding_cookie     = false
-#   allowed_idps              = ["e7931f71-fd92-4e34-879c-8fc01185e2d8"]
-#   destinations = [{
-#     type = "public"
-#     uri  = "keycloak.ciansheehy.co"
-#   }]
-#   policies = [{
-#     id         = cloudflare_zero_trust_access_policy.bypass.id
-#     precedence = 1
-#   }]
-#   http_only_cookie_attribute = false
-#   options_preflight_bypass   = false
-#   session_duration           = "6h"
-#   type                       = "self_hosted"
-# }
+resource "cloudflare_zero_trust_access_application" "keycloak" {
+  name                      = "keycloak"
+  account_id                = var.cloudflare.account_id
+  domain                    = "keycloak.ciansheehy.co"
+  auto_redirect_to_identity = true
+  enable_binding_cookie     = false
+  allowed_idps              = ["e7931f71-fd92-4e34-879c-8fc01185e2d8"]
+  destinations = [{
+    type = "public"
+    uri  = "keycloak.ciansheehy.co"
+  }]
+  policies = [{
+    id         = cloudflare_zero_trust_access_policy.bypass.id
+    precedence = 1
+  }]
+  http_only_cookie_attribute = false
+  options_preflight_bypass   = false
+  session_duration           = "6h"
+  type                       = "self_hosted"
+}
 
 resource "cloudflare_zero_trust_access_application" "ntfy" {
   name                      = "ntfy"

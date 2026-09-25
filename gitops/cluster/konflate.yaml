@@ -2,17 +2,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: trivy
+  name: konflate
   namespace: flux-system
 spec:
   interval: 10m0s
   dependsOn:
     - name: base
-  path: ./gitops/apps/trivy
+    - name: external-secrets
+    - name: openbao
+  path: ./gitops/apps/konflate
   prune: true
   retryInterval: 1m0s
   sourceRef:
     kind: GitRepository
     name: flux-system
-  timeout: 3m0s
+  timeout: 5m0s
   wait: true
