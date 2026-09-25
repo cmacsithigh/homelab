@@ -6,4 +6,3 @@ resources:
   - external-secrets.yaml
   - namespace.yaml
   - postgresql.yaml
-  - rbac.yaml

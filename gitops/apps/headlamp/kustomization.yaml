@@ -4,4 +4,5 @@ resources:
   - namespace.yaml
   - oidc.yaml
   - helm.yaml
+  - rbac.yaml
   - serviceaccount.yaml
