@@ -5,6 +5,7 @@ namespace: media-system
 resources:
   - jellyfin.yaml
   - namespace.yaml
+  - prowlarr.yaml
   - pvcs.yaml
   - qbittorrent.yaml
   - radarr.yaml
