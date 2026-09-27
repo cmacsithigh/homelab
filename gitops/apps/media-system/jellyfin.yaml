@@ -38,8 +38,7 @@ spec:
             - name: cache
               mountPath: /cache
             - name: media-storage
-              mountPath: /media
-              subPath: media
+              mountPath: /data
           resources:
             requests:
               cpu: 250m
