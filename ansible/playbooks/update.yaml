@@ -1,6 +1,6 @@
 ---
 - name: Update Debian-based packages on desktop and server
-  hosts: k3s, rc2 # only hosts which can handle package updates
+  hosts: k3s # only hosts which can handle package updates
   serial: 1
   become: yes
   vars:
@@ -11,6 +11,13 @@
         that:
           - ansible_facts.os_family == 'Debian'
         fail_msg: This role supports Debian-based operating systems only.
+
+    - name: Install nfs-common
+      ansible.builtin.apt:
+        name:
+          - nfs-common
+        state: present
+        update_cache: yes
 
     - name: Update and upgrade packages with automatic lock recovery
       block:

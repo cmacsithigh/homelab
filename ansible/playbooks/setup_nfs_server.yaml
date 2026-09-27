@@ -1,0 +1,30 @@
+- name: Create NFS server
+  hosts: desktop
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Install nfs-kernel-server
+      ansible.builtin.apt:
+        name:
+          - nfs-kernel-server
+        state: present
+        update_cache: yes
+
+    - name: Ensure the NFS storage directory exists
+      ansible.builtin.file:
+        path: /mnt/nfs
+        state: directory
+        mode: '0777'
+
+    - name: Configure NFS exports file
+      ansible.builtin.lineinfile:
+        path: /etc/exports
+        line: '/mnt/nfs *(rw,sync,no_subtree_check,no_root_squash)'
+        state: present
+      notify: Restart NFS Server
+
+  handlers:
+    - name: Restart NFS Server
+      ansible.builtin.service:
+        name: nfs-kernel-server
+        state: restarted
