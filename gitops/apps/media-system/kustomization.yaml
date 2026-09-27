@@ -9,6 +9,7 @@ resources:
   - pvcs.yaml
   - qbittorrent.yaml
   - radarr.yaml
+  - sabnzbd.yaml
   - seerr.yaml
   - services.yaml
   - sonarr.yaml
