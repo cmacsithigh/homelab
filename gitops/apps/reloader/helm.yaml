@@ -1,3 +1,4 @@
+# https://github.com/stakater/Reloader/blob/master/deployments/kubernetes/chart/reloader/values.yaml
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -28,3 +29,10 @@ spec:
       retries: 10
   interval: 60m
   targetNamespace: reloader
+  values:
+    reloader:
+      requests:
+        cpu: 5m
+        memory: 32Mi
+      limits:
+        memory: 128Mi

@@ -32,6 +32,11 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+          requests:
+            cpu: 5m
+            memory: 126Mi
+          limits:
+            memory: 512Mi
         - name: flaresolverr
           image: ghcr.io/flaresolverr/flaresolverr:v3.5.2
           env:
@@ -39,6 +44,11 @@ spec:
               value: "info"
             - name: TZ
               value: "Etc/UTC"
+          requests:
+            cpu: 5m
+            memory: 126Mi
+          limits:
+            memory: 512Mi
           ports:
             - containerPort: 8191
               name: flaresolverr
