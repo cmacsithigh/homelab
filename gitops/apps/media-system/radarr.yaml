@@ -24,17 +24,6 @@ spec:
                   values:
                     - pi4-server
     spec:
-      initContainers:
-        - name: init-data-dirs
-          image: busybox:latest
-          command:
-            - sh
-            - -c
-            - mkdir -p /data/media/movies /data/media/tv /data/usenet/complete /data/usenet/incomplete
-            - chown -R 1000:1000 /data/media /data/usenet
-          volumeMounts:
-            - name: media-storage
-              mountPath: /data
       containers:
         - name: radarr
           image: lscr.io/linuxserver/radarr:6.4.4

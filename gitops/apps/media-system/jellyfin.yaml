@@ -26,6 +26,17 @@ spec:
       hostNetwork: true
       hostIPC: true
       dnsPolicy: ClusterFirstWithHostNet
+      initContainers:
+        - name: init-data-dirs
+          image: busybox:latest
+          command:
+            - sh
+            - -c
+            - mkdir -p /data/media/movies /data/media/tv /data/usenet/complete /data/usenet/incomplete
+            - chown -R 777 /data/media /data/usenet /data/torrents
+          volumeMounts:
+            - name: media-storage
+              mountPath: /data
       containers:
         - name: jellyfin
           image: jellyfin/jellyfin:12.1
