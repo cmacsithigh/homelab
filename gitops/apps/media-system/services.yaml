@@ -31,12 +31,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sonarr
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.18.224
 spec:
   type: NodePort
   ports:
     - port: 8989
       targetPort: 8989
-      nodePort: 32268
       name: http
   selector:
     app: sonarr
@@ -45,12 +46,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: radarr
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.18.223
 spec:
   type: NodePort
   ports:
     - port: 7878
       targetPort: 7878
-      nodePort: 32269
       name: http
   selector:
     app: radarr
@@ -59,12 +61,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: prowlarr
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.18.222
 spec:
   type: NodePort
   ports:
     - port: 9696
       targetPort: 9696
-      nodePort: 32270
       name: http
   selector:
     app: prowlarr
@@ -73,12 +76,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sabnzbd
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.18.221
 spec:
   type: NodePort
   ports:
     - port: 8080
       targetPort: 8080
-      nodePort: 32271
       name: webui
   selector:
     app: sabnzbd
