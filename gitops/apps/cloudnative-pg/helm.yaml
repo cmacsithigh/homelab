@@ -1,3 +1,4 @@
+# https://github.com/cloudnative-pg/charts/blob/main/charts/cloudnative-pg/values.yaml
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -28,3 +29,10 @@ spec:
       retries: 3
   interval: 60m
   targetNamespace: cloudnative-pg-system
+  values:
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        memory: 256Mi
