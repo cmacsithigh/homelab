@@ -34,7 +34,7 @@ metadata:
   annotations:
     metallb.io/loadBalancerIPs: 192.168.18.224
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 8989
       targetPort: 8989
@@ -49,7 +49,7 @@ metadata:
   annotations:
     metallb.io/loadBalancerIPs: 192.168.18.223
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 7878
       targetPort: 7878
@@ -64,7 +64,7 @@ metadata:
   annotations:
     metallb.io/loadBalancerIPs: 192.168.18.222
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 9696
       targetPort: 9696
@@ -79,7 +79,7 @@ metadata:
   annotations:
     metallb.io/loadBalancerIPs: 192.168.18.221
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 8080
       targetPort: 8080
