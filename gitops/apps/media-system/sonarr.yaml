@@ -13,15 +13,6 @@ spec:
     metadata:
       labels:
         app: sonarr
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: In
-                  values:
-                    - pi4-server
     spec:
       containers:
         - name: sonarr

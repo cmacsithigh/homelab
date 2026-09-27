@@ -15,15 +15,8 @@ spec:
       labels:
         app: seerr
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: In
-                    values:
-                      - pi4-server
+      nodeSelector:
+        kubernetes.io/hostname: pi4-server
       containers:
         - name: seerr
           image: seerr/seerr:sha-103976d

@@ -13,19 +13,12 @@ spec:
     metadata:
       labels:
         app: jellyfin
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: In
-                  values:
-                    - pi4-server
     spec:
       hostNetwork: true
       hostIPC: true
       dnsPolicy: ClusterFirstWithHostNet
+      nodeSelector:
+        kubernetes.io/hostname: pi4-server
       initContainers:
         - name: init-data-dirs
           image: busybox:latest
