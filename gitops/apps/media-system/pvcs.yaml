@@ -77,11 +77,11 @@ metadata:
   name: sabnzbd-config-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
-  storageClassName: nfs-storage
+      storage: 5Gi
+  storageClassName: local-path
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
