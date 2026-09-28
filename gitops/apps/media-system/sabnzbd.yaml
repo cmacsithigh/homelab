@@ -12,6 +12,8 @@ spec:
       labels:
         app: sabnzbd
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: pi4-server
       containers:
         - name: sabnzbd
           image: lscr.io/linuxserver/sabnzbd:latest
