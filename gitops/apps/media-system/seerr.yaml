@@ -19,7 +19,7 @@ spec:
         kubernetes.io/hostname: pi4-server
       containers:
         - name: seerr
-          image: seerr/seerr:sha-103976d
+          image: seerr/seerr:v3.5.0
           ports:
             - containerPort: 5055
               name: http
