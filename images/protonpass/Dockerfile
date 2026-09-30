@@ -18,6 +18,7 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     bash \
+    jq \
     && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -s /bin/bash protonuser
@@ -25,7 +26,6 @@ WORKDIR /home/protonuser
 
 COPY --from=installer /root/.local/bin/pass-cli /usr/local/bin/pass-cli
 COPY --from=installer /kubectl /usr/local/bin/kubectl
-COPY --from=installer /usr/bin/jq /usr/local/bin/jq
 
 RUN chmod 755 /usr/local/bin/pass-cli /usr/local/bin/kubectl
 
