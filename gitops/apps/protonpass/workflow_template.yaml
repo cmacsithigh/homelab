@@ -6,16 +6,16 @@ spec:
   serviceAccountName: protonpass
   automountServiceAccountToken: true
   entrypoint: sync-secret
-  arguments:
-    parameters:
-      - name: target-namespace
-      - name: k8s-secret-name
-      - name: k8s-secret-key
-      - name: proton-item-name
   templates:
     - name: sync-secret
       retryStrategy:
         limit: "1"
+      inputs:
+        parameters:
+          - name: target-namespace
+          - name: k8s-secret-name
+          - name: k8s-secret-key
+          - name: proton-item-name
       container:
         image: ghcr.io/cmacsithigh/protonpass:1.10.0
         imagePullPolicy: Always
