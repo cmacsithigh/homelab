@@ -6,3 +6,5 @@ resources:
   - namespace.yaml
   - roles.yaml
   - serviceaccount.yaml
+  - workflow_template.yaml
+  - workflows.yaml

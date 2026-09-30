@@ -1,0 +1,67 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: protonpass-secret-syncer
+spec:
+  serviceAccountName: protonpass
+  automountServiceAccountToken: true
+  entrypoint: sync-secret
+  arguments:
+    parameters:
+      - name: target-namespace
+      - name: k8s-secret-name
+      - name: k8s-secret-key
+      - name: proton-item-name
+  templates:
+    - name: sync-secret
+      retryStrategy:
+        limit: "1"
+      container:
+        image: ghcr.io/cmacsithigh/protonpass:1.10.0
+        imagePullPolicy: Always
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            set -e
+            
+            echo "Logging into Proton Pass..."
+            pass-cli login
+
+            PROTON_VAULT_NAME="homelab"
+            PROTON_ITEM_NAME="{{inputs.parameters.proton-item-name}}"
+            TARGET_NAMESPACE="{{inputs.parameters.target-namespace}}"
+            K8S_SECRET_NAME="{{inputs.parameters.k8s-secret-name}}"
+            K8S_SECRET_KEY="{{inputs.parameters.k8s-secret-key}}"
+
+            echo "Searching for item references in vault: $PROTON_VAULT_NAME..."
+            VAULT_JSON=$(pass-cli item list --vault-name "$PROTON_VAULT_NAME" --output json)
+            
+            # Updated fields to match the exact snake_case response structure
+            ITEM_ID=$(echo "$VAULT_JSON" | jq -r --arg title "$PROTON_ITEM_NAME" '.items[] | select(.title == $title) | .id')
+            SHARE_ID=$(echo "$VAULT_JSON" | jq -r --arg title "$PROTON_ITEM_NAME" '.items[] | select(.title == $title) | .share_id')
+            
+            if [ -z "$ITEM_ID" ] || [ "$ITEM_ID" = "null" ] || [ -z "$SHARE_ID" ] || [ "$SHARE_ID" = "null" ]; then
+              echo "Error: Could not resolve item metadata matching name '$PROTON_ITEM_NAME' inside vault '$PROTON_VAULT_NAME'."
+              exit 1
+            fi
+            
+            ITEM_REF="pass://${SHARE_ID}/${ITEM_ID}"
+            
+            echo "Fetching secret details for item reference..."
+            SECRET_VALUE=$(pass-cli item view "$ITEM_REF" --output json | jq -r '.. | objects | select(.password != null) | .password' | head -n 1)
+            
+            if [ -z "$SECRET_VALUE" ] || [ "$SECRET_VALUE" = "null" ]; then
+              echo "Error: Failed to extract password from Proton Pass item data."
+              exit 1
+            fi
+            
+            echo "Deploying secret to target namespace..."
+            kubectl create secret generic "$K8S_SECRET_NAME" \
+              --namespace "$TARGET_NAMESPACE" \
+              --from-literal="$K8S_SECRET_KEY"="$SECRET_VALUE" \
+              --dry-run=client -o yaml | kubectl apply -f -
+            
+            echo "Sync complete!"
+        envFrom:
+          - secretRef:
+              name: protonpass-credentials
