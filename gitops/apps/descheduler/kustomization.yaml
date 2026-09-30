@@ -36,6 +36,16 @@ patches:
                   nodeFit: true
               - name: "RemoveDuplicates"
               - name: "RemovePodsViolatingInterPodAntiAffinity"
+              - name: "RemovePodsHavingTooManyRestarts"
+                args:
+                  podRestartThreshold: 10
+                  includingInitContainers: true
+                  states:
+                    - "Running"
+              - name: "RemoveFailedPods"
+                args:
+                  minPodLifetimeSeconds: 600
+                  includingInitContainers: true
               - name: "LowNodeUtilization"
                 args:
                   thresholds:

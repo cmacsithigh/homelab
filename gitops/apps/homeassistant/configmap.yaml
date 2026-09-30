@@ -204,7 +204,7 @@ data:
       description: ''
       triggers:
       - trigger: time
-        at: '17:30:00'
+        at: '17:10:00'
         weekday:
         - mon
         - tue
@@ -334,6 +334,26 @@ data:
               - media_content_type: music_assistant
                 media_content_id: tracks
               browse_entity_id: media_player.rc2
+      mode: single
+    - id: '1790784917997'
+      alias: Speakers - Stop - Hallway
+      description: ''
+      triggers:
+      - trigger: time
+        at: '17:15:00'
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+      conditions: []
+      actions:
+      - action: media_player.media_stop
+        metadata: {}
+        target:
+          area_id: hallway
+        data: {}
       mode: single
   configuration.yaml: |-
     default_config:
