@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: protonpass--renovate
+spec:
+  schedules:
+    - "*/11 * * * *"
+  timezone: "Europe/Dublin"
+  concurrencyPolicy: "Forbid"
+  workflowSpec:
+    workflowTemplateRef:
+      name: protonpass-secret-syncer
+    arguments:
+      parameters:
+        - name: target-namespace
+          value: renovate
+        - name: k8s-secret-name
+          value: renovate-token
+        - name: k8s-secret-key
+          value: token
+        - name: proton-item-name
+          value: GITHUB_TOKEN
+---
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: protonpass--keycloak
+spec:
+  schedules:
+    - "*/10 * * * *"
+  timezone: "Europe/Dublin"
+  concurrencyPolicy: "Forbid"
+  workflowSpec:
+    workflowTemplateRef:
+      name: protonpass-secret-syncer
+    arguments:
+      parameters:
+        - name: target-namespace
+          value: keycloak-system
+        - name: k8s-secret-name
+          value: keycloak-credentials
+        - name: k8s-secret-key
+          value: password
+        - name: proton-item-name
+          value: KEYCLOAK_TOKEN
