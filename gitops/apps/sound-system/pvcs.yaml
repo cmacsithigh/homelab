@@ -5,8 +5,7 @@ metadata:
   name: music-assistant-pvc
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: nfs-storage
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi
