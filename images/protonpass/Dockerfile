@@ -5,7 +5,7 @@ FROM alpine:3.18 AS installer
 RUN apk add --no-cache curl jq bash
 
 # 1. Download and run the Proton Pass CLI installer
-RUN curl -fsSL https://proton.me | bash
+RUN curl -fsSL https://proton.me/download/pass-cli/install.sh | bash
 
 # 2. Download the latest stable kubectl binary
 RUN KUBECTL_VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt) && \
