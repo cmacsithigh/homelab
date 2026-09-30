@@ -25,6 +25,7 @@ WORKDIR /home/protonuser
 
 COPY --from=installer /root/.local/bin/pass-cli /usr/local/bin/pass-cli
 COPY --from=installer /kubectl /usr/local/bin/kubectl
+COPY --from=installer /usr/bin/jq /usr/local/bin/jq
 
 RUN chmod 755 /usr/local/bin/pass-cli /usr/local/bin/kubectl
 
