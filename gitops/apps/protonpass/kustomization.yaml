@@ -5,6 +5,6 @@ namespace: protonpass
 resources:
   - namespace.yaml
   - roles.yaml
+  - secrets.yaml
   - serviceaccount.yaml
   - workflow_template.yaml
-  - workflows.yaml

@@ -9,7 +9,6 @@ spec:
   dependsOn:
     - name: base
     - name: external-secrets
-    - name: openbao
     - name: cloudnative-pg
   path: ./gitops/apps/keycloak
   prune: true
