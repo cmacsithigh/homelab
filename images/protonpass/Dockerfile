@@ -1,6 +1,10 @@
-FROM alpine:3.18 AS installer
+FROM debian:bookworm-slim AS installer
 
-RUN apk add --no-cache curl jq bash
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    jq \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL https://proton.me/download/pass-cli/install.sh | bash
 
@@ -9,11 +13,14 @@ RUN KUBECTL_VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt) && \
     curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${ARCH_MAPPING}/kubectl" && \
     chmod +x ./kubectl
 
-FROM alpine:3.18
+FROM debian:bookworm-slim
 
-RUN apk add --no-cache libc6-compat ca-certificates bash
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    bash \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN adduser -D protonuser
+RUN useradd -m -s /bin/bash protonuser
 WORKDIR /home/protonuser
 
 COPY --from=installer /root/.local/bin/pass-cli /usr/local/bin/pass-cli
