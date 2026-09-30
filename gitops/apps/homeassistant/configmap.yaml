@@ -7,7 +7,6 @@ metadata:
     app: homeassistant
 data:
   automations.yaml: |-
-    ---
     - id: '1737837864723'
       alias: Speakers - Set volume - Morning
       description: ''
@@ -18,7 +17,7 @@ data:
       actions:
       - action: media_player.volume_set
         data:
-          volume_level: 0.2
+          volume_level: 0.3
         metadata: {}
         target:
           area_id: hallway
@@ -27,7 +26,7 @@ data:
         target:
           area_id: bedroom
         data:
-          volume_level: 0.3
+          volume_level: 0.35
       mode: single
     - id: '1745318078223'
       alias: Lights - Turn off
@@ -70,7 +69,7 @@ data:
           area_id: cian_office
       - action: media_player.volume_set
         data:
-          volume_level: 0.2
+          volume_level: 0.3
         metadata: {}
         target:
           area_id: hallway
@@ -157,7 +156,7 @@ data:
       description: ''
       triggers:
       - trigger: time_pattern
-        minutes: /30
+        minutes: /15
       conditions:
       - condition: time
         after: 09:00:00
@@ -311,10 +310,6 @@ data:
       - trigger: time
         at: '17:00:00'
         weekday:
-        - mon
-        - tue
-        - wed
-        - thu
         - fri
       conditions: []
       actions:
