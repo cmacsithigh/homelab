@@ -59,8 +59,10 @@ patches:
               plugins:
                 balance:
                   enabled:
-                    - "RemoveDuplicates"
-                    - "LowNodeUtilization"
+                    - RemoveDuplicates
+                    - LowNodeUtilization
                 deschedule:
                   enabled:
-                    - "RemovePodsViolatingInterPodAntiAffinity"
+                    - RemovePodsViolatingInterPodAntiAffinity
+                    - RemovePodsHavingTooManyRestarts
+                    - RemovedFailedPods
