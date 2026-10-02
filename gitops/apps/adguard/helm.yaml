@@ -55,6 +55,8 @@ spec:
         http:
           address: 0.0.0.0:80
           session_ttl: 720h
+          doh:
+            insecure_enabled: true
         users:
           - name: admin
             password: "$2y$10$SuSeOQ9oUg/75q3u9/CRwO05zjyso96Oz7hLIDJXqkSpiyRkJPAEG"
