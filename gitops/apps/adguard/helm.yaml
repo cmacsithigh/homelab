@@ -44,6 +44,8 @@ spec:
                 template:
                   spec:
                     hostNetwork: true
+                    nodeSelector:
+                      kubernetes.io/hostname: desktop-9th3sl8
                     dnsPolicy: ClusterFirstWithHostNet
   values:
     config:
