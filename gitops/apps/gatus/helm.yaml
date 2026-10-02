@@ -1,13 +1,15 @@
-# https://github.com/TwiN/helm-charts/blob/master/charts/gatus/values.yaml
+# https://github.com/home-operations/gatus-sidecar/blob/main/charts/gatus-sidecar/values.yaml
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: OCIRepository
 metadata:
-  name: twin
+  name: gatus-sidecar
   namespace: flux-system
 spec:
   interval: 120m
-  url: https://twin.github.io/helm-charts
+  url: oci://ghcr.io/home-operations/charts/gatus-sidecar
+  ref:
+    tag: 0.5.3
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -15,20 +17,55 @@ metadata:
   name: gatus
   namespace: flux-system
 spec:
-  chart:
-    spec:
-      chart: gatus
-      sourceRef:
-        kind: HelmRepository
-        name: twin
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: gatus-sidecar
+    namespace: flux-system
   install:
     createNamespace: true
     remediation:
       retries: 3
   interval: 60m
   targetNamespace: gatus-system
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Service
+              name: gatus-gatus-sidecar
+              namespace: gatus-system
+            patch: |-
+              - op: add
+                path: /metadata/annotations/metallb.io~1loadBalancerIPs
+                value: 192.168.18.209
   values:
+    config:
+      existingConfigMap: gatus-config
+      items:
+        - key: config.yaml
+          path: config.yaml
+    gatus:
+      extraEnv:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: gatus-postgresql-app
+              key: password
+    sidecar:
+      defaultInterval: 60s
+      kinds:
+        ingress:
+          enable: true
+          auto: true
+          prefix: ingress-
+        httproute:
+          enable: true
+          auto: true
+          prefix: httproute-
+        service:
+          enable: true
+          auto: true
+          prefix: service-
     resources:
       requests:
         cpu: 20m
@@ -37,104 +74,4 @@ spec:
         memory: 256Mi
     service:
       type: LoadBalancer
-      annotations:
-        metallb.io/loadBalancerIPs: 192.168.18.209
-    persistence:
-      enabled: true
-      size: 500Mi
-    env:
-      POSTGRES_PASSWORD:
-        valueFrom:
-          secretKeyRef:
-            name: gatus-postgresql-app
-            key: password
-    config:
-      storage:
-        type: postgres
-        path: "postgres://gatus:${POSTGRES_PASSWORD}@gatus-postgresql-rw.gatus-system.svc.cluster.local:5432/gatus?sslmode=disable"
-      endpoints:
-        - name: cloudnative-pg
-          group: infrastructure
-          url: http://cloudnative-pg-metrics.cloudnative-pg-system.svc.cluster.local:8080/metrics
-          interval: 30s
-          priority: 4
-          conditions:
-            - "[STATUS] == 200"
-          alerts:
-            - type: ntfy
-        - name: cloudflared
-          group: infrastructure
-          url: http://cloudflared.cloudflared.svc.cluster.local:60123/metrics
-          interval: 30s
-          priority: 5
-          conditions:
-            - "[STATUS] == 200"
-          alerts:
-            - type: ntfy
-        - name: openbao
-          group: infrastructure
-          url: http://openbao-system-openbao.openbao-system.svc.cluster.local:8200/v1/sys/health
-          interval: 30s
-          click: https://openbao.ciansheehy.co
-          priority: 4
-          conditions:
-            - "[STATUS] == any(200, 429, 472, 473, 501, 503)"
-          alerts:
-            - type: ntfy
-        - name: external-secrets
-          group: infrastructure
-          url: http://external-secrets-system-external-secrets-metrics.external-secrets-system.svc.cluster.local:8080/metrics
-          interval: 30s
-          priority: 3
-          conditions:
-            - "[STATUS] == 200"
-          alerts:
-            - type: ntfy
-        - name: keycloak
-          group: infrastructure
-          url: "http://keycloak-system-keycloak.keycloak-system.svc.cluster.local"
-          interval: 30s
-          click: https://keycloak.ciansheehy.co
-          priority: 4
-          conditions:
-            - "[CONNECTED] == true"
-          alerts:
-            - type: ntfy
-        - name: headlamp
-          group: applications
-          url: http://headlamp.headlamp-system.svc.cluster.local/
-          interval: 30s
-          click: https://headlamp.ciansheehy.co
-          priority: 2
-          conditions:
-            - "[STATUS] == 200"
-          alerts:
-            - type: ntfy
-        - name: home-assistant
-          group: applications
-          url: http://homeassistant.homeassistant.svc.cluster.local/
-          interval: 30s
-          click: https://home.ciansheehy.co
-          priority: 4
-          conditions:
-            - "[STATUS] == 200"
-          alerts:
-            - type: ntfy
-        - name: music-assistant
-          group: applications
-          url: http://music-assistant.sound-system.svc.cluster.local:8095/
-          interval: 30s
-          click: https://music.ciansheehy.co
-          priority: 4
-          conditions:
-            - "[STATUS] == 200"
-          alerts:
-            - type: ntfy
-      alerting:
-        ntfy:
-          url: http://192.168.18.211
-          topic: homelab
-          default-alert:
-            failure-threshold: 5
-            success-threshold: 3
-            send-on-resolved: true
+      port: 80
