@@ -1,0 +1,85 @@
+# https://github.com/helmforgedev/charts/blob/main/charts/adguard-home/values.yaml
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: helmforge
+  namespace: flux-system
+spec:
+  interval: 120m
+  url: oci://ghcr.io/helmforgedev/helm/adguard-home
+  ref:
+    tag: 1.5.2
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: adguard
+  namespace: flux-system
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: helmforge
+    namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  interval: 60m
+  targetNamespace: adguard
+  values:
+    config:
+      adGuardHome:
+        http:
+          address: 0.0.0.0:80
+          session_ttl: 720h
+        users:
+          - name: admin
+            password: "$2y$10$SuSeOQ9oUg/75q3u9/CRwO05zjyso96Oz7hLIDJXqkSpiyRkJPAEG"
+        dns:
+          bind_hosts:
+            - 0.0.0.0
+          port: 53
+          upstream_dns:
+            - https://dns.quad9.net/dns-query
+            - https://dns.cloudflare.com/dns-query
+          bootstrap_dns:
+            - 9.9.9.9
+            - 1.1.1.1
+            - 8.8.8.8
+          protection_enabled: true
+          filtering_enabled: true
+          cache_size: 4194304
+        filters:
+          - enabled: true
+            url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt
+            name: AdGuard DNS filter
+            id: 1
+          - enabled: true
+            url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_2.txt
+            name: AdAway Default Blocklist
+            id: 2
+        querylog:
+          enabled: true
+          interval: 720h
+        statistics:
+          enabled: true
+          interval: 168h
+        schema_version: 29
+    service:
+      dns:
+        type: LoadBalancer
+        loadBalancerIP: 192.168.18.241
+    persistence:
+      conf:
+        enabled: true
+        size: 256Mi
+        accessModes:
+          - ReadWriteMany
+        storageClass: nfs-storage
+      work:
+        enabled: true
+        size: 5Gi
+        accessModes:
+          - ReadWriteMany
+        storageClass: nfs-storage
