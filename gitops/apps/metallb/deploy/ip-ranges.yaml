@@ -36,8 +36,8 @@ spec:
     - wlan0
   nodeSelectors:
     - matchExpressions:
-        - key: k3s.io/hostname 
+        - key: kubernetes.io/hostname
           operator: In
           values:
             - pi4-server
-            - desktop
+            - desktop-9th3sl8
