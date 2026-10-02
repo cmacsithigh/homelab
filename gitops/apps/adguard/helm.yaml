@@ -27,6 +27,24 @@ spec:
       retries: 3
   interval: 60m
   targetNamespace: adguard
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              name: adguard-adguard-adguard-home
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: adguard-adguard-adguard-home
+              spec:
+                template:
+                  spec:
+                    hostNetwork: true
+                    dnsPolicy: ClusterFirstWithHostNet
   values:
     config:
       adGuardHome:
