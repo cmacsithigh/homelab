@@ -1,6 +1,8 @@
 ---
 reporting:
   interval: 30s
+commonAnnotations:
+  gatus.home-operations.com/enabled: "false"
 web:
   config:
     authentication:
