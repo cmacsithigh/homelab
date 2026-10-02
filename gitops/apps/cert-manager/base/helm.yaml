@@ -30,5 +30,5 @@ spec:
   interval: 60m
   targetNamespace: cert-manager
   values:
-    crd:
+    crds:
       enabled: true
