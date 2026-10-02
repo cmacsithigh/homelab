@@ -37,5 +37,4 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-            - pi4-server
             - desktop-9th3sl8
