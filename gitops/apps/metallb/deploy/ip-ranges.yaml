@@ -12,12 +12,32 @@ spec:
     - 192.168.18.201-192.168.18.240
 ---
 apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: adguard-pool
+  namespace: metallb-system
+spec:
+  addresses:
+    ## Replace this with your IP address reserved range.
+    ## This should be on the same network as your nodes!
+    ## This address range should be blocked on your router DHCP config
+    - 192.168.18.241/32
+---
+apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
-  name: ip-pool-l2-adv
+  name: pools
   namespace: metallb-system
 spec:
   ipAddressPools:
+    - adguard-pool
     - ip-pool
   interfaces:
     - wlan0
+  nodeSelectors:
+    - matchExpressions:
+        - key: k3s.io/hostname 
+          operator: In
+          values:
+            - pi4-server
+            - desktop

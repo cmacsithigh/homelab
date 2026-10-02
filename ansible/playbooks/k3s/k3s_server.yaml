@@ -22,6 +22,7 @@
         block: |
           disable:
             - servicelb
+            - traefik
           kube-proxy-arg:
             - ipvs-strict-arp=true
           kube-apiserver-arg:
