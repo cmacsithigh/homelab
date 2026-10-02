@@ -32,8 +32,6 @@ spec:
   ipAddressPools:
     - adguard-pool
     - ip-pool
-  interfaces:
-    - wlan0
   nodeSelectors:
     - matchExpressions:
         - key: kubernetes.io/hostname
