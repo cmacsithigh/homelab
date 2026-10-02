@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: gatus-config
+  namespace: gatus-system
 data:
   config.yaml: |
     storage:
