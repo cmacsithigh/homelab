@@ -5,6 +5,9 @@ metadata:
   name: keycloak-postgresql
   namespace: keycloak-system
 spec:
+  inheritedMetadata:
+    annotations:
+      gatus.home-operations.com/enabled: "false"
   instances: 1
   bootstrap:
     initdb:

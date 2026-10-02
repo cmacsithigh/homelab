@@ -4,6 +4,8 @@ kind: Service
 metadata:
   name: metallb-controller
   namespace: metallb-system
+  annotations:
+    gatus.home-operations.com/enabled: "false"
 spec:
   ports:
     - name: healthz
