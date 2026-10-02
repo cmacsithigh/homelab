@@ -57,15 +57,15 @@ spec:
         ingress:
           enable: true
           auto: true
-          prefix: "[ingress] - "
+          prefix: "[ingress]"
         httproute:
           enable: true
           auto: true
-          prefix: "[httproute] -"
+          prefix: "[httproute]"
         service:
           enable: true
           auto: true
-          prefix: "[service] -"
+          prefix: "[service]"
     resources:
       requests:
         cpu: 20m
