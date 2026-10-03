@@ -24,7 +24,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: headlamp
-  releaseName: headlamp
   install:
     createNamespace: false
     remediation:
