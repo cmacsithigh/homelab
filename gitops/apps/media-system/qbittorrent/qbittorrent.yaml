@@ -23,7 +23,9 @@ spec:
                 - NET_ADMIN # Required to create VPN tunnel interface
           envFrom:
             - secretRef:
-                name: gluetun-vpn-secret
+                name: openvpn-user
+            - secretRef:
+                name: openvpn-password
           env:
             - name: FIREWALL_INPUT_PORTS
               value: "8080"
