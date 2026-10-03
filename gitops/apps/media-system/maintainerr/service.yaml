@@ -6,8 +6,9 @@ metadata:
   annotations:
     metallb.io/loadBalancerIPs: 192.168.18.225
 spec:
-  selector:
-    app: maintainerr
+  type: LoadBalancer
   ports:
     - port: 6246
       targetPort: 6246
+  selector:
+    app: maintainerr
