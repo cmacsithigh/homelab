@@ -9,7 +9,6 @@ spec:
   dependsOn:
     - name: base
     - name: external-secrets
-    - name: openbao
   path: ./gitops/apps/headlamp
   prune: true
   retryInterval: 1m0s
@@ -18,3 +17,7 @@ spec:
     name: flux-system
   timeout: 5m0s
   wait: true
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: headlamp-client
