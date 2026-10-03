@@ -47,7 +47,7 @@ spec:
       inCluster: true
       oidc:
         callbackURL: https://headlamp.ciansheehy.co/oidc-callback
-        clientId: headlamp
+        clientID: headlamp
         clientSecret: "${secret}"
         issuerURL: https://keycloak.ciansheehy.co/realms/homelab
         scopes: "profile,email"

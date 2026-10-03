@@ -44,8 +44,10 @@ spec:
       publicUrl: https://konflate.ciansheehy.co
       mcp: true
       verifyImages: true
+      appClientId: ${appClientId}
     secret:
-      existingSecret: konflate-webhook-token
+      webhookSecret: "${webhookSecret}"
+      appPrivateKey: "${appPrivateKey}"
     service:
       type: LoadBalancer
     resources:
