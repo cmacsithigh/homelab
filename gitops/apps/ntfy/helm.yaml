@@ -14,6 +14,7 @@ metadata:
   name: ntfy
   namespace: flux-system
 spec:
+  releaseName: ntfy
   chart:
     spec:
       chart: ntfy

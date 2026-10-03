@@ -15,6 +15,7 @@ metadata:
   name: reloader
   namespace: flux-system
 spec:
+  releaseName: reloader
   chart:
     spec:
       chart: reloader

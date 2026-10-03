@@ -14,6 +14,7 @@ metadata:
   name: headlamp
   namespace: flux-system
 spec:
+  releaseName: headlamp
   targetNamespace: headlamp-system
   interval: 60m
   chart:

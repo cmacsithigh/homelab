@@ -17,6 +17,7 @@ metadata:
   name: adguard
   namespace: flux-system
 spec:
+  releaseName: adguard
   chartRef:
     kind: OCIRepository
     name: helmforge

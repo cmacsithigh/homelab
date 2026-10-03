@@ -14,6 +14,7 @@ metadata:
   name: eraser
   namespace: flux-system
 spec:
+  releaseName: eraser
   chart:
     spec:
       chart: eraser

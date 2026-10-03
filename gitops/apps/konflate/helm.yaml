@@ -16,6 +16,7 @@ metadata:
   name: konflate
   namespace: flux-system
 spec:
+  releaseName: konflate
   chartRef:
     kind: OCIRepository
     name: konflate
