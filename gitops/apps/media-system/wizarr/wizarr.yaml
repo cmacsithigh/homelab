@@ -62,8 +62,6 @@ spec:
         - ip: 127.0.0.1
           hostnames:
             - s3
-      nodeSelector:
-        kubernetes.io/hostname: desktop-9th3sl8
       initContainers:
         - name: initialize-data
           image: busybox:1.36
