@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: media-system
 resources:
   - jellyfin
+  - maintainerr
   - prowlarr
   - qbittorrent
   - radarr
