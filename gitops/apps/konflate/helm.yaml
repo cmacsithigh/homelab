@@ -31,7 +31,7 @@ spec:
         patches:
           - target:
               kind: Service
-              name: konflate-konflate
+              name: konflate
               namespace: konflate
             patch: |-
               - op: add

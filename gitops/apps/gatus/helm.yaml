@@ -33,7 +33,7 @@ spec:
         patches:
           - target:
               kind: Service
-              name: gatus-system-gatus-gatus-sidecar
+              name: gatus-gatus-sidecar
               namespace: gatus-system
             patch: |-
               - op: add
