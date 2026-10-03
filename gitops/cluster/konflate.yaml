@@ -17,11 +17,3 @@ spec:
     name: flux-system
   timeout: 5m0s
   wait: true
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: konflate-app-id
-      - kind: Secret
-        name: konflate-app-private-key
-      - kind: Secret
-        name: konflate-webhook-secret
