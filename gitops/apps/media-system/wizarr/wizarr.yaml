@@ -1,0 +1,146 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wizarr-nginx
+data:
+  wizarr.conf.template: |
+    server {
+        listen 5690;
+        server_name _;
+
+        location / {
+            proxy_pass http://127.0.0.1:5173;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_pass_request_headers on;
+        }
+
+        location /api {
+            proxy_pass http://127.0.0.1:5001;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_pass_request_headers on;
+        }
+
+        location /admin/bull {
+            proxy_pass http://127.0.0.1:5001;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_pass_request_headers on;
+        }
+
+        location /socket.io {
+            proxy_pass http://127.0.0.1:5001/socket.io;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_pass_request_headers on;
+        }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wizarr
+  labels:
+    app: wizarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wizarr
+  template:
+    metadata:
+      labels:
+        app: wizarr
+    spec:
+      hostAliases:
+        - ip: 127.0.0.1
+          hostnames:
+            - s3
+      containers:
+        - name: nginx
+          image: nginx:1.24.0-alpine
+          ports:
+            - containerPort: 5690
+              name: http
+          env:
+            - name: PORT
+              value: "5690"
+            - name: FRONT_URL
+              value: http://127.0.0.1:5173
+            - name: SERVER_URL
+              value: http://127.0.0.1:5001
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/templates/wizarr.conf.template
+              subPath: wizarr.conf.template
+              readOnly: true
+        - name: frontend
+          image: ghcr.io/wizarrrrr/wizarr-frontend:latest
+          ports:
+            - containerPort: 5173
+              name: frontend
+        - name: backend
+          image: ghcr.io/wizarrrrr/wizarr-backend:latest
+          ports:
+            - containerPort: 5001
+              name: backend
+          env:
+            - name: DB_TYPE
+              value: sqlite
+            - name: DB_DIR
+              value: /usr/wizarr/data/database
+            - name: STORAGE_DIR
+              value: /usr/wizarr/data/storage
+            - name: REDIS_HOST
+              value: 127.0.0.1
+            - name: REDIS_PORT
+              value: "6379"
+            - name: MEMCACHED_HOST
+              value: 127.0.0.1
+            - name: MEMCACHED_PORT
+              value: "11211"
+            - name: TZ
+              value: Etc/UTC
+          volumeMounts:
+            - name: data
+              mountPath: /usr/wizarr/data
+        - name: redis
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379
+              name: redis
+        - name: memcached
+          image: memcached:alpine
+          ports:
+            - containerPort: 11211
+              name: memcached
+        - name: s3
+          image: zenko/cloudserver:latest
+          ports:
+            - containerPort: 8000
+              name: s3
+          env:
+            - name: S3METADATAPATH
+              value: /var/lib/s3/meta
+            - name: S3DATAPATH
+              value: /var/lib/s3/data
+            - name: REMOTE_MANAGEMENT_DISABLE
+              value: "true"
+            - name: HOST_NAMES
+              value: s3
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/s3
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: wizarr-nginx
+        - name: data
+          persistentVolumeClaim:
+            claimName: wizarr-data
