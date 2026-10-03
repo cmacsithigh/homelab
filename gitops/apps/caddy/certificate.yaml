@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tls-cert
+  namespace: caddy-system
+spec:
+  secretName: tls-secret
+  dnsNames:
+    - jellyfin.ciansheehy.co
+  issuerRef:
+    name: letsencrypt-cloudflare
+    kind: ClusterIssuer

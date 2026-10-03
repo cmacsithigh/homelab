@@ -31,6 +31,8 @@ spec:
               mountPath: /data
             - name: config-data
               mountPath: /config
+            - name: tls-cert
+              mountPath: /certs
           resources:
             requests:
               cpu: 25m
@@ -46,3 +48,6 @@ spec:
             claimName: caddy-data
         - name: config-data
           emptyDir: {}
+        - name: tls-cert
+          secret:
+            secretName: tls-secret

@@ -5,5 +5,6 @@ metadata:
 data:
   Caddyfile: |
     jellyfin.ciansheehy.co {
+        tls /certs/tls.crt /certs/tls.key
         reverse_proxy jellyfin.media-system.svc.cluster.local:8096
     }
