@@ -64,6 +64,16 @@ spec:
             - s3
       nodeSelector:
         kubernetes.io/hostname: desktop-9th3sl8
+      initContainers:
+        - name: initialize-data
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - mkdir -p /data/database /data/storage /data/s3/meta /data/s3/data
+          volumeMounts:
+            - name: data
+              mountPath: /data
       containers:
         - name: nginx
           image: nginx:1.24.0-alpine
