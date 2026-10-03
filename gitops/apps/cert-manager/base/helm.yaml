@@ -15,6 +15,7 @@ metadata:
   name: cert-manager
   namespace: flux-system
 spec:
+  releaseName: cert-manager
   chart:
     spec:
       chart: cert-manager
