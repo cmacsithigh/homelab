@@ -27,6 +27,8 @@ spec:
               value: redis://localhost:6379/0
             - name: DISPATCHARR_LOG_LEVEL
               value: info
+            - name: DISPATCHARR_PORT
+              value: "9191"
           ports:
             - containerPort: 9191
               name: http
