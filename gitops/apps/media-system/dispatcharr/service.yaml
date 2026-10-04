@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dispatcharr
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.18.228
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 9191
+      targetPort: 9191
+      name: http
+  selector:
+    app: dispatcharr
