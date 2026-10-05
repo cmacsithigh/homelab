@@ -5,7 +5,6 @@ namespace: media-system
 resources:
   - jellyfin
   - maintainerr
-  - dispatcharr
   - prowlarr
   - qbittorrent
   - radarr
