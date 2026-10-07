@@ -12,6 +12,7 @@ resources:
   - sabnzbd
   - seerr
   - sonarr
+  - weaver
   - wizarr
   - shared-pvc.yaml
   - namespace.yaml

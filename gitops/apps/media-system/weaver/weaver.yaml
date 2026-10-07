@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weaver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weaver
+  template:
+    metadata:
+      labels:
+        app: weaver
+    spec:
+      containers:
+        - name: weaver
+          image: ghcr.io/scryer-media/weaver:0.14.5
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Etc/UTC"
+            - name: WEAVER_BOOTSTRAP_LOGIN_USERNAME
+              value: "admin"
+            - name: WEAVER_BOOTSTRAP_LOGIN_PASSWORD
+              value: "changeme"
+            - name: WEAVER_INTERMEDIATE_DIR
+              value: "/data/intermediate"
+            - name: WEAVER_COMPLETE_DIR
+              value: "/downloads/complete"
+          ports:
+            - containerPort: 9090
+              name: http
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media-storage
+              mountPath: /downloads
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: weaver-config-pvc
+        - name: media-storage
+          persistentVolumeClaim:
+            claimName: media-storage-pvc
