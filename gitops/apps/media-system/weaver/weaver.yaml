@@ -28,7 +28,7 @@ spec:
             - name: WEAVER_BOOTSTRAP_LOGIN_PASSWORD
               value: "changeme"
             - name: WEAVER_INTERMEDIATE_DIR
-              value: "/data/intermediate"
+              value: "/config/intermediate"
             - name: WEAVER_COMPLETE_DIR
               value: "/downloads/complete"
           ports:
