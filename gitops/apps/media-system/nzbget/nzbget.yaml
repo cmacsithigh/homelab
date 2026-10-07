@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: nzbget
-          image: lscr.io/linuxserver/nzbget:v26.3
+          image: ghcr.io/nzbgetcom/nzbget:v26.3
           env:
             - name: PUID
               value: "1000"
