@@ -7,7 +7,6 @@ resources:
   - maintainerr
   - nzbget
   - prowlarr
-  - qbittorrent
   - radarr
   - seerr
   - sonarr
