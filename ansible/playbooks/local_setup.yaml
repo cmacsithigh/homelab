@@ -18,7 +18,6 @@
 
 - name: Setup kubectl on localhost with new context
   hosts: localhost
-  become: yes
   tasks:
     - name: Create $HOME/.kube directory if not present
       ansible.builtin.file:
@@ -29,7 +28,7 @@
       ansible.builtin.replace:
         path: .kube/k3s-config
         regexp: '127\.0\.0\.1'
-        replace: "{{ groups['server'] | first }}" 
+        replace: "{{ hostvars[(groups['k3s_server'] | first)]['ansible_host'] | default(groups['k3s_server'] | first) }}"
         backup: yes
 
     - name: Copy k3s kube config to $HOME/.kube directory
@@ -47,27 +46,6 @@
       ansible.builtin.file:
         path: .kube
         state: absent
-
-    - name: Configure Kubernetes aliases
-      lineinfile:
-        path: "~/.config/fish/config.fish"
-        line: "{{ item.line }}"
-        regexp: "{{ item.regexp }}"
-        create: yes
-        state: present
-      loop:
-        - line: "alias kubectl='kubecolor'"
-          regexp: "^alias k="
-        - line: "alias k='kubectl'"
-          regexp: "^alias k="
-        - line: "alias kg='kubectl get'"
-          regexp: "^alias kg="
-        - line: "alias kd='kubectl describe'"
-          regexp: "^alias kd="
-        - line: "alias kdel='kubectl delete'"
-          regexp: "^alias kdel="
-        - line: "set -x ANSIBLE_CONFIG /mnt/c/dev/personal/homelab/ansible/ansible.cfg"
-          regexp: "^set -x ANSIBLE_CONFIG"
 
     - name: Check if kubectl is already installed
       ansible.builtin.stat:
@@ -116,6 +94,7 @@
       args:
         creates: /usr/local/bin/kubecolor
         executable: /bin/bash
+      become: yes
       when: not kubecolor.stat.exists
 
     - name: Verify K3s is running

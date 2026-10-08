@@ -12,6 +12,11 @@ There is a great guide [here](https://www.raspberrypi.com/documentation/computer
 
 After you have flashed your SD card you will boot up your system and ensure you have a connection to the local internet.
 
+## Setup ansible config
+
+You will need to add the `ANSIBLE_CONFIG` environment variable to you default shell and point it to the `./ansible/ansible.cfg`. This will allow the playbook to pick up hosts and variables other default options.
+
+
 ## Create private key
 
 `
