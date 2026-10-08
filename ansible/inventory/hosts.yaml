@@ -29,6 +29,8 @@ all:
         server:
 
     speaker_server:
+      vars:
+        snapcast_host: 192.168.18.205
       hosts:
         server:
 

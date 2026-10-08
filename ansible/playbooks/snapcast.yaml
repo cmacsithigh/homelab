@@ -51,7 +51,7 @@
       ansible.builtin.lineinfile:
         path: /etc/default/snapclient
         regexp: '^SNAPCLIENT_OPTS='
-        line: 'SNAPCLIENT_OPTS="--host {{ hostvars[groups["speaker_server"][0]]["ansible_host"] }}"'
+        line: 'SNAPCLIENT_OPTS="--host {{ hostvars[groups["speaker_server"][0]]["snapcast_host"] }}"'
         owner: root
         group: root
         mode: '0644'

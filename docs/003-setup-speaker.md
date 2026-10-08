@@ -12,7 +12,7 @@ ansible-playbook ./ansible/playbooks/initalise_speakers.yaml
 
 ## Setup snapcast
 
-After you've setup the raspberry pi with the bonnet and hooked it up to one of your speakers all that is left is to install snapclient. As our snapserver is managed by music assistant all we need to do is add the snapclients which this playbook does.
+After you've setup the raspberry pi with the bonnet and hooked it up to one of your speakers all that is left is to install snapclient. Music Assistant manages the Snapcast server, exposed at `192.168.18.230`; this playbook configures the clients to connect to it.
 
 ```bash
 ansible-playbook ./ansible/playbooks/snapcast.yaml
