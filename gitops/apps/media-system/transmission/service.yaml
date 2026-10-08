@@ -6,6 +6,7 @@ metadata:
   annotations:
     metallb.io/loadBalancerIPs: 192.168.18.228
 spec:
+  type: LoadBalancer
   ports:
     - port: 9091
       targetPort: 9091
