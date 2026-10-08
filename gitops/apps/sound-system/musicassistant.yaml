@@ -13,9 +13,6 @@ spec:
       labels:
         app: music-assistant
     spec:
-      hostNetwork: true
-      hostIPC: true
-      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: server
           image: ghcr.io/music-assistant/server:2.10.4

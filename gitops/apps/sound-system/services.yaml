@@ -13,3 +13,25 @@ spec:
   selector:
     app: music-assistant
   type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: music-assistant
+  name: music-assistant-snapcast
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.18.230
+spec:
+  ports:
+    - name: snapcast-stream
+      port: 1704
+      targetPort: 1704
+      protocol: TCP
+    - name: snapcast-control
+      port: 1705
+      targetPort: 1705
+      protocol: TCP
+  selector:
+    app: music-assistant
+  type: LoadBalancer
