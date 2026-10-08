@@ -5,6 +5,8 @@ metadata:
   labels:
     app: music-assistant
   name: music-assistant
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.18.204
 spec:
   ports:
     - name: music-assistant
@@ -21,7 +23,7 @@ metadata:
     app: music-assistant
   name: music-assistant-snapcast
   annotations:
-    metallb.io/loadBalancerIPs: 192.168.18.230
+    metallb.io/loadBalancerIPs: 192.168.18.205
 spec:
   ports:
     - name: snapcast-stream
