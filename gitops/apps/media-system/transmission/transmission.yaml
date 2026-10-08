@@ -1,0 +1,87 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transmission
+  labels:
+    app: transmission
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transmission
+  template:
+    metadata:
+      labels:
+        app: transmission
+    spec:
+      containers:
+        - name: gluetun
+          image: qmcgaw/gluetun:v3.41.3
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          envFrom:
+            - secretRef:
+                name: openvpn-user
+            - secretRef:
+                name: openvpn-password
+          env:
+            - name: FIREWALL_INPUT_PORTS
+              value: "9091,51413"
+            - name: FIREWALL_OUTBOUND_SUBNETS
+              value: "10.42.0.0/16,10.43.0.0/16,192.168.0.0/16"
+            - name: VPN_PORT_FORWARDING
+              value: "on"
+            - name: VPN_SERVICE_PROVIDER
+              value: "protonvpn"
+            - name: VPN_TYPE
+              value: "openvpn"
+            - name: SERVER_COUNTRIES
+              value: "Netherlands,Germany,Sweden,Switzerland"
+          ports:
+            - containerPort: 9091
+              name: webui
+            - containerPort: 51413
+              name: peer-tcp
+            - containerPort: 51413
+              name: peer-udp
+              protocol: UDP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+        - name: transmission
+          image: lscr.io/linuxserver/transmission:4.0.6
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "UTC"
+            - name: PEERPORT
+              value: "51413"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media-storage
+              mountPath: /data
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: transmission-config-pvc
+        - name: media-storage
+          persistentVolumeClaim:
+            claimName: media-storage-pvc

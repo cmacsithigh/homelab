@@ -35,6 +35,24 @@ Configure the Downloads Tab:
 
 Note: Ensure /data matches the mount point path configured in your Kubernetes PVC for qBittorrent.
 
+## Test Transmission alongside qBittorrent
+
+Transmission is deployed separately and uses the same VPN and media storage as qBittorrent. Its Web UI is only exposed inside the cluster. To access it locally, run:
+
+```bash
+kubectl -n media-system port-forward service/transmission 9091:9091
+```
+
+Then open `http://localhost:9091`. Enable RPC authentication in Transmission's settings before using it, and set the download directories to `/data/torrents/completed` and `/data/torrents/incomplete` to match the existing media paths.
+
+To test it without replacing qBittorrent, add a Transmission download client in Sonarr and Radarr:
+
+- Host: `transmission.media-system.svc.cluster.local`
+- Port: `9091`
+- Set the username and password configured in Transmission.
+
+qBittorrent remains available until you are ready to switch over.
+
 # Connecting Prowlarr to Sonarr and Radarr
 
 ## Step 1: Get API Keys from Sonarr and Radarr
