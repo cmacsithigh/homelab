@@ -14,9 +14,6 @@ spec:
       labels:
         app: jellyfin
     spec:
-      hostNetwork: true
-      hostIPC: true
-      dnsPolicy: ClusterFirstWithHostNet
       nodeSelector:
         kubernetes.io/hostname: pi4-server
       initContainers:
