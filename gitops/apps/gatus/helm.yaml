@@ -45,13 +45,11 @@ spec:
       items:
         - key: config.yaml
           path: config.yaml
-    gatus:
-      extraEnv:
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: gatus-postgresql-app
-              key: password
+    persistence:
+      enabled: true
+      storageClass: nfs-storage
+      accessMode: ReadWriteMany
+      size: 2Gi
     sidecar:
       defaultInterval: 60s
       kinds:

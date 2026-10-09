@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - helm.yaml
   - configmap.yaml
-  - postgresql.yaml

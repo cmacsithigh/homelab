@@ -7,8 +7,8 @@ metadata:
 data:
   config.yaml: |
     storage:
-      type: postgres
-      path: "postgres://gatus:${POSTGRES_PASSWORD}@gatus-postgresql-rw.gatus-system.svc.cluster.local:5432/gatus?sslmode=disable"
+      type: sqlite
+      path: /config/data.db
     alerting:
       ntfy:
         url: http://192.168.18.211
