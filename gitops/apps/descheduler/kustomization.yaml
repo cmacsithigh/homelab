@@ -14,7 +14,7 @@ patches:
       metadata:
         name: descheduler-cronjob
       spec:
-        schedule: "3 * * * *"
+        schedule: "0 3 * * *"
   - target:
       kind: ConfigMap
       name: descheduler-policy-configmap
