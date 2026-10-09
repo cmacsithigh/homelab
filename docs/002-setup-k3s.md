@@ -1,9 +1,11 @@
 # Setup k3s cluster
 
-This part if all automated and all we need to do is run 3 playbooks. We have seperated them out
+Run the playbooks in order. Configure Tailscale first, then initialize the cluster, install the pinned K3s server version, apply its configuration, and install the agents.
 
 ```bash
+ansible-playbook ./ansible/playbooks/tailscale.yaml
 ansible-playbook ./ansible/playbooks/k3s/k3s_init.yaml
-ansible-playbook ./ansible/playbooks/k3s/k3s_server.yaml
-ansible-playbook ./ansible/playbooks/k3s/k3s_agent.yaml
+ansible-playbook ./ansible/playbooks/k3s/k3s_server_version.yaml
+ansible-playbook ./ansible/playbooks/k3s/k3s_server_config.yaml
+ansible-playbook ./ansible/playbooks/k3s/k3s_agents.yaml
 ```

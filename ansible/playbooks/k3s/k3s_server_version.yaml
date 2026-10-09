@@ -1,0 +1,36 @@
+---
+- name: Install or upgrade the K3s server to the pinned version
+  hosts: k3s_server
+  gather_facts: yes
+  become: yes
+  vars:
+    k3s_version: "v1.36.4+k3s1"
+
+  tasks:
+    - name: Check the installed K3s version
+      ansible.builtin.command:
+        cmd: k3s --version
+      register: installed_k3s_version
+      changed_when: false
+      failed_when: false
+
+    - name: Install or upgrade K3s when the pinned version is not installed
+      ansible.builtin.shell:
+        cmd: set -o pipefail && curl -sfL https://get.k3s.io | sh -s - server
+        executable: /bin/bash
+      environment:
+        INSTALL_K3S_VERSION: "{{ k3s_version }}"
+      when: installed_k3s_version.rc != 0 or k3s_version not in installed_k3s_version.stdout
+
+    - name: Verify the installed K3s version
+      ansible.builtin.command:
+        cmd: k3s --version
+      register: installed_k3s_version
+      changed_when: false
+      failed_when: k3s_version not in installed_k3s_version.stdout
+
+    - name: Wait for the K3s server kubeconfig
+      ansible.builtin.wait_for:
+        path: /etc/rancher/k3s/k3s.yaml
+        state: present
+        timeout: 120

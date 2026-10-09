@@ -1,0 +1,76 @@
+---
+- name: Configure the K3s server to use Tailscale networking
+  hosts: k3s_server
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Check that K3s is installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/k3s
+      register: k3s_binary
+
+    - name: Require K3s to be installed before configuring it
+      ansible.builtin.assert:
+        that:
+          - k3s_binary.stat.exists
+        fail_msg: Run k3s_server_version.yaml before configuring the K3s server.
+
+    - name: Get the server Tailscale IPv4 address
+      ansible.builtin.command:
+        cmd: tailscale ip -4
+      register: tailscale_ip
+      changed_when: false
+
+    - name: Verify the server has a Tailscale IPv4 address
+      ansible.builtin.assert:
+        that:
+          - tailscale_ip.stdout | trim | length > 0
+        fail_msg: Tailscale did not return an IPv4 address for {{ inventory_hostname }}.
+
+    - name: Set K3s configuration in config.yaml
+      ansible.builtin.blockinfile:
+        path: /etc/rancher/k3s/config.yaml
+        create: yes
+        mode: '0644'
+        block: |
+          disable:
+            - servicelb
+            - traefik
+          kube-proxy-arg:
+            - ipvs-strict-arp=true
+          kube-apiserver-arg:
+            - oidc-issuer-url=https://keycloak.ciansheehy.co/realms/homelab
+            - oidc-client-id=headlamp
+            - oidc-username-claim=preferred_username
+            - oidc-groups-claim=groups
+          node-ip: "{{ tailscale_ip.stdout | trim }}"
+          node-external-ip: "{{ tailscale_ip.stdout | trim }}"
+          advertise-address: "{{ tailscale_ip.stdout | trim }}"
+          tls-san:
+            - "{{ tailscale_ip.stdout | trim }}"
+          flannel-iface: tailscale0
+      register: k3s_config
+
+    - name: Restart K3s to apply configuration changes
+      ansible.builtin.systemd:
+        name: k3s
+        state: restarted
+      when: k3s_config is changed
+
+    - name: Wait for the K3s server kubeconfig
+      ansible.builtin.wait_for:
+        path: /etc/rancher/k3s/k3s.yaml
+        state: present
+        timeout: 120
+
+    - name: Set permissions for K3s kubeconfig
+      ansible.builtin.file:
+        path: /etc/rancher/k3s/k3s.yaml
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Verify the K3s service is active
+      ansible.builtin.command:
+        cmd: systemctl is-active --quiet k3s
+      changed_when: false
