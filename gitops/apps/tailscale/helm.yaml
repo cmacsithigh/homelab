@@ -30,6 +30,3 @@ spec:
       retries: 3
   interval: 60m
   targetNamespace: tailscale
-  values:
-    oauth:
-      clientSecret: tailscale-auth-credentials
