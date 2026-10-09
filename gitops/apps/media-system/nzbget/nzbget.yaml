@@ -42,7 +42,7 @@ spec:
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: nzbget-config-pvc
+            claimName: nzbget-config
         - name: media-storage
           persistentVolumeClaim:
             claimName: media-storage-pvc # Shared storage PVC across Servarr apps
