@@ -1,0 +1,35 @@
+# https://github.com/tailscale/tailscale/blob/main/cmd/k8s-operator/deploy/chart/values.yaml
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: tailscale
+  namespace: flux-system
+spec:
+  interval: 120m
+  url: https://pkgs.tailscale.com/helmcharts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tailscale-operator
+  namespace: flux-system
+spec:
+  releaseName: tailscale-operator
+  chart:
+    spec:
+      chart: tailscale-operator
+      version: 1.102.4
+      sourceRef:
+        kind: HelmRepository
+        name: tailscale
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  interval: 60m
+  targetNamespace: tailscale
+  values:
+    oauth:
+      clientSecret: tailscale-auth-credentials
