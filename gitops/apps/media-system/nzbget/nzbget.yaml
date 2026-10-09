@@ -13,6 +13,8 @@ spec:
       labels:
         app: nzbget
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: pi4-server
       containers:
         - name: nzbget
           image: ghcr.io/nzbgetcom/nzbget:v26.3
