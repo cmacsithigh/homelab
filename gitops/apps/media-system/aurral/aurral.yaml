@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: aurral
-          image: ghcr.io/lklynet/aurral:v2.10.0
+          image: ghcr.io/lklynet/aurral:2.10.0
           env:
             - name: PUID
               value: "1000"
