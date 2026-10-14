@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: droppedneedle
+  name: aurral
   annotations:
     metallb.io/loadBalancerIPs: 192.168.18.230
 spec:
   type: LoadBalancer
   ports:
-    - name: http
-      port: 8688
+    - port: 80
       targetPort: http
+      name: http
   selector:
-    app: droppedneedle
+    app: aurral

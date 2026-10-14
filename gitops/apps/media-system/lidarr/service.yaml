@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lidarr
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.18.231
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: http
+      name: http
+  selector:
+    app: lidarr

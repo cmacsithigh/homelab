@@ -19,6 +19,34 @@ pod starts. In NZBGet, open
 The script sends a notification for each completed download. Successful,
 warning, and failed downloads get different ntfy priorities and tags.
 
+## Lidarr and Aurral
+
+Lidarr, NZBGet, and Aurral all mount `media-storage-pvc` at `/data`. Use paths
+under `/data` in each application's settings so completed NZBGet downloads,
+Lidarr's music root, and Aurral's library resolve to the same files.
+
+In Lidarr, add NZBGet under **Settings > Download Clients**:
+
+- Host: `nzbget.media-system.svc.cluster.local`
+- Port: `6789`
+- Enter the NZBGet username and password configured in NZBGet.
+
+Configure NZBGet's completed and intermediate directories as
+`/data/usenet/complete` and `/data/usenet/incomplete`, respectively, and use
+those same paths in Lidarr's NZBGet client settings.
+
+Set the Lidarr root folder to `/data/music`. In **Settings > Media Management**,
+enable completed download handling.
+
+In Aurral, connect Lidarr under **Settings > Lidarr**:
+
+- Server URL: `http://lidarr.media-system.svc.cluster.local:8686`
+- Enter the Lidarr API key from **Settings > General**.
+- Use `/data/music` as the Lidarr root folder.
+
+Configure Prowlarr to sync indexers to Lidarr using
+`http://lidarr.media-system.svc.cluster.local:8686` and the Lidarr API key.
+
 ## set admin password qbittorrent
 
 Find temporary admin password from logs and login. Reset password to something new
