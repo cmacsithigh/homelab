@@ -18,6 +18,8 @@ spec:
         - name: mixarr
           image: ghcr.io/aquantumofdonuts/mixarr:slim
           env:
+            - name: API_URL
+              value: http://127.0.0.1:3005
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
