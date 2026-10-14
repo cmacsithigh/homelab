@@ -19,11 +19,7 @@ pod starts. In NZBGet, open
 The script sends a notification for each completed download. Successful,
 warning, and failed downloads get different ntfy priorities and tags.
 
-## Lidarr and Aurral
-
-Lidarr, NZBGet, and Aurral all mount `media-storage-pvc` at `/data`. Use paths
-under `/data` in each application's settings so completed NZBGet downloads,
-Lidarr's music root, and Aurral's library resolve to the same files.
+## Lidarr and Mixarr
 
 In Lidarr, add NZBGet under **Settings > Download Clients**:
 
@@ -38,11 +34,19 @@ those same paths in Lidarr's NZBGet client settings.
 Set the Lidarr root folder to `/data/music`. In **Settings > Media Management**,
 enable completed download handling.
 
-In Aurral, connect Lidarr under **Settings > Lidarr**:
+Mixarr connects to Lidarr using its API. From Mixarr, configure the Lidarr URL
+as `http://lidarr.media-system.svc.cluster.local:8686` and enter the API key
+from Lidarr **Settings > General**.
 
-- Server URL: `http://lidarr.media-system.svc.cluster.local:8686`
-- Enter the Lidarr API key from **Settings > General**.
-- Use `/data/music` as the Lidarr root folder.
+Mixarr requires MariaDB, Redis, and a session secret. Create its Kubernetes
+Secret once before deploying:
+
+```bash
+kubectl -n media-system create secret generic mixarr-secrets \
+  --from-literal=MYSQL_ROOT_PASSWORD="$(openssl rand -hex 32)" \
+  --from-literal=MYSQL_PASSWORD="$(openssl rand -hex 32)" \
+  --from-literal=SESSION_SECRET="$(openssl rand -hex 32)"
+```
 
 Configure Prowlarr to sync indexers to Lidarr using
 `http://lidarr.media-system.svc.cluster.local:8686` and the Lidarr API key.

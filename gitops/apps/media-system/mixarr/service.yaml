@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: aurral
+  name: mixarr
   annotations:
     metallb.io/loadBalancerIPs: 192.168.18.230
 spec:
   type: LoadBalancer
   ports:
-    - port: 80
-      targetPort: http
-      name: http
+    - name: web
+      port: 80
+      targetPort: web
   selector:
-    app: aurral
+    app: mixarr
