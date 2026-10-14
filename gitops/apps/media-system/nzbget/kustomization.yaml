@@ -5,3 +5,7 @@ resources:
   - pvc.yaml
   - nzbget.yaml
   - service.yaml
+configMapGenerator:
+  - name: nzbget-scripts
+    files:
+      - scripts/ntfy.py

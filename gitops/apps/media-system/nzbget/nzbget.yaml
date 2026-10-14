@@ -13,6 +13,21 @@ spec:
       labels:
         app: nzbget
     spec:
+      initContainers:
+        - name: install-scripts
+          image: busybox:1.38
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /config/scripts
+              cp /scripts/ntfy.py /config/scripts/ntfy.py
+              chmod 0755 /config/scripts/ntfy.py
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            - name: config
+              mountPath: /config
       nodeSelector:
         kubernetes.io/hostname: pi4-server
       containers:
@@ -43,6 +58,9 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: nzbget-config
+        - name: scripts
+          configMap:
+            name: nzbget-scripts
         - name: media-storage
           persistentVolumeClaim:
             claimName: media-storage-pvc # Shared storage PVC across Servarr apps

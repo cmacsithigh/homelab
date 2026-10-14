@@ -6,6 +6,19 @@ Here we will document all the manual bits and bobs
 
 We need to fetch the openvpn credentials from protonvpn. These will be used for authentiaction for gluetun
 
+## NZBGet ntfy notifications
+
+The `ntfy.py` post-processing script is installed to `/config/scripts`
+(NZBGet's `MainDir/scripts`) from the `nzbget-scripts` ConfigMap whenever the
+pod starts. In NZBGet, open
+**Settings > Extension Scripts**, enable `ntfy.py`, and set:
+
+- `NTFY_URL`: `http://ntfy.ntfy-system.svc.cluster.local`
+- `NTFY_TOPIC`: `homelab`
+
+The script sends a notification for each completed download. Successful,
+warning, and failed downloads get different ntfy priorities and tags.
+
 ## set admin password qbittorrent
 
 Find temporary admin password from logs and login. Reset password to something new
