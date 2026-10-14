@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: droppedneedle
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.18.230
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 8688
+      targetPort: http
+  selector:
+    app: droppedneedle
