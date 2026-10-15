@@ -29,3 +29,12 @@ spec:
       retries: 10
   interval: 60m
   targetNamespace: eraser-system
+  values:
+    runtimeConfig:
+      manager:
+        scheduling:
+          repeatInterval: 22h
+          beginImmediately: true
+      components:
+        scanner:
+          enabled: false

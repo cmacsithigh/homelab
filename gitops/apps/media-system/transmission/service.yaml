@@ -8,22 +8,23 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - port: 80
-      targetPort: 9091
-      name: webui
+  - port: 80
+    targetPort: 9091
+    name: webui
   selector:
     app: transmission
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: transmission-public
-spec:
-  type: LoadBalancer
-  loadBalancerClass: tailscale
-  ports:
-    - port: 80
-      targetPort: 9091
-      name: webui
-  selector:
-    app: transmission
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: transmission-public
+# spec:
+#   type: LoadBalancer
+#   loadBalancerClass: tailscale
+#   ports:
+#     - port: 80
+#       targetPort: 9091
+#       name: webui
+#   selector:
+#     app: transmission
