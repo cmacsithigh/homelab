@@ -17,7 +17,7 @@ data:
       actions:
       - action: media_player.volume_set
         data:
-          volume_level: 0.3
+          volume_level: 0.2
         metadata: {}
         target:
           area_id: hallway
@@ -26,7 +26,7 @@ data:
         target:
           area_id: bedroom
         data:
-          volume_level: 0.35
+          volume_level: 0.25
       mode: single
     - id: '1745318078223'
       alias: Lights - Turn off
@@ -69,7 +69,7 @@ data:
           area_id: cian_office
       - action: media_player.volume_set
         data:
-          volume_level: 0.3
+          volume_level: 0.2
         metadata: {}
         target:
           area_id: hallway
