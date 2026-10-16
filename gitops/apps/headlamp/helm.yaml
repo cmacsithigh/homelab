@@ -38,11 +38,11 @@ spec:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: NotIn
-                  values:
-                    - rc2
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: NotIn
+              values:
+              - rc2
     config:
       inCluster: true
       oidc:
@@ -51,6 +51,7 @@ spec:
         clientSecret: "${secret}"
         issuerURL: https://keycloak.ciansheehy.co/realms/homelab
         scopes: "profile,email"
+        autoLogin: true
         secret:
           create: false
     serviceAccount:
