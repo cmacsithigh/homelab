@@ -14,53 +14,53 @@ spec:
         app: nzbget
     spec:
       initContainers:
-        - name: install-scripts
-          image: busybox:1.38
-          command:
-            - sh
-            - -c
-            - |
-              mkdir -p /config/scripts
-              cp /scripts/ntfy.py /config/scripts/ntfy.py
-              chmod 0755 /config/scripts/ntfy.py
-          volumeMounts:
-            - name: scripts
-              mountPath: /scripts
-            - name: config
-              mountPath: /config
-      nodeSelector:
-        kubernetes.io/hostname: pi4-server
-      containers:
-        - name: nzbget
-          image: ghcr.io/nzbgetcom/nzbget:v26.3
-          env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
-            - name: TZ
-              value: "Etc/UTC"
-          ports:
-            - containerPort: 6789
-              name: webui
-          volumeMounts:
-            - name: config
-              mountPath: /config
-            - name: media-storage
-              mountPath: /data
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              memory: 512Mi
-      volumes:
-        - name: config
-          persistentVolumeClaim:
-            claimName: nzbget-config
+      - name: install-scripts
+        image: busybox:1.38
+        command:
+        - sh
+        - -c
+        - |
+          mkdir -p /config/scripts
+          cp /scripts/ntfy.py /config/scripts/ntfy.py
+          chmod 0755 /config/scripts/ntfy.py
+        volumeMounts:
         - name: scripts
-          configMap:
-            name: nzbget-scripts
+          mountPath: /scripts
+        - name: config
+          mountPath: /config
+      nodeSelector:
+        kubernetes.io/hostname: desktop-9th3sl8
+      containers:
+      - name: nzbget
+        image: ghcr.io/nzbgetcom/nzbget:v26.3
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "Etc/UTC"
+        ports:
+        - containerPort: 6789
+          name: webui
+        volumeMounts:
+        - name: config
+          mountPath: /config
         - name: media-storage
-          persistentVolumeClaim:
-            claimName: media-storage-pvc # Shared storage PVC across Servarr apps
+          mountPath: /data
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            memory: 512Mi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: nzbget-config
+      - name: scripts
+        configMap:
+          name: nzbget-scripts
+      - name: media-storage
+        persistentVolumeClaim:
+          claimName: media-storage-pvc # Shared storage PVC across Servarr apps
