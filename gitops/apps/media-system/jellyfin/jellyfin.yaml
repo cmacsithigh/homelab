@@ -15,7 +15,7 @@ spec:
         app: jellyfin
     spec:
       nodeSelector:
-        kubernetes.io/hostname: desktop-9th3sl8
+        kubernetes.io/hostname: pi4-server
       initContainers:
       - name: init-data-dirs
         image: busybox:latest
