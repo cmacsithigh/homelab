@@ -23,13 +23,15 @@ warning, and failed downloads get different ntfy priorities and tags.
 
 Dispatcharr and Sportarr are available on the media-system LAN addresses:
 
-- Dispatcharr: `http://192.168.18.227:9191`
+- Dispatcharr: `http://192.168.18.227`
 - Sportarr: `http://192.168.18.230:1867`
 
-Dispatcharr runs its all-in-one image with persistent application data. Complete
-its initial web setup after the pod is ready. Sportarr stores its configuration
-separately and uses the shared `/data` media storage, matching the paths used by
-the other media apps.
+Dispatcharr routes its network traffic through the ProtonVPN Gluetun sidecar,
+using the same credentials and VPN settings as Transmission. Its web UI remains
+available on the LAN through port 80. It runs its all-in-one image with
+persistent application data; complete its initial web setup after the pod is
+ready. Sportarr stores its configuration separately and uses the shared `/data`
+media storage, matching the paths used by the other media apps.
 
 ## Lidarr and Mixarr
 
