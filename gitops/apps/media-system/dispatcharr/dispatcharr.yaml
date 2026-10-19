@@ -60,9 +60,6 @@ spec:
               value: redis://localhost:6379/0
             - name: DISPATCHARR_LOG_LEVEL
               value: info
-          ports:
-            - containerPort: 9191
-              name: http
           volumeMounts:
             - name: data
               mountPath: /data
