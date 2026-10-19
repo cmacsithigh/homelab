@@ -15,58 +15,55 @@ spec:
         app: dispatcharr
     spec:
       containers:
-        - name: gluetun
-          image: qmcgaw/gluetun:v3.41.3
-          securityContext:
-            capabilities:
-              add:
-                - NET_ADMIN
-          envFrom:
-            - secretRef:
-                name: openvpn-user
-            - secretRef:
-                name: openvpn-password
-          env:
-            - name: FIREWALL_INPUT_PORTS
-              value: "9191"
-            - name: FIREWALL_OUTBOUND_SUBNETS
-              value: "10.42.0.0/16,10.43.0.0/16,192.168.0.0/16"
-            - name: VPN_PORT_FORWARDING
-              value: "on"
-            - name: VPN_SERVICE_PROVIDER
-              value: protonvpn
-            - name: VPN_TYPE
-              value: openvpn
-            - name: SERVER_COUNTRIES
-              value: Netherlands,Germany,Sweden,Switzerland
-          ports:
-            - containerPort: 9191
-              name: http
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 500m
-              memory: 256Mi
-        - name: dispatcharr
-          image: ghcr.io/dispatcharr/dispatcharr:latest
-          env:
-            - name: DISPATCHARR_ENV
-              value: aio
-            - name: REDIS_HOST
-              value: localhost
-            - name: CELERY_BROKER_URL
-              value: redis://localhost:6379/0
-            - name: DISPATCHARR_LOG_LEVEL
-              value: info
-          ports:
-            - containerPort: 9191
-              name: http
-          volumeMounts:
-            - name: data
-              mountPath: /data
-      volumes:
+      - name: gluetun
+        image: qmcgaw/gluetun:v3.41.3
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+        envFrom:
+        - secretRef:
+            name: openvpn-user
+        - secretRef:
+            name: openvpn-password
+        env:
+        - name: FIREWALL_INPUT_PORTS
+          value: "9191"
+        - name: FIREWALL_OUTBOUND_SUBNETS
+          value: "10.42.0.0/16,10.43.0.0/16,192.168.0.0/16"
+        - name: VPN_PORT_FORWARDING
+          value: "on"
+        - name: VPN_SERVICE_PROVIDER
+          value: protonvpn
+        - name: VPN_TYPE
+          value: openvpn
+        - name: SERVER_COUNTRIES
+          value: Netherlands,Germany,Sweden,Switzerland
+        ports:
+        - containerPort: 9191
+          name: http
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+      - name: dispatcharr
+        image: ghcr.io/dispatcharr/dispatcharr:latest
+        env:
+        - name: DISPATCHARR_ENV
+          value: aio
+        - name: REDIS_HOST
+          value: localhost
+        - name: CELERY_BROKER_URL
+          value: redis://localhost:6379/0
+        - name: DISPATCHARR_LOG_LEVEL
+          value: info
+        volumeMounts:
         - name: data
-          persistentVolumeClaim:
-            claimName: dispatcharr-data
+          mountPath: /data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: dispatcharr-data
