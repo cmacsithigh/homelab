@@ -19,6 +19,18 @@ pod starts. In NZBGet, open
 The script sends a notification for each completed download. Successful,
 warning, and failed downloads get different ntfy priorities and tags.
 
+## Dispatcharr and Sportarr
+
+Dispatcharr and Sportarr are available on the media-system LAN addresses:
+
+- Dispatcharr: `http://192.168.18.227:9191`
+- Sportarr: `http://192.168.18.230:1867`
+
+Dispatcharr runs its all-in-one image with persistent application data. Complete
+its initial web setup after the pod is ready. Sportarr stores its configuration
+separately and uses the shared `/data` media storage, matching the paths used by
+the other media apps.
+
 ## Lidarr and Mixarr
 
 In Lidarr, add NZBGet under **Settings > Download Clients**:

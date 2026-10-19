@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sportarr
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.18.230
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 1867
+    name: http
+  selector:
+    app: sportarr
