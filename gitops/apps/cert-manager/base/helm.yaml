@@ -1,4 +1,4 @@
-# https://github.com/helmforgedev/charts/blob/main/charts/adguard-home/values.yaml
+https://github.com/cert-manager/cert-manager/blob/master/deploy/charts/cert-manager/values.yaml
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
