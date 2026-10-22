@@ -16,27 +16,27 @@ spec:
         app: seerr
     spec:
       containers:
-        - name: seerr
-          image: seerr/seerr:v3.5.0
-          ports:
-            - containerPort: 5055
-              name: http
-          env:
-            - name: LOG_LEVEL
-              value: "info"
-            - name: TZ
-              value: "Etc/UTC"
-          volumeMounts:
-            - name: config
-              mountPath: /app/config
-          resources:
-            requests:
-              cpu: 100m
-              memory: 256Mi
-            limits:
-              cpu: 500m
-              memory: 512Mi
-      volumes:
+      - name: seerr
+        image: seerr/seerr:v3.5.1
+        ports:
+        - containerPort: 5055
+          name: http
+        env:
+        - name: LOG_LEVEL
+          value: "info"
+        - name: TZ
+          value: "Etc/UTC"
+        volumeMounts:
         - name: config
-          persistentVolumeClaim:
-            claimName: seerr-config
+          mountPath: /app/config
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: seerr-config

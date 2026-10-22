@@ -4,6 +4,8 @@ metadata:
   name: maintainerr
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: maintainerr
@@ -27,6 +29,12 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /opt/data
+          startupProbe:
+            httpGet:
+              path: /api/health/live
+              port: 6246
+            periodSeconds: 10
+            failureThreshold: 30
           livenessProbe:
             httpGet:
               path: /api/health/live
