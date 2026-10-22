@@ -18,60 +18,64 @@ spec:
         app: homeassistant
     spec:
       initContainers:
-        - name: copy-config
-          image: busybox:1.38
-          command:
-            - sh
-            - -c
-            - |
-              echo "Copying Home Assistant config from ConfigMap into PVC /config";
-              mkdir -p /config;
-              cp -aL /tmp/homeassistant-config/. /config/;
-              echo "Copy complete";
-              echo "Config files in /config:";
-              ls -la /config;
-          volumeMounts:
-            - mountPath: /config
-              name: config
-            - mountPath: /tmp/homeassistant-config
-              name: homeassistant-config
+      - name: copy-config
+        image: busybox:1.38
+        command:
+        - sh
+        - -c
+        - |
+          echo "Copying Home Assistant config from ConfigMap into PVC /config";
+          mkdir -p /config;
+          cp -aL /tmp/homeassistant-config/. /config/;
+          echo "Copy complete";
+
+          ehco "Permissions set to 777 for /config";
+          chmod -R 777 /config;
+
+          echo "Config files in /config:";
+          ls -la /config;
+        volumeMounts:
+        - mountPath: /config
+          name: config
+        - mountPath: /tmp/homeassistant-config
+          name: homeassistant-config
       containers:
-        - env:
-            - name: TZ
-              value: Europe/Dublin
-          image: ghcr.io/home-assistant/home-assistant:2026.10.1
-          imagePullPolicy: IfNotPresent
-          name: homeassistant
-          ports:
-            - containerPort: 8123
-          securityContext:
-            privileged: true
-          requests:
-            cpu: 10m
-            memory: 256Mi
-          limits:
-            memory: 512Mi
-          volumeMounts:
-            - mountPath: /config
-              name: config
-            - mountPath: /etc/localtime
-              name: localtime
-              readOnly: true
-            - mountPath: /run/dbus
-              name: dbus
-              readOnly: true
-      volumes:
-        - name: config
-          persistentVolumeClaim:
-            claimName: homeassistant
-        - name: homeassistant-config
-          configMap:
-            name: homeassistant-config
-        - hostPath:
-            path: /etc/localtime
-            type: File
+      - env:
+        - name: TZ
+          value: Europe/Dublin
+        image: ghcr.io/home-assistant/home-assistant:2026.10.1
+        imagePullPolicy: IfNotPresent
+        name: homeassistant
+        ports:
+        - containerPort: 8123
+        securityContext:
+          privileged: true
+        requests:
+          cpu: 10m
+          memory: 256Mi
+        limits:
+          memory: 512Mi
+        volumeMounts:
+        - mountPath: /config
+          name: config
+        - mountPath: /etc/localtime
           name: localtime
-        - hostPath:
-            path: /run/dbus
-            type: Directory
+          readOnly: true
+        - mountPath: /run/dbus
           name: dbus
+          readOnly: true
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: homeassistant
+      - name: homeassistant-config
+        configMap:
+          name: homeassistant-config
+      - hostPath:
+          path: /etc/localtime
+          type: File
+        name: localtime
+      - hostPath:
+          path: /run/dbus
+          type: Directory
+        name: dbus
