@@ -233,16 +233,6 @@ data:
         - thu
         - fri
         - sat
-      - trigger: time
-        at: 08:00:00
-        weekday:
-        - sun
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
-        - sat
       conditions: []
       actions:
       - action: media_player.play_media
@@ -354,6 +344,44 @@ data:
         target:
           area_id: hallway
         data: {}
+      mode: single
+    - id: '1792665253970'
+      alias: Speakers - Play - Morning - 8am - BBC Radio 6
+      description: ''
+      triggers:
+      - trigger: time
+        at: 08:00:00
+        weekday:
+        - sun
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+      conditions: []
+      actions:
+      - action: media_player.play_media
+        metadata: {}
+        target:
+          area_id:
+          - hallway
+          - bedroom
+        data:
+          enqueue: replace
+          media:
+            media_content_id: library://radio/2
+            media_content_type: music
+            metadata:
+              title: BBC Radio 6
+              thumbnail: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpQQyFb3eDlEmKfVpEHtqRb6Yx1Z91XxhR_g&s
+              media_class: music
+              children_media_class:
+              navigateIds:
+              - {}
+              - media_content_type: music_assistant
+                media_content_id: radio
+              browse_entity_id: media_player.hallway_speaker
       mode: single
   configuration.yaml: |-
     default_config:
