@@ -14,5 +14,5 @@ spec:
       database: keycloak
       owner: keycloak
   storage:
-    storageClass: local-path
+    storageClass: nfs-storage
     size: 1Gi
