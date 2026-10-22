@@ -19,35 +19,29 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
       containers:
-        - name: maintainerr
-          image: ghcr.io/maintainerr/maintainerr:3.30.1
-          ports:
-            - containerPort: 6246
-          env:
-            - name: TZ
-              value: Europe/Brussels
-          volumeMounts:
-            - name: data
-              mountPath: /opt/data
-          startupProbe:
-            httpGet:
-              path: /api/health/live
-              port: 6246
-            periodSeconds: 10
-            failureThreshold: 30
-          livenessProbe:
-            httpGet:
-              path: /api/health/live
-              port: 6246
-            initialDelaySeconds: 30
-            periodSeconds: 30
-          readinessProbe:
-            httpGet:
-              path: /api/health/ready
-              port: 6246
-            initialDelaySeconds: 10
-            periodSeconds: 10
-      volumes:
+      - name: maintainerr
+        image: ghcr.io/maintainerr/maintainerr:3.30.1
+        ports:
+        - containerPort: 6246
+        env:
+        - name: TZ
+          value: Europe/Brussels
+        volumeMounts:
         - name: data
-          persistentVolumeClaim:
-            claimName: maintainerr-data
+          mountPath: /opt/data
+        livenessProbe:
+          httpGet:
+            path: /api/health/live
+            port: 6246
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /api/health/ready
+            port: 6246
+          initialDelaySeconds: 10
+          periodSeconds: 10
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: maintainerr-data
