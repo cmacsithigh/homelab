@@ -5,8 +5,8 @@ metadata:
   name: homeassistant
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
+  - ReadWriteMany
+  storageClassName: nfs-storage
   resources:
     requests:
       storage: 1Gi
