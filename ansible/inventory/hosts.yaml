@@ -4,29 +4,30 @@ all:
       hosts:
         server:
           ansible_host: 192.168.18.10
-        desktop:
+        rpi5-worker:
           ansible_host: 192.168.18.14
         rc0:
           ansible_host: 192.168.18.13 # bedroom
         rc2:
           ansible_host: 192.168.18.11 # hallway
-        rc3:
-          ansible_host: 192.168.18.19 # office
 
     k3s:
       hosts:
         server:
-        desktop:
+        rpi5-worker:
         rc2:
+
 
     k3s_nodes:
       hosts:
-        desktop:
+        rpi5-worker:
         rc2:
+
 
     k3s_server:
       hosts:
         server:
+
 
     speaker_server:
       vars:
@@ -34,8 +35,8 @@ all:
       hosts:
         server:
 
+
     speakers:
       hosts:
         rc0:
         rc2:
-        rc3:
