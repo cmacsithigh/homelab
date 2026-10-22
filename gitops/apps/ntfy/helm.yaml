@@ -38,6 +38,9 @@ spec:
     persistence:
       enabled: true
       size: 1Gi
+      storageClass: nfs-storage
+      accessModes:
+      - ReadWriteMany
     service:
       type: LoadBalancer
       annotations:
