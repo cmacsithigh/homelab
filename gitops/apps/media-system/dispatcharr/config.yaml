@@ -8,7 +8,7 @@ data:
   POSTGRES_HOST: dispatcharr-postgres-rw
   POSTGRES_PORT: "5432"
   POSTGRES_DB: dispatcharr
-  POSTGRES_USER: dispatch
+  POSTGRES_USER: dispatcharr
   REDIS_HOST: dispatcharr-redis
   REDIS_PORT: "6379"
   DJANGO_SETTINGS_MODULE: dispatcharr.settings

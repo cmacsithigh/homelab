@@ -17,23 +17,15 @@ LAN addresses are defined by the services in this directory:
 | Transmission | `http://192.168.18.228`      |
 | Wizarr       | `http://192.168.18.226:5690` |
 
-## Required secrets
+## VPN credentials
 
 Dispatcharr and Transmission use the `openvpn-user` and `openvpn-password`
 secrets in the `media-system` namespace.
 
-Dispatcharr's CloudNativePG cluster requires an application credential secret.
-Create it before deploying Dispatcharr:
-
-```bash
-kubectl -n media-system create secret generic dispatcharr-db-app \
-  --from-literal=username=dispatch \
-  --from-literal=password="$(openssl rand -hex 32)" \
-  --type=kubernetes.io/basic-auth
-```
-
-Keep this secret unchanged while its PostgreSQL cluster is in use. Dispatcharr
-starts with a new database; its existing `/data` PVC is separate.
+CloudNativePG creates the `dispatcharr` database and user and generates the
+application password in `dispatcharr-postgres-app`, following the same pattern
+as the Keycloak database cluster. Dispatcharr starts with a new database; its
+existing `/data` PVC is separate.
 
 ## NZBGet notifications
 

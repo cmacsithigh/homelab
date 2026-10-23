@@ -10,7 +10,7 @@ spec:
   bootstrap:
     initdb:
       database: dispatcharr
-      owner: dispatch
+      owner: dispatcharr
   storage:
     storageClass: nfs-storage
     size: 5Gi

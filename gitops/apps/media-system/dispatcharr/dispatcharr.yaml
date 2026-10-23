@@ -58,7 +58,7 @@ spec:
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: dispatcharr-db-app
+              name: dispatcharr-postgres-app
               key: password
         volumeMounts:
         - name: data
@@ -74,7 +74,7 @@ spec:
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: dispatcharr-db-app
+              name: dispatcharr-postgres-app
               key: password
         - name: DISPATCHARR_WEB_HOST
           value: localhost
