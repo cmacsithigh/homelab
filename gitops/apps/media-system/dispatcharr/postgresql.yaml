@@ -3,6 +3,9 @@ kind: Cluster
 metadata:
   name: dispatcharr-postgres
 spec:
+  affinity:
+    nodeSelector:
+      kubernetes.io/hostname: pi4-server
   inheritedMetadata:
     annotations:
       gatus.home-operations.com/enabled: "false"
