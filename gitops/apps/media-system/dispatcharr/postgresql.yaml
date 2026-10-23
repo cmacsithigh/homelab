@@ -1,0 +1,15 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: dispatcharr-postgres
+spec:
+  instances: 1
+  bootstrap:
+    initdb:
+      database: dispatcharr
+      owner: dispatch
+      secret:
+        name: dispatcharr-db-app
+  storage:
+    storageClass: nfs-storage
+    size: 5Gi

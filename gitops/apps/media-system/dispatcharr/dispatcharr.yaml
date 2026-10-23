@@ -49,17 +49,37 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
-      - name: dispatcharr
+      - name: dispatcharr-web
         image: ghcr.io/dispatcharr/dispatcharr:0.32.0
+        envFrom:
+        - configMapRef:
+            name: dispatcharr-config
         env:
-        - name: DISPATCHARR_ENV
-          value: aio
-        - name: REDIS_HOST
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dispatcharr-db-app
+              key: password
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      - name: dispatcharr-celery
+        image: ghcr.io/dispatcharr/dispatcharr:0.32.0
+        command:
+        - /app/docker/entrypoint.celery.sh
+        envFrom:
+        - configMapRef:
+            name: dispatcharr-config
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dispatcharr-db-app
+              key: password
+        - name: DISPATCHARR_WEB_HOST
           value: localhost
-        - name: CELERY_BROKER_URL
-          value: redis://localhost:6379/0
-        - name: DISPATCHARR_LOG_LEVEL
-          value: info
+        - name: DISPATCHARR_PORT
+          value: "9191"
         volumeMounts:
         - name: data
           mountPath: /data

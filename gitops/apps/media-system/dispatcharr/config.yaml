@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dispatcharr-config
+data:
+  DISPATCHARR_ENV: modular
+  DISPATCHARR_LOG_LEVEL: info
+  POSTGRES_HOST: dispatcharr-postgres-rw
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: dispatcharr
+  POSTGRES_USER: dispatch
+  REDIS_HOST: dispatcharr-redis
+  REDIS_PORT: "6379"
+  DJANGO_SETTINGS_MODULE: dispatcharr.settings
+  PYTHONUNBUFFERED: "1"
