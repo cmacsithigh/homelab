@@ -29,7 +29,7 @@ spec:
         - name: config
           mountPath: /config
       nodeSelector:
-        kubernetes.io/hostname: rpi5-worker
+        kubernetes.io/hostname: pi4-server
       containers:
       - name: nzbget
         image: ghcr.io/nzbgetcom/nzbget:v26.3
