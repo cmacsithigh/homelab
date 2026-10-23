@@ -43,55 +43,12 @@ sudo partprobe /dev/sda
 
 Now that the disk is cleanly partitioned, format your new partition (/dev/sda1) with the ext4 filesystem:
 
-```bash
-sudo mkfs.ext4 /dev/sda1
-```
-
-## Mount drive
-
-### Create mount path
-
-I have gone with `/mnt/nfs`
-
-```bash
-sudo mkdir -p /mnt/nfs
-```
-
-### Find your UUID
-
-```bash
-sudo blkid /dev/sda1
-```
-
-### Open configuration file
-
-```bash
-sudo nano /etc/fstab
-```
-
-### Add in config
-
-```conf
-UUID=<UUID from above>  /mnt/nfs  ext4  defaults,nofail  0  2
-```
-
-### Load mounted
-
-Reload your configuration without restarting run this
-
-```bash
-sudo mount -a
-```
-
-### View block devices with mount paths
-
-```bash
-sudo lsblk
-```
-
 ## Install NFS
 
-To install the server all you need to do is run this playbook
+The NFS server playbook creates `/mnt/nfs`, reads the filesystem UUID from
+`/dev/sda1`/`/dev/sdb1`, adds the UUID-based mount to `/etc/fstab`, mounts the drive, and
+shows the resulting block devices. If your drive uses a different device path,
+override `nfs_storage_device` when running the playbook.
 
 ```bash
 ansible-playbook ./ansible/playbooks/setup_nfs_server.yaml

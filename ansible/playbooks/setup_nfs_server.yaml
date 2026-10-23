@@ -1,7 +1,9 @@
 - name: Create NFS server
-  hosts: rpi5-worker
+  hosts: server
   gather_facts: yes
   become: yes
+  vars:
+    nfs_storage_device: /dev/sdb1
   tasks:
   - name: Install nfs-kernel-server
     ansible.builtin.apt:
@@ -16,10 +18,43 @@
       state: directory
       mode: '0777'
 
+  - name: Get NFS storage filesystem UUID
+    ansible.builtin.command:
+      argv:
+      - blkid
+      - --output
+      - value
+      - --match-tag
+      - UUID
+      - "{{ nfs_storage_device }}"
+    register: nfs_storage_uuid
+    changed_when: false
+
+  - name: Mount NFS storage by UUID
+    ansible.builtin.mount:
+      path: /mnt/nfs
+      src: "UUID={{ nfs_storage_uuid.stdout }}"
+      fstype: ext4
+      opts: defaults,nofail
+      dump: '0'
+      passno: '2'
+      state: mounted
+
+  - name: List block devices and mount paths
+    ansible.builtin.command:
+      argv:
+      - lsblk
+    register: nfs_block_devices
+    changed_when: false
+
+  - name: Show block devices and mount paths
+    ansible.builtin.debug:
+      var: nfs_block_devices.stdout_lines
+
   - name: Configure NFS exports file
     ansible.builtin.lineinfile:
       path: /etc/exports
-      line: '/mnt/nfs *(rw,sync,no_subtree_check,no_root_squash)'
+      line: '/mnt/nfs *(rw,async,no_subtree_check,no_root_squash)'
       state: present
     notify: Restart NFS Server
 
