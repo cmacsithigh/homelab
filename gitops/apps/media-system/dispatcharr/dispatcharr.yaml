@@ -50,7 +50,7 @@ spec:
             cpu: 500m
             memory: 256Mi
       - name: dispatcharr
-        image: ghcr.io/dispatcharr/dispatcharr:latest
+        image: ghcr.io/dispatcharr/dispatcharr:0.32.0
         env:
         - name: DISPATCHARR_ENV
           value: aio
