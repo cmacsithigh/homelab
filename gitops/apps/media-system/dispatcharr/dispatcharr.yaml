@@ -49,7 +49,6 @@ spec:
             cpu: 100m
             memory: 128Mi
           limits:
-            cpu: 500m
             memory: 256Mi
       - name: dispatcharr-web
         image: ghcr.io/dispatcharr/dispatcharr:0.32.0
