@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: teamarr
+  labels:
+    app: teamarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: teamarr
+  template:
+    metadata:
+      labels:
+        app: teamarr
+    spec:
+      containers:
+      - name: teamarr
+        image: ghcr.io/pharaoh-labs/teamarr:2.25.1
+        ports:
+        - containerPort: 9195
+          name: http
+        env:
+        - name: TZ
+          value: America/Detroit
+        volumeMounts:
+        - name: data
+          mountPath: /app/data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: teamarr-data

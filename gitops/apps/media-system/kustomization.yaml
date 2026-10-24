@@ -11,6 +11,7 @@ resources:
 - radarr
 - seerr
 - sonarr
+- teamarr
 - transmission
 - wizarr
 - shared-pvc.yaml

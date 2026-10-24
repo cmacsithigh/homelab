@@ -14,6 +14,7 @@ LAN addresses are defined by the services in this directory:
 | Radarr       | `http://192.168.18.223:7878` |
 | Seerr        | `http://192.168.18.220:5055` |
 | Sonarr       | `http://192.168.18.224:8989` |
+| Teamarr      | `http://192.168.18.230:9195` |
 | Transmission | `http://192.168.18.228`      |
 | Wizarr       | `http://192.168.18.226:5690` |
 
