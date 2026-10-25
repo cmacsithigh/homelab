@@ -51,7 +51,7 @@ spec:
           limits:
             memory: 256Mi
       - name: dispatcharr-web
-        image: ghcr.io/dispatcharr/dispatcharr:0.32.0
+        image: ghcr.io/dispatcharr/dispatcharr:0.33.0
         envFrom:
         - configMapRef:
             name: dispatcharr-config
@@ -71,7 +71,7 @@ spec:
           limits:
             memory: 2000Mi
       - name: dispatcharr-celery
-        image: ghcr.io/dispatcharr/dispatcharr:0.32.0
+        image: ghcr.io/dispatcharr/dispatcharr:0.33.0
         command:
         - /app/docker/entrypoint.celery.sh
         envFrom:
