@@ -63,12 +63,6 @@ data:
       actions:
       - action: media_player.volume_set
         data:
-          volume_level: 0.05
-        metadata: {}
-        target:
-          area_id: cian_office
-      - action: media_player.volume_set
-        data:
           volume_level: 0.2
         metadata: {}
         target:
@@ -141,6 +135,36 @@ data:
         - thu
         - fri
         - sat
+      - trigger: time
+        at: 06:15:00
+        weekday:
+        - sun
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+      - trigger: time
+        at: 06:30:00
+        weekday:
+        - sun
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+      - trigger: time
+        at: 06:45:00
+        weekday:
+        - sun
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
       conditions: []
       actions:
       - action: media_player.join
@@ -149,32 +173,7 @@ data:
           area_id: hallway
         data:
           group_members:
-          - media_player.rc0
-      mode: single
-    - id: '1789972772761'
-      alias: Speakers - Join  - Office
-      description: ''
-      triggers:
-      - trigger: time_pattern
-        minutes: /15
-      conditions:
-      - condition: time
-        after: 09:00:00
-        before: '17:00:00'
-        weekday:
-        - fri
-        - thu
-        - wed
-        - tue
-        - mon
-      actions:
-      - action: media_player.join
-        metadata: {}
-        target:
-          area_id: hallway
-        data:
-          group_members:
-          - media_player.pi0_rc3
+          - media_player.bedroom_speaker
       mode: single
     - id: '1789972837370'
       alias: Speakers - Unjoin - Bedroom
@@ -199,28 +198,8 @@ data:
           - bedroom
         data: {}
       mode: single
-    - id: '1789972898752'
-      alias: Speakers - Unjoin - Office
-      description: ''
-      triggers:
-      - trigger: time
-        at: '17:10:00'
-        weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
-      conditions: []
-      actions:
-      - action: media_player.unjoin
-        metadata: {}
-        data: {}
-        target:
-          area_id: cian_office
-      mode: single
     - id: '1789972990047'
-      alias: Speakers - Play - Morning - Lyric FM radio
+      alias: Speakers - Play - 7am - Lyric FM radio
       description: ''
       triggers:
       - trigger: time
@@ -240,7 +219,6 @@ data:
         target:
           area_id:
           - hallway
-          - bedroom
         data:
           enqueue: replace
           media:
@@ -258,7 +236,7 @@ data:
               browse_entity_id: media_player.rc2
       mode: single
     - id: '1789973052234'
-      alias: Speakers - Play - Work start - FIP Radio
+      alias: Speakers - Play - 9am - FIP Radio
       description: ''
       triggers:
       - trigger: time
@@ -269,6 +247,8 @@ data:
         - wed
         - thu
         - fri
+        - sat
+        - sun
       conditions: []
       actions:
       - action: media_player.play_media
@@ -276,7 +256,6 @@ data:
         target:
           area_id:
           - hallway
-          - cian_office
         data:
           enqueue: replace
           media:
@@ -294,7 +273,7 @@ data:
               browse_entity_id: media_player.rc2
       mode: single
     - id: '1790004515553'
-      alias: Speakers - Play - Work end - P.I.M.P instrumental
+      alias: Speakers - Play - 5pm Friday - P.I.M.P instrumental
       description: ''
       triggers:
       - trigger: time
@@ -308,7 +287,6 @@ data:
         target:
           area_id:
           - hallway
-          - cian_office
         data:
           enqueue: replace
           media:
@@ -346,7 +324,7 @@ data:
         data: {}
       mode: single
     - id: '1792665253970'
-      alias: Speakers - Play - Morning - 8am - BBC Radio 6
+      alias: Speakers - Play - 8am - BBC Radio 6
       description: ''
       triggers:
       - trigger: time
@@ -366,7 +344,6 @@ data:
         target:
           area_id:
           - hallway
-          - bedroom
         data:
           enqueue: replace
           media:
