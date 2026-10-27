@@ -17,6 +17,8 @@
     "repositoryCache": "enabled",
     "enabledManagers": [
         "dockerfile",
+        "docker-compose",
+        "github-actions",
         "helmfile",
         "crossplane",
         "azure-pipelines",
@@ -36,49 +38,36 @@
         "enabled": true
     },
     "kubernetes": {
-        "fileMatch": [
-            "^.*\\.yaml$"
-        ]
+        "managerFilePatterns": ["/^.*\\.yaml$/"]
     },
     "kustomize": {
-        "fileMatch": [
-            "^.*\\.yaml$"
-        ]
+        "managerFilePatterns": ["/^.*\\.yaml$/"]
     },
     "flux": {
-        "fileMatch": [
-            "^.*\\.yaml$"
-        ]
+        "managerFilePatterns": ["/^.*\\.yaml$/"]
     },
     "helm-values": {
-        "fileMatch": [
-            "^.*\\.yaml$"
-        ]
+        "managerFilePatterns": ["/^.*\\.yaml$/"]
     },
     "helmv3": {
-        "fileMatch": [
-            "^.*\\.yaml$"
-        ]
+        "managerFilePatterns": ["/^.*\\.yaml$/"]
     },
     "helmfile": {
-        "fileMatch": [
-            "^.*\\.yaml$"
-        ]
+        "managerFilePatterns": ["/^.*\\.yaml$/"]
     },
     "packageRules": [
         {
-            "matchManagers": [
-                "dockerfile",
-                "docker-compose",
-                "kubernetes",
-                "github-actions"
-            ],
-            "matchPackageNames": ["^ghcr\\.io/"],
-            "matchUpdateTypes": [
-                "digest",
-                "patch"
-            ],
-            "automerge": true
+            "description": "Automerge all non-major Docker image updates",
+            "matchDatasources": ["docker"],
+            "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
+            "automerge": true,
+            "platformAutomerge": true
+        },
+        {
+            "description": "Never automerge major Docker updates",
+            "matchDatasources": ["docker"],
+            "matchUpdateTypes": ["major"],
+            "automerge": false
         }
     ]
 }
