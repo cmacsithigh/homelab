@@ -18,7 +18,7 @@ spec:
         kubernetes.io/hostname: pi4-server
       initContainers:
       - name: init-data-dirs
-        image: busybox:latest # {"$imagepolicy": "flux-system:media-busybox"}
+        image: busybox:1.38.0 # {"$imagepolicy": "flux-system:media-busybox"}
         command:
         - sh
         - -c
