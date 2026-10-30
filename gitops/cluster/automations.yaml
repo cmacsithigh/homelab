@@ -8,7 +8,7 @@ spec:
   interval: 10m0s
   dependsOn:
   - name: base
-  path: ./automations
+  path: ./gitops/automations
   prune: true
   retryInterval: 1m0s
   sourceRef:
