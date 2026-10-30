@@ -35,8 +35,8 @@ spec:
         branch: main
     commit:
       author:
-      email: fluxcdbot@://github.com
-      name: fluxcdbot
+        email: fluxcdbot@://github.com
+        name: fluxcdbot
       messageTemplate: "chore(infra): updating renovate image to {{ .Updated.LatestImage }}"
     push:
       branch: main
