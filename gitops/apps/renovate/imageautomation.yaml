@@ -1,0 +1,42 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: renovate
+spec:
+  image: ghcr.io/renovate/renovate
+  interval: 2h
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: renovate
+spec:
+  imageRepositoryRef:
+    name: renovate
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageUpdateAutomation
+metadata:
+  name: renovate
+spec:
+  interval: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  update:
+    strategy: Setters
+    path: ./gitops/apps/renovate/cronjob.yaml
+  git:
+    checkout:
+      ref:
+        branch: main
+    commit:
+      author:
+      email: fluxcdbot@://github.com
+      name: fluxcdbot
+      messageTemplate: "chore(infra): updating renovate image to {{ .Updated.LatestImage }}"
+    push:
+      branch: main

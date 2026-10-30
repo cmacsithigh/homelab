@@ -2,9 +2,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - cronjob.yaml
+- cronjob.yaml
+- imageautomation.yaml
 namespace: renovate
 configMapGenerator:
-  - name: renovate-config
-    files:
-      - renovate.json=config.json
+- name: renovate-config
+  files:
+  - renovate.json=config.json

@@ -29,21 +29,21 @@ spec:
           automountServiceAccountToken: false
           restartPolicy: Never
           containers:
-            - name: renovate
-              image: ghcr.io/renovatebot/renovate:44.187.0
-              imagePullPolicy: Always
-              env:
-                - name: RENOVATE_CONFIG_FILE
-                  value: /etc/renovate/renovate.json
-                - name: RENOVATE_TOKEN
-                  valueFrom:
-                    secretKeyRef:
-                      name: renovate-token
-                      key: token
-              volumeMounts:
-                - name: renovate-config
-                  mountPath: /etc/renovate
-          volumes:
+          - name: renovate
+            image: ghcr.io/renovatebot/renovate:44.186.0 # {"$imagepolicy": "flux-system:renovate"}
+            imagePullPolicy: Always
+            env:
+            - name: RENOVATE_CONFIG_FILE
+              value: /etc/renovate/renovate.json
+            - name: RENOVATE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: renovate-token
+                  key: token
+            volumeMounts:
             - name: renovate-config
-              configMap:
-                name: renovate-config
+              mountPath: /etc/renovate
+          volumes:
+          - name: renovate-config
+            configMap:
+              name: renovate-config
