@@ -18,7 +18,7 @@ spec:
         kubernetes.io/hostname: pi4-server
       containers:
       - name: redis
-        image: redis:7.4-alpine # {"$imagepolicy": "flux-system:media-redis"}
+        image: redis:8.10.3-alpine # {"$imagepolicy": "flux-system:media-redis"}
         command:
         - redis-server
         - --timeout
