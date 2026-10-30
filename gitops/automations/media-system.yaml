@@ -146,7 +146,7 @@ spec:
     name: media-jellyfin
   filterTags:
     pattern: '^([0-9]+\.[0-9]+)$'
-    extract: '$1'
+    extract: '$1.0'
   policy:
     semver:
       range: ">=0.1"
@@ -191,7 +191,7 @@ spec:
     name: media-nzbget
   filterTags:
     pattern: '^v([0-9]+\.[0-9]+)$'
-    extract: '$1'
+    extract: '$1.0'
   policy:
     semver:
       range: ">=0.0.1"
