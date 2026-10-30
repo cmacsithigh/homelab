@@ -26,7 +26,7 @@ spec:
             secretKeyRef:
               key: token
               name: cloudflared-credentials
-        image: cloudflare/cloudflared:2026.10.4 # {"$imagepolicy": "flux-system:cloudflared"}
+        image: cloudflare/cloudflared:2026.10.6 # {"$imagepolicy": "flux-system:cloudflared"}
         livenessProbe:
           failureThreshold: 3
           httpGet:
