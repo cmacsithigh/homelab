@@ -15,7 +15,7 @@ spec:
     spec:
       initContainers:
       - name: install-scripts
-        image: busybox:1.38
+        image: busybox:1.38 # {"$imagepolicy": "flux-system:media-busybox"}
         command:
         - sh
         - -c
@@ -32,7 +32,7 @@ spec:
         kubernetes.io/hostname: pi4-server
       containers:
       - name: nzbget
-        image: ghcr.io/nzbgetcom/nzbget:v26.3
+        image: ghcr.io/nzbgetcom/nzbget:v26.3 # {"$imagepolicy": "flux-system:media-nzbget"}
         env:
         - name: PUID
           value: "1000"

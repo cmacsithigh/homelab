@@ -43,7 +43,7 @@ spec:
       - env:
         - name: TZ
           value: Europe/Dublin
-        image: ghcr.io/home-assistant/home-assistant:2026.10.4
+        image: ghcr.io/home-assistant/home-assistant:2026.10.4 # {"$imagepolicy": "flux-system:homeassistant"}
         imagePullPolicy: IfNotPresent
         name: homeassistant
         ports:

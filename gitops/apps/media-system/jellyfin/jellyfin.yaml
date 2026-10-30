@@ -18,7 +18,7 @@ spec:
         kubernetes.io/hostname: pi4-server
       initContainers:
       - name: init-data-dirs
-        image: busybox:latest
+        image: busybox:latest # {"$imagepolicy": "flux-system:media-busybox"}
         command:
         - sh
         - -c
@@ -29,7 +29,7 @@ spec:
           mountPath: /data
       containers:
       - name: jellyfin
-        image: jellyfin/jellyfin:12.4
+        image: jellyfin/jellyfin:12.4 # {"$imagepolicy": "flux-system:media-jellyfin"}
         ports:
         - containerPort: 8096
           name: http

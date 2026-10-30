@@ -18,7 +18,7 @@ spec:
         kubernetes.io/hostname: pi4-server
       containers:
       - name: gluetun
-        image: qmcgaw/gluetun:v3.41.3
+        image: qmcgaw/gluetun:v3.41.3 # {"$imagepolicy": "flux-system:media-gluetun"}
         securityContext:
           capabilities:
             add:
@@ -51,7 +51,7 @@ spec:
           limits:
             memory: 256Mi
       - name: dispatcharr-web
-        image: ghcr.io/dispatcharr/dispatcharr:0.33.0
+        image: ghcr.io/dispatcharr/dispatcharr:0.33.0 # {"$imagepolicy": "flux-system:media-dispatcharr"}
         envFrom:
         - configMapRef:
             name: dispatcharr-config
@@ -71,7 +71,7 @@ spec:
           limits:
             memory: 2000Mi
       - name: dispatcharr-celery
-        image: ghcr.io/dispatcharr/dispatcharr:0.33.0
+        image: ghcr.io/dispatcharr/dispatcharr:0.33.0 # {"$imagepolicy": "flux-system:media-dispatcharr"}
         command:
         - /app/docker/entrypoint.celery.sh
         envFrom:

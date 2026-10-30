@@ -39,8 +39,8 @@ spec:
         branch: main
     commit:
       author:
-        email: bot-key-in@://github.com
-        name: bot-key-in
+        email: fluxcdbot@users.noreply.github.com
+        name: fluxcdbot
       messageTemplate: "chore(infra): {{ .Changed.Summary }}"
     push:
       branch: main

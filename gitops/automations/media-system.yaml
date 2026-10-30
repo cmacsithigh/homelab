@@ -1,0 +1,322 @@
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-gluetun
+  namespace: flux-system
+spec:
+  image: qmcgaw/gluetun
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-gluetun
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-gluetun
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-dispatcharr
+  namespace: flux-system
+spec:
+  image: ghcr.io/dispatcharr/dispatcharr
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-dispatcharr
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-dispatcharr
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-redis
+  namespace: flux-system
+spec:
+  image: redis
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-redis
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-redis
+  filterTags:
+    pattern: '^([0-9]+\.[0-9]+(\.[0-9]+)?)-alpine$'
+    extract: '$1'
+  policy:
+    semver:
+      range: ">=7.4.0"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-maintainerr
+  namespace: flux-system
+spec:
+  image: ghcr.io/maintainerr/maintainerr
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-maintainerr
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-maintainerr
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-sonarr
+  namespace: flux-system
+spec:
+  image: lscr.io/linuxserver/sonarr
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-sonarr
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-sonarr
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-busybox
+  namespace: flux-system
+spec:
+  image: busybox
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-busybox
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-busybox
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-jellyfin
+  namespace: flux-system
+spec:
+  image: jellyfin/jellyfin
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-jellyfin
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-jellyfin
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-wizarr
+  namespace: flux-system
+spec:
+  image: ghcr.io/wizarrrr/wizarr
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-wizarr
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-wizarr
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-nzbget
+  namespace: flux-system
+spec:
+  image: ghcr.io/nzbgetcom/nzbget
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-nzbget
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-nzbget
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-prowlarr
+  namespace: flux-system
+spec:
+  image: lscr.io/linuxserver/prowlarr
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-prowlarr
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-prowlarr
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-flaresolverr
+  namespace: flux-system
+spec:
+  image: ghcr.io/flaresolverr/flaresolverr
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-flaresolverr
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-flaresolverr
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-radarr
+  namespace: flux-system
+spec:
+  image: lscr.io/linuxserver/radarr
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-radarr
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-radarr
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-seerr
+  namespace: flux-system
+spec:
+  image: seerr/seerr
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-seerr
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-seerr
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-transmission
+  namespace: flux-system
+spec:
+  image: lscr.io/linuxserver/transmission
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-transmission
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-transmission
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageUpdateAutomation
+metadata:
+  name: media-system
+  namespace: flux-system
+spec:
+  interval: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  update:
+    strategy: Setters
+    path: ./gitops/apps/media-system
+  git:
+    checkout:
+      ref:
+        branch: main
+    commit:
+      author:
+        email: fluxcdbot@users.noreply.github.com
+        name: fluxcdbot
+      messageTemplate: "chore(media): {{ .Changed.Summary }}"
+    push:
+      branch: main
