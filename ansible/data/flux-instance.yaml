@@ -15,6 +15,7 @@ spec:
     - source-controller
     - kustomize-controller
     - helm-controller
+    - image-reflector-controller
     - image-automation-controller
   cluster:
     size: small

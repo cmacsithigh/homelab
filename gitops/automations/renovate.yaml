@@ -41,6 +41,6 @@ spec:
       author:
         email: fluxcdbot@://github.com
         name: fluxcdbot
-      messageTemplate: "chore(infra): updating renovate image to {{ .Updated.LatestImage }}"
+      messageTemplate: "chore(infra): image update - {{ .Changed.Summary }}"
     push:
       branch: main
