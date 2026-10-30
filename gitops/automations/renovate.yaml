@@ -4,8 +4,8 @@ metadata:
   name: renovate
   namespace: flux-system
 spec:
-  image: ghcr.io/renovate/renovate
-  interval: 5m
+  image: ghcr.io/renovatebot/renovate
+  interval: 1h
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImagePolicy
