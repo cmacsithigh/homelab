@@ -12,11 +12,11 @@ spec:
     version: 2.x
     registry: "ghcr.io/fluxcd"
   components:
-    - source-controller
-    - kustomize-controller
-    - helm-controller
-    - image-reflector-controller
-    - image-automation-controller
+  - source-controller
+  - kustomize-controller
+  - helm-controller
+  - image-reflector-controller
+  - image-automation-controller
   cluster:
     size: small
     networkPolicy: false
@@ -26,3 +26,4 @@ spec:
     path: ./gitops/cluster
     ref: refs/heads/main
     url: https://github.com/cmacsithigh/homelab.git
+    pullSecret: basic-access-auth
