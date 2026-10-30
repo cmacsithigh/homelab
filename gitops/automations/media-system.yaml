@@ -188,7 +188,7 @@ spec:
     name: media-nzbget
   policy:
     semver:
-      range: ">=0.0.1"
+      range: ">=0.1"
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
