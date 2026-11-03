@@ -1,4 +1,3 @@
----
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
@@ -22,7 +21,7 @@ spec:
         kind: HelmRepository
         name: argo
         namespace: flux-system
-      version: 2.0.15 # {"$imagepolicy": "flux-system:argo-workflows:tag"}
+      version: 2.0.16 # {"$imagepolicy": "flux-system:argo-workflows:tag"}
   install:
     createNamespace: true
     remediation:
