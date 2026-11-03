@@ -16,6 +16,8 @@ spec:
       hostNetwork: true
       hostIPC: true
       dnsPolicy: ClusterFirstWithHostNet
+      nodeSelector:
+        kubernetes.io/hostname: pi4-server
       containers:
       - name: server
         image: ghcr.io/music-assistant/server:2.10.9
