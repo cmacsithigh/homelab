@@ -22,7 +22,7 @@ spec:
         kind: HelmRepository
         name: argo
         namespace: flux-system
-      version: 2.0.15
+      version: 2.0.15 # {"$imagepolicy": "flux-system:argo-workflows:tag"}
   install:
     createNamespace: true
     remediation:

@@ -1,0 +1,46 @@
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: gatus-sidecar
+  namespace: flux-system
+spec:
+  image: ghcr.io/home-operations/charts/gatus-sidecar
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: gatus-sidecar
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: gatus-sidecar
+  policy:
+    semver:
+      range: ">=0.6.0 <1.0.0"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageUpdateAutomation
+metadata:
+  name: gatus-sidecar
+  namespace: flux-system
+spec:
+  interval: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  update:
+    strategy: Setters
+    path: ./gitops/apps/gatus/helm.yaml
+  git:
+    checkout:
+      ref:
+        branch: main
+    commit:
+      author:
+        email: fluxcdbot@users.noreply.github.com
+        name: fluxcdbot
+      messageTemplate: "chore(infra): {{ .Changed.Summary }}"
+    push:
+      branch: main
