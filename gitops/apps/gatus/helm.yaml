@@ -1,5 +1,3 @@
-# https://github.com/home-operations/gatus-sidecar/blob/main/charts/gatus-sidecar/values.yaml
----
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
@@ -9,7 +7,7 @@ spec:
   interval: 120m
   url: oci://ghcr.io/home-operations/charts/gatus-sidecar
   ref:
-    tag: 0.6.0 # {"$imagepolicy": "flux-system:gatus-sidecar:tag"}
+    tag: 0.6.1 # {"$imagepolicy": "flux-system:gatus-sidecar:tag"}
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
