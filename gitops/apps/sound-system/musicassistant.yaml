@@ -13,21 +13,24 @@ spec:
       labels:
         app: music-assistant
     spec:
+      hostNetwork: true
+      hostIPC: true
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
-        - name: server
-          image: ghcr.io/music-assistant/server:2.10.9
-          securityContext:
-            privileged: true
-          volumeMounts:
-            - name: data
-              mountPath: /data
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8095
-            initialDelaySeconds: 30
-            periodSeconds: 20
-      volumes:
+      - name: server
+        image: ghcr.io/music-assistant/server:2.10.9
+        securityContext:
+          privileged: true
+        volumeMounts:
         - name: data
-          persistentVolumeClaim:
-            claimName: music-assistant-pvc
+          mountPath: /data
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8095
+          initialDelaySeconds: 30
+          periodSeconds: 20
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: music-assistant-pvc
