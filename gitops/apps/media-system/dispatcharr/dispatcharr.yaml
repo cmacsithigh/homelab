@@ -40,7 +40,7 @@ spec:
         - name: VPN_TYPE
           value: openvpn
         - name: SERVER_COUNTRIES
-          value: Netherlands
+          value: Netherlands,Germany,Switzerland,France
         ports:
         - containerPort: 9191
           name: http
