@@ -22,13 +22,14 @@ spec:
           mkdir -p /config/scripts
           cp /scripts/ntfy.py /config/scripts/ntfy.py
           chmod 0755 /config/scripts/ntfy.py
+
+          mkdir -p /downloads/intermediate
+          mkdir -p /downloads/nzb
         volumeMounts:
         - name: scripts
           mountPath: /scripts
         - name: config
           mountPath: /config
-        - name: conf
-          mountPath: /conf
       nodeSelector:
         kubernetes.io/hostname: rpi5-worker
       containers:
@@ -47,8 +48,6 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /config
-        - name: conf
-          mountPath: /conf
         - name: media-storage
           mountPath: /data
         resources:
@@ -61,9 +60,6 @@ spec:
       - name: config
         persistentVolumeClaim:
           claimName: nzbget-config
-      - name: conf
-        persistentVolumeClaim:
-          claimName: nzbget-conf
       - name: scripts
         configMap:
           name: nzbget-scripts
