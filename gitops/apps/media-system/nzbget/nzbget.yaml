@@ -22,16 +22,13 @@ spec:
           mkdir -p /config/scripts
           cp /scripts/ntfy.py /config/scripts/ntfy.py
           chmod 0755 /config/scripts/ntfy.py
-
-          mkdir -p /downloads/intermediate
-          mkdir -p /downloads/nzb
         volumeMounts:
         - name: scripts
           mountPath: /scripts
         - name: config
           mountPath: /config
       nodeSelector:
-        kubernetes.io/hostname: rpi5-worker
+        kubernetes.io/hostname: pi4-server
       containers:
       - name: nzbget
         image: ghcr.io/nzbgetcom/nzbget:v26.3 # {"$imagepolicy": "flux-system:media-nzbget"}
@@ -55,7 +52,7 @@ spec:
             cpu: 100m
             memory: 128Mi
           limits:
-            memory: 1000Mi
+            memory: 512Mi
       volumes:
       - name: config
         persistentVolumeClaim:
