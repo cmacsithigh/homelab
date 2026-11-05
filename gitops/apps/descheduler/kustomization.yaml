@@ -64,3 +64,5 @@ patches:
                 deschedule:
                   enabled:
                     - "RemovePodsViolatingInterPodAntiAffinity"
+                    - "RemovePodsHavingTooManyRestarts"
+                    - "RemoveFailedPods"
