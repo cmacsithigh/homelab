@@ -16,16 +16,15 @@ spec:
       labels:
         app: snapserver
     spec:
+      hostNetwork: true
+      hostIPC: true
+      dnsPolicy: ClusterFirstWithHostNet
       nodeSelector:
         kubernetes.io/hostname: pi4-server
       containers:
       - image: ghcr.io/cmacsithigh/snapserver:1.8.0
         imagePullPolicy: Always
         name: snapserver
-        ports:
-        - containerPort: 1704
-        - containerPort: 1705
-        - containerPort: 1780
         securityContext:
           privileged: true
         volumeMounts:
