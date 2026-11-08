@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: snapserver
+  name: snapserver
+spec:
+  replicas: 1
+  serviceName: snapserver
+  selector:
+    matchLabels:
+      app: snapserver
+  template:
+    metadata:
+      labels:
+        app: snapserver
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: pi4-server
+      containers:
+      - image: ghcr.io/cmacsithigh/snapserver:1.8.0
+        imagePullPolicy: Always
+        name: snapserver
+        ports:
+        - containerPort: 1704
+        - containerPort: 1705
+        - containerPort: 1780
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /fifo
+          name: fifo
+        - mountPath: /run/avahi-daemon/socket
+          name: host-avahi-socket
+          readOnly: true
+        - mountPath: /var/run/dbus/system_bus_socket
+          name: host-dbus-socket
+          readOnly: true
+      volumes:
+      - name: fifo
+        persistentVolumeClaim:
+          claimName: mpd-fifo
+      - hostPath:
+          path: /run/avahi-daemon/socket
+          type: Socket
+        name: host-avahi-socket
+      - hostPath:
+          path: /var/run/dbus/system_bus_socket
+          type: Socket
+        name: host-dbus-socket
