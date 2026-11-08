@@ -6,6 +6,7 @@ LAN addresses are defined by the services in this directory:
 
 | App          | URL                          |
 | ------------ | ---------------------------- |
+| Bazarr       | `http://192.168.18.230`      |
 | Dispatcharr  | `http://192.168.18.227`      |
 | Jellyfin     | `http://192.168.18.221:8096` |
 | Maintainerr  | `http://192.168.18.225:6246` |
@@ -16,6 +17,9 @@ LAN addresses are defined by the services in this directory:
 | Sonarr       | `http://192.168.18.224:8989` |
 | Transmission | `http://192.168.18.228`      |
 | Wizarr       | `http://192.168.18.226:5690` |
+
+Bazarr's config PVC uses `local-path` storage because its SQLite database is
+not supported on NFS.
 
 ## VPN credentials
 
