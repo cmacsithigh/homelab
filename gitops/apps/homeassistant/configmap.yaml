@@ -85,7 +85,7 @@ data:
       actions:
       - action: light.turn_on
         data:
-          brightness_pct: 66
+          brightness_pct: 100
         metadata: {}
         target:
           area_id:
@@ -102,7 +102,7 @@ data:
       actions:
       - action: light.turn_on
         data:
-          brightness_pct: 30
+          brightness_pct: 40
         metadata: {}
         target:
           area_id:
