@@ -22,7 +22,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: pi4-server
       containers:
-      - image: ghcr.io/cmacsithigh/snapserver:1.8.0
+      - image: ghcr.io/cmacsithigh/snapserver:1.11.0
         imagePullPolicy: Always
         name: snapserver
         securityContext:
