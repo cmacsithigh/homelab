@@ -1,0 +1,13 @@
+#EXTM3U
+#EXTINF:1,KEXP
+#EXTGENRE:Indie
+#PLAYLIST:KEXP
+#EXTIMG:kexp.jpg
+#HOMEPAGE:
+#COUNTRY:United States
+#STATE:
+#LANGUAGE:English
+#DESCRIPTION:
+#CODEC:MP3
+#BITRATE:192
+https://kexp.streamguys1.com/kexp160.aac

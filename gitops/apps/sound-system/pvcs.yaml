@@ -22,3 +22,15 @@ spec:
   resources:
     requests:
       storage: 100Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mympd
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: nfs-storage
+  resources:
+    requests:
+      storage: 512Mi
