@@ -6,7 +6,7 @@ metadata:
     app: mympd
   name: mympd
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: mympd
