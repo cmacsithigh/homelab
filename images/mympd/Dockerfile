@@ -1,4 +1,4 @@
-FROM ghcr.io/jcorporation/mympd/mympd:26.0.0
+FROM ghcr.io/jcorporation/mympd/mympd:26.1.3
 
 USER root
 
