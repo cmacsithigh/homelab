@@ -17,7 +17,7 @@ spec:
           - name: k8s-secret-key
           - name: proton-item-name
       container:
-        image: ghcr.io/cmacsithigh/protonpass:1.10.0
+        image: ghcr.io/cmacsithigh/protonpass:1.11.0
         imagePullPolicy: Always
         command: ["/bin/bash", "-c"]
         args:
