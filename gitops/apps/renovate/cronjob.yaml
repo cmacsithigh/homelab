@@ -29,7 +29,7 @@ spec:
           restartPolicy: Never
           containers:
           - name: renovate
-            image: ghcr.io/renovatebot/renovate:44.235.2 # {"$imagepolicy": "flux-system:renovate"}
+            image: ghcr.io/renovatebot/renovate:44.235.3 # {"$imagepolicy": "flux-system:renovate"}
             imagePullPolicy: Always
             env:
             - name: RENOVATE_CONFIG_FILE
