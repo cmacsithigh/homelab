@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,7 +16,7 @@ spec:
     spec:
       containers:
       - name: seerr
-        image: seerr/seerr:v3.5.1 # {"$imagepolicy": "flux-system:media-seerr"}
+        image: seerr/seerr:v3.5.2 # {"$imagepolicy": "flux-system:media-seerr"}
         ports:
         - containerPort: 5055
           name: http
