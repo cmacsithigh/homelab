@@ -35,6 +35,8 @@ spec:
       authDefaultAccess: read-write
       behindProxy: true
       enableMetrics: true
+      extraConfig: |
+        upstream-base-url: "https://ntfy.sh"
     persistence:
       enabled: true
       size: 1Gi
