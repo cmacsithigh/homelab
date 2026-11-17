@@ -22,8 +22,8 @@ spec:
         runAsNonRoot: false
       initContainers:
       - name: fix-data-perms
-        image: ghcr.io/dispatcharr/dispatcharr:0.34.0
-        command: [ "sh", "-c", "chown -R dispatcharr:dispatcharr /data/plugins || true; chmod -R g+uw /data/plugins || true" ]
+        image: ghcr.io/dispatcharr/dispatcharr:0.34.0 # {"$imagepolicy": "flux-system:media-dispatcharr"}
+        command: [ "sh", "-c", "chown -R 1000:1000 /data/plugins; chmod -R g+rwX /data/plugins" ]
         volumeMounts:
         - name: data
           mountPath: /data
