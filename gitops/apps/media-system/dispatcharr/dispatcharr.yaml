@@ -16,17 +16,6 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: rpi5-worker
-      securityContext:
-        runAsUser: 0
-        runAsGroup: 0
-        runAsNonRoot: false
-      initContainers:
-      - name: fix-data-perms
-        image: ghcr.io/dispatcharr/dispatcharr:0.34.0 # {"$imagepolicy": "flux-system:media-dispatcharr"}
-        command: [ "sh", "-c", "chown -R 1000:1000 /data/plugins; chmod -R g+rwX /data/plugins" ]
-        volumeMounts:
-        - name: data
-          mountPath: /data
       containers:
       - name: gluetun
         image: qmcgaw/gluetun:v3.41.3 # {"$imagepolicy": "flux-system:media-gluetun"}
@@ -62,7 +51,7 @@ spec:
           limits:
             memory: 256Mi
       - name: dispatcharr-web
-        image: ghcr.io/dispatcharr/dispatcharr:0.34.0 # {"$imagepolicy": "flux-system:media-dispatcharr"}
+        image: ghcr.io/dispatcharr/dispatcharr:0.33.0 # {"$imagepolicy": "flux-system:media-dispatcharr"}
         envFrom:
         - configMapRef:
             name: dispatcharr-config
@@ -82,14 +71,9 @@ spec:
           limits:
             memory: 2000Mi
       - name: dispatcharr-celery
-        image: ghcr.io/dispatcharr/dispatcharr:0.34.0 # {"$imagepolicy": "flux-system:media-dispatcharr"}
-        command: [ "/bin/bash", "-c" ]
-        args:
-        - |
-          set -e
-          echo "Applying gevent/flock workaround to loader.py"
-          sed -i 's/from gevent import sleep/import time/; s/sleep(0\.01)/time.sleep(0.01)/' /app/apps/plugins/loader.py
-          exec /app/docker/entrypoint.celery.sh
+        image: ghcr.io/dispatcharr/dispatcharr:0.33.0 # {"$imagepolicy": "flux-system:media-dispatcharr"}
+        command:
+        - /app/docker/entrypoint.celery.sh
         envFrom:
         - configMapRef:
             name: dispatcharr-config
