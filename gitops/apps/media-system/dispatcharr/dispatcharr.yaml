@@ -16,6 +16,10 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: rpi5-worker
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        runAsNonRoot: false
       containers:
       - name: gluetun
         image: qmcgaw/gluetun:v3.41.3 # {"$imagepolicy": "flux-system:media-gluetun"}
