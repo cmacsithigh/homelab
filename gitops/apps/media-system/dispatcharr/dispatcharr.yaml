@@ -83,8 +83,13 @@ spec:
             memory: 2000Mi
       - name: dispatcharr-celery
         image: ghcr.io/dispatcharr/dispatcharr:0.34.0 # {"$imagepolicy": "flux-system:media-dispatcharr"}
-        command:
-        - /app/docker/entrypoint.celery.sh
+        command: [ "/bin/bash", "-c" ]
+        args:
+        - |
+          set -e
+          echo "Applying gevent/flock workaround to loader.py"
+          sed -i 's/from gevent import sleep/import time/; s/sleep(0\.01)/time.sleep(0.01)/' /app/apps/plugins/loader.py
+          exec /app/docker/entrypoint.celery.sh
         envFrom:
         - configMapRef:
             name: dispatcharr-config
