@@ -20,6 +20,13 @@ spec:
         runAsUser: 0
         runAsGroup: 0
         runAsNonRoot: false
+      initContainers:
+      - name: fix-data-perms
+        image: ghcr.io/dispatcharr/dispatcharr:0.34.0
+        command: [ "sh", "-c", "chown -R dispatcharr:dispatcharr /data/plugins || true; chmod -R g+uw /data/plugins || true" ]
+        volumeMounts:
+        - name: data
+          mountPath: /data
       containers:
       - name: gluetun
         image: qmcgaw/gluetun:v3.41.3 # {"$imagepolicy": "flux-system:media-gluetun"}
