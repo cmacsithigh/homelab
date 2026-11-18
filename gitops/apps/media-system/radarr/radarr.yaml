@@ -16,33 +16,33 @@ spec:
         app: radarr
     spec:
       containers:
-        - name: radarr
-          image: lscr.io/linuxserver/radarr:7.0.3 # {"$imagepolicy": "flux-system:media-radarr"}
-          env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
-            - name: TZ
-              value: "UTC"
-          ports:
-            - containerPort: 7878
-              name: http
-          volumeMounts:
-            - name: config
-              mountPath: /config
-            - name: media-storage
-              mountPath: /data # Shared root folder across all apps
-          resources:
-            requests:
-              cpu: 100m
-              memory: 256Mi
-            limits:
-              memory: 1Gi
-      volumes:
+      - name: radarr
+        image: lscr.io/linuxserver/radarr:7.0.3 # {"$imagepolicy": "flux-system:media-radarr"}
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "UTC"
+        ports:
+        - containerPort: 7878
+          name: http
+        volumeMounts:
         - name: config
-          persistentVolumeClaim:
-            claimName: radarr-config-pvc
+          mountPath: /config
         - name: media-storage
-          persistentVolumeClaim:
-            claimName: media-storage-pvc
+          mountPath: /data # Shared root folder across all apps
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            memory: 1Gi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: radarr-conf
+      - name: media-storage
+        persistentVolumeClaim:
+          claimName: media-storage-pvc
