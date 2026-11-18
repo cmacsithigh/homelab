@@ -26,14 +26,8 @@ spec:
         volumeMounts:
         - mountPath: /fifo
           name: fifo
-        - mountPath: /var/lib/mpd/playlists
-          name: mympd
-          subPath: playlists
       hostname: mpd
       volumes:
       - name: fifo
         persistentVolumeClaim:
           claimName: mpd-fifo
-      - name: mympd
-        persistentVolumeClaim:
-          claimName: mympd
