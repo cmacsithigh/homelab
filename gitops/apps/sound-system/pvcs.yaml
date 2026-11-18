@@ -14,23 +14,23 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mpd-fifo
+  name: music-assistant-data
 spec:
   accessModes:
   - ReadWriteMany
-  storageClassName: nfs-storage
+  storageClassName: nfs-internal-ssd
   resources:
     requests:
-      storage: 100Mi
+      storage: 5Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mympd
+  name: mpd-fifo
 spec:
   accessModes:
   - ReadWriteMany
-  storageClassName: nfs-storage
+  storageClassName: nfs-internal-ssd
   resources:
     requests:
-      storage: 512Mi
+      storage: 100Mi
