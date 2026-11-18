@@ -20,10 +20,7 @@ spec:
         - /bin/sh
         - -ec
         - >-
-          apk add --no-cache rsync &&
-          rsync -av --itemize-changes --human-readable --info=progress2 --stats
-          "/transfer/source/media/media/movies/"
-          "/transfer/target/media/media/movies/"
+          apk add --no-cache rsync && rsync -av --itemize-changes --human-readable --info=progress2 --stats "/transfer/source/media/media/tv/" "/transfer/target/media/media/tv/"
         resources:
           requests:
             cpu: 100m
