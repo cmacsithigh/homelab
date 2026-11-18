@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: media-transfer
+  name: media-transfer-tv
   labels:
     app.kubernetes.io/name: media-transfer
 spec:
