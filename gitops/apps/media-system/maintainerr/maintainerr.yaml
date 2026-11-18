@@ -42,4 +42,4 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: maintainerr-data
+          claimName: maintainerr-conf

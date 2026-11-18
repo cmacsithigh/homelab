@@ -56,7 +56,7 @@ spec:
       volumes:
       - name: config
         persistentVolumeClaim:
-          claimName: nzbget-config
+          claimName: nzbget-conf
       - name: scripts
         configMap:
           name: nzbget-scripts
