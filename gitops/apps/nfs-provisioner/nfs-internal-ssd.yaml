@@ -2,35 +2,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nfs-client-provisioner
+  name: nfs-internal-ssd
   labels:
-    app: nfs-client-provisioner
+    app: nfs-internal-ssd
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: nfs-client-provisioner
+      app: nfs-internal-ssd
   template:
     metadata:
       labels:
-        app: nfs-client-provisioner
+        app: nfs-internal-ssd
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: rpi5-worker
       serviceAccountName: nfs-client-provisioner
       containers:
-      - name: nfs-client-provisioner
+      - name: app
         image: registry.k8s.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
         volumeMounts:
         - name: nfs-client-root
           mountPath: /persistentvolumes
         env:
         - name: PROVISIONER_NAME
-          value: k3s-nfs-storage
+          value: nfs-internal-ssd
         - name: NFS_SERVER
-          value: "192.168.18.10"
+          value: "192.168.18.14"
         - name: NFS_PATH
-          value: "/mnt/nfs"
+          value: "/mnt/data/nfs"
         requests:
           cpu: 20m
           memory: 64Mi
@@ -39,5 +41,5 @@ spec:
       volumes:
       - name: nfs-client-root
         nfs:
-          server: "192.168.18.10"
-          path: "/mnt/nfs"
+          server: "192.168.18.14"
+          path: "/mnt/data/nfs"

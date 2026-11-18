@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-external-hhd
+  labels:
+    app: nfs-external-hhd
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-external-hhd
+  template:
+    metadata:
+      labels:
+        app: nfs-external-hhd
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: pi4-server
+      serviceAccountName: nfs-client-provisioner
+      containers:
+      - name: app
+        image: registry.k8s.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
+        volumeMounts:
+        - name: nfs-client-root
+          mountPath: /persistentvolumes
+        env:
+        - name: PROVISIONER_NAME
+          value: nfs-external-hhd
+        - name: NFS_SERVER
+          value: "192.168.18.10"
+        - name: NFS_PATH
+          value: "/mnt/nfs"
+        requests:
+          cpu: 20m
+          memory: 64Mi
+        limits:
+          memory: 512Mi
+      volumes:
+      - name: nfs-client-root
+        nfs:
+          server: "192.168.18.10"
+          path: "/mnt/nfs"

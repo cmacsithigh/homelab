@@ -3,7 +3,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: nfs-provisioner
 resources:
-  - namespce.yaml
-  - nfs-client-provisioner.yaml
-  - roles.yaml
-  - serviceaccount.yaml
+- namespce.yaml
+- nfs-external-hhd.yaml
+- nfs-internal-ssd.yaml
+- roles.yaml
+- serviceaccount.yaml

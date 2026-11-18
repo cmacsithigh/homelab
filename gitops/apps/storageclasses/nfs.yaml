@@ -2,6 +2,22 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: nfs-storage
-provisioner: k3s-nfs-storage
+provisioner: nfs-external-hhd
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-external-hhd
+provisioner: nfs-external-hhd
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-internal-ssd
+provisioner: nfs-internal-ssd
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
