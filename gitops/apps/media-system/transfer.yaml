@@ -1,27 +1,29 @@
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: media-transfer
   labels:
     app.kubernetes.io/name: media-transfer
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: media-transfer
+  backoffLimit: 1
   template:
     metadata:
       labels:
         app.kubernetes.io/name: media-transfer
     spec:
+      restartPolicy: Never
       containers:
       - name: transfer
         image: alpine:3.22
         command:
         - /bin/sh
         - -ec
-        - apk add --no-cache rsync && exec sleep 2147483647
+        - >-
+          apk add --no-cache rsync &&
+          rsync -av --itemize-changes --human-readable --info=progress2 --stats
+          "/transfer/source/media/media/movies/"
+          "/transfer/target/media/media/movies/"
         resources:
           requests:
             cpu: 100m

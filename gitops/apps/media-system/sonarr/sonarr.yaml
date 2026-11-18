@@ -44,4 +44,4 @@ spec:
           claimName: sonarr-conf
       - name: media-storage
         persistentVolumeClaim:
-          claimName: media-storage-pvc
+          claimName: media-storage

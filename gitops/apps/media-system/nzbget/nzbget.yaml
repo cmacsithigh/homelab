@@ -62,4 +62,4 @@ spec:
           name: nzbget-scripts
       - name: media-storage
         persistentVolumeClaim:
-          claimName: media-storage-pvc # Shared storage PVC across Servarr apps
+          claimName: media-storage

@@ -65,4 +65,4 @@ spec:
           sizeLimit: 10Gi
       - name: media-storage
         persistentVolumeClaim:
-          claimName: media-storage-pvc
+          claimName: media-storage
