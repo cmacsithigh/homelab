@@ -11,9 +11,10 @@ data:
       path: /config/data.db
     alerting:
       ntfy:
-        url: http://ntfy.ntfy-system.svc.cluster.local
+        url: http://ntfy-ntfy.ntfy-system.svc.cluster.local
         topic: homelab
         default-alert:
+          enabled: true
           failure-threshold: 3
           success-threshold: 3
           send-on-resolved: true
