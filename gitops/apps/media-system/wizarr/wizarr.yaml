@@ -15,24 +15,24 @@ spec:
         app: wizarr
     spec:
       containers:
-        - name: wizarr
-          image: ghcr.io/wizarrrr/wizarr:v2026.10.1 # {"$imagepolicy": "flux-system:media-wizarr"}
-          ports:
-            - containerPort: 5690
-              name: http
-          env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
-            - name: DISABLE_BUILTIN_AUTH
-              value: "false"
-            - name: TZ
-              value: Etc/UTC
-          volumeMounts:
-            - name: data
-              mountPath: /data
-      volumes:
+      - name: wizarr
+        image: ghcr.io/wizarrrr/wizarr:v2026.10.1 # {"$imagepolicy": "flux-system:media-wizarr"}
+        ports:
+        - containerPort: 5690
+          name: http
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: DISABLE_BUILTIN_AUTH
+          value: "false"
+        - name: TZ
+          value: Etc/UTC
+        volumeMounts:
         - name: data
-          persistentVolumeClaim:
-            claimName: wizarr-data
+          mountPath: /data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: wizarr-conf
