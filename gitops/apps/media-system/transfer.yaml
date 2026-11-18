@@ -1,0 +1,142 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: media-transfer
+  labels:
+    app.kubernetes.io/name: media-transfer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: media-transfer
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: media-transfer
+    spec:
+      containers:
+        - name: transfer
+          image: busybox:1.38.0
+          command:
+            - sh
+            - -c
+            - exec sleep 2147483647
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
+          volumeMounts:
+            - name: source-dispatcharr
+              mountPath: /transfer/source/dispatcharr
+              readOnly: true
+            - name: target-dispatcharr
+              mountPath: /transfer/target/dispatcharr
+            - name: source-jellyfin
+              mountPath: /transfer/source/jellyfin
+              readOnly: true
+            - name: target-jellyfin
+              mountPath: /transfer/target/jellyfin
+            - name: source-maintainerr
+              mountPath: /transfer/source/maintainerr
+              readOnly: true
+            - name: target-maintainerr
+              mountPath: /transfer/target/maintainerr
+            - name: source-nzbget
+              mountPath: /transfer/source/nzbget
+              readOnly: true
+            - name: target-nzbget
+              mountPath: /transfer/target/nzbget
+            - name: source-prowlarr
+              mountPath: /transfer/source/prowlarr
+              readOnly: true
+            - name: target-prowlarr
+              mountPath: /transfer/target/prowlarr
+            - name: source-radarr
+              mountPath: /transfer/source/radarr
+              readOnly: true
+            - name: target-radarr
+              mountPath: /transfer/target/radarr
+            - name: source-seerr
+              mountPath: /transfer/source/seerr
+              readOnly: true
+            - name: target-seerr
+              mountPath: /transfer/target/seerr
+            - name: source-sonarr
+              mountPath: /transfer/source/sonarr
+              readOnly: true
+            - name: target-sonarr
+              mountPath: /transfer/target/sonarr
+            - name: source-wizarr
+              mountPath: /transfer/source/wizarr
+              readOnly: true
+            - name: target-wizarr
+              mountPath: /transfer/target/wizarr
+            - name: source-media
+              mountPath: /transfer/source/media
+              readOnly: true
+            - name: target-media
+              mountPath: /transfer/target/media
+      volumes:
+        - name: source-dispatcharr
+          persistentVolumeClaim:
+            claimName: dispatcharr-data
+        - name: target-dispatcharr
+          persistentVolumeClaim:
+            claimName: dispatcharr-conf
+        - name: source-jellyfin
+          persistentVolumeClaim:
+            claimName: jellyfin-config-pvc
+        - name: target-jellyfin
+          persistentVolumeClaim:
+            claimName: jellyfin-conf
+        - name: source-maintainerr
+          persistentVolumeClaim:
+            claimName: maintainerr-data
+        - name: target-maintainerr
+          persistentVolumeClaim:
+            claimName: maintainerr-conf
+        - name: source-nzbget
+          persistentVolumeClaim:
+            claimName: nzbget-config
+        - name: target-nzbget
+          persistentVolumeClaim:
+            claimName: nzbget-conf
+        - name: source-prowlarr
+          persistentVolumeClaim:
+            claimName: prowlarr-config
+        - name: target-prowlarr
+          persistentVolumeClaim:
+            claimName: prowlarr-conf
+        - name: source-radarr
+          persistentVolumeClaim:
+            claimName: radarr-config-pvc
+        - name: target-radarr
+          persistentVolumeClaim:
+            claimName: radarr-conf
+        - name: source-seerr
+          persistentVolumeClaim:
+            claimName: seerr-config
+        - name: target-seerr
+          persistentVolumeClaim:
+            claimName: seerr-conf
+        - name: source-sonarr
+          persistentVolumeClaim:
+            claimName: sonarr-config-pvc
+        - name: target-sonarr
+          persistentVolumeClaim:
+            claimName: sonarr-conf
+        - name: source-wizarr
+          persistentVolumeClaim:
+            claimName: wizarr-data
+        - name: target-wizarr
+          persistentVolumeClaim:
+            claimName: wizarr-conf
+        - name: source-media
+          persistentVolumeClaim:
+            claimName: media-storage-pvc
+        - name: target-media
+          persistentVolumeClaim:
+            claimName: media-storage
