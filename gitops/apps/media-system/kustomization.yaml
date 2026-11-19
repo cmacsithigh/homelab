@@ -12,6 +12,5 @@ resources:
 - seerr
 - sonarr
 - wizarr
-- transfer.yaml
 - shared-pvc.yaml
 - namespace.yaml
