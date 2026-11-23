@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: prowlarr
-        image: lscr.io/linuxserver/prowlarr:3.0.2 # {"$imagepolicy": "flux-system:media-prowlarr"}
+        image: lscr.io/linuxserver/prowlarr:3.1.0 # {"$imagepolicy": "flux-system:media-prowlarr"}
         env:
         - name: PUID
           value: "1000"
