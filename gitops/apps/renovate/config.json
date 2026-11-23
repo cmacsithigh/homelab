@@ -54,20 +54,5 @@
     },
     "helmfile": {
         "managerFilePatterns": ["/^.*\\.yaml$/"]
-    },
-    "packageRules": [
-        {
-            "description": "Automerge all non-major Docker image updates",
-            "matchDatasources": ["docker"],
-            "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
-            "automerge": true,
-            "platformAutomerge": true
-        },
-        {
-            "description": "Never automerge major Docker updates",
-            "matchDatasources": ["docker"],
-            "matchUpdateTypes": ["major"],
-            "automerge": false
-        }
-    ]
+    }
 }
