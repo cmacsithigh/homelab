@@ -19,27 +19,27 @@ spec:
     semver:
       range: ">=0.0.1"
 
-# ---
-# apiVersion: image.toolkit.fluxcd.io/v1
-# kind: ImageRepository
-# metadata:
-#   name: media-dispatcharr
-#   namespace: flux-system
-# spec:
-#   image: ghcr.io/dispatcharr/dispatcharr
-#   interval: 1h
-# ---
-# apiVersion: image.toolkit.fluxcd.io/v1
-# kind: ImagePolicy
-# metadata:
-#   name: media-dispatcharr
-#   namespace: flux-system
-# spec:
-#   imageRepositoryRef:
-#     name: media-dispatcharr
-#   policy:
-#     semver:
-#       range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: media-dispatcharr
+  namespace: flux-system
+spec:
+  image: ghcr.io/dispatcharr/dispatcharr
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: media-dispatcharr
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: media-dispatcharr
+  policy:
+    semver:
+      range: ">=0.0.1"
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
