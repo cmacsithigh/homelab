@@ -32,3 +32,4 @@ spec:
   targetNamespace: volsync-system
   values:
     replicaCount: 1
+    manageCRDs: true
