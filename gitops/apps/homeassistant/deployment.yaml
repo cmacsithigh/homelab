@@ -18,7 +18,7 @@ spec:
     spec:
       initContainers:
       - name: copy-config
-        image: 1.38.0 # {"$imagepolicy": "flux-system:busybox"}
+        image: busybox:1.38.0 # {"$imagepolicy": "flux-system:busybox"}
         command:
         - sh
         - -c
