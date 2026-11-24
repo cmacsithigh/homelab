@@ -9,7 +9,7 @@ spec:
   eventSeverity: info
   eventSources:
   - kind: ImageUpdateAutomation
-    name: ''
+    name: '*'
   eventMetadata:
     summary: "Flux image update"
   exclusionList:
