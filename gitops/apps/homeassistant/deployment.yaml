@@ -57,8 +57,6 @@ spec:
         volumeMounts:
         - mountPath: /config
           name: config
-        - mountPath: /config-data
-          name: data
         - mountPath: /etc/localtime
           name: localtime
           readOnly: true
@@ -67,9 +65,6 @@ spec:
           readOnly: true
       volumes:
       - name: config
-        persistentVolumeClaim:
-          claimName: homeassistant
-      - name: data
         persistentVolumeClaim:
           claimName: homeassistant-data
       - name: homeassistant-config
