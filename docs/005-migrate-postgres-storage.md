@@ -69,6 +69,9 @@ kubectl exec -n media-system dispatcharr-pg-1 -- psql -U postgres -d postgres -t
    resource is only safe if its existing data PVCs are retained and reused, or
    if you have a separate tested backup/restore procedure. The old source is
    not a valid recovery copy after cutover because it stops receiving writes.
+   Replacing this stanza with `initdb` would not change the running database;
+   on empty storage it would create a new, empty database rather than restore
+   Dispatcharr's data.
    Reconcile this change and wait for Flux to report it healthy.
 6. Remove the old `dispatcharr-postgres` Cluster resource only in a subsequent
    change.
