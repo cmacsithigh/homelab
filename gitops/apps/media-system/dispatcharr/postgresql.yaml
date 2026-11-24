@@ -17,3 +17,45 @@ spec:
   storage:
     storageClass: nfs-storage
     size: 5Gi
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: dispatcharr-pg
+spec:
+  affinity:
+    nodeSelector:
+      kubernetes.io/hostname: rpi5-worker
+  inheritedMetadata:
+    annotations:
+      gatus.home-operations.com/enabled: "false"
+  instances: 1
+  bootstrap:
+    pg_basebackup:
+      database: dispatcharr
+      owner: dispatcharr
+      secret:
+        name: dispatcharr-postgres-app
+      source: dispatcharr-postgres
+  replica:
+    enabled: true
+    source: dispatcharr-postgres
+  externalClusters:
+  - name: dispatcharr-postgres
+    connectionParameters:
+      host: dispatcharr-postgres-rw.media-system.svc
+      user: streaming_replica
+      dbname: postgres
+      sslmode: verify-full
+    sslKey:
+      name: dispatcharr-postgres-replication
+      key: tls.key
+    sslCert:
+      name: dispatcharr-postgres-replication
+      key: tls.crt
+    sslRootCert:
+      name: dispatcharr-postgres-ca
+      key: ca.crt
+  storage:
+    storageClass: nfs-internal-ssd
+    size: 5Gi

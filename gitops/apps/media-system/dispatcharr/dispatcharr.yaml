@@ -5,7 +5,7 @@ metadata:
   labels:
     app: dispatcharr
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: dispatcharr
