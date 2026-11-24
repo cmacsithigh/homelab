@@ -5,4 +5,12 @@ resources:
 - https://raw.githubusercontent.com/fluxcd/image-reflector-controller/main/config/crd/bases/image.toolkit.fluxcd.io_imagerepositories.yaml
 - https://raw.githubusercontent.com/fluxcd/image-reflector-controller/main/config/crd/bases/image.toolkit.fluxcd.io_imagepolicies.yaml
 - https://raw.githubusercontent.com/fluxcd/image-automation-controller/main/config/crd/bases/image.toolkit.fluxcd.io_imageupdateautomations.yaml
+
+- https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.7.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotclasses.yaml
+- https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.7.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotcontents.yaml
+- https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.7.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshots.yaml
+- https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.7.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshotclasses.yaml
+- https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.7.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshotcontents.yaml
+- https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.7.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshots.yaml
+
 - rbac.yaml
