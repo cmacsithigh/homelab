@@ -14,8 +14,6 @@ metadata:
   name: volsync
   namespace: flux-system
 spec:
-  interval: 30m
-  timeout: 5m
   releaseName: volsync
   chart:
     spec:
