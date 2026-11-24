@@ -5,7 +5,7 @@ metadata:
 data:
   DISPATCHARR_ENV: modular
   DISPATCHARR_LOG_LEVEL: info
-  POSTGRES_HOST: dispatcharr-postgres-rw
+  POSTGRES_HOST: dispatcharr-pg-rw
   POSTGRES_PORT: "5432"
   POSTGRES_DB: dispatcharr
   POSTGRES_USER: dispatcharr
