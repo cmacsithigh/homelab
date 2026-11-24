@@ -38,7 +38,7 @@ spec:
         name: dispatcharr-postgres-app
       source: dispatcharr-postgres
   replica:
-    enabled: true
+    enabled: false
     source: dispatcharr-postgres
   externalClusters:
   - name: dispatcharr-postgres
