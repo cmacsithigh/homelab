@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: radarr
-        image: lscr.io/linuxserver/radarr:7.0.3 # {"$imagepolicy": "flux-system:media-radarr"}
+        image: ghcr.io/hotio/radarr:release-7.0.3.10918 # {"$imagepolicy": "flux-system:media-radarr"}
         env:
         - name: PUID
           value: "1000"

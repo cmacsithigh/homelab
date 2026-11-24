@@ -91,7 +91,7 @@ metadata:
   name: media-sonarr
   namespace: flux-system
 spec:
-  image: lscr.io/linuxserver/sonarr
+  image: ghcr.io/hotio/sonarr
   interval: 1h
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
@@ -102,9 +102,12 @@ metadata:
 spec:
   imageRepositoryRef:
     name: media-sonarr
+  filterTags:
+    pattern: '^release-([0-9]+\.[0-9]+\.[0-9]+)\.([0-9]+)$'
+    extract: '$1-$2'
   policy:
     semver:
-      range: ">=0.0.1"
+      range: ">=0.0.1-0"
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
@@ -181,7 +184,7 @@ metadata:
   name: media-prowlarr
   namespace: flux-system
 spec:
-  image: lscr.io/linuxserver/prowlarr
+  image: ghcr.io/hotio/prowlarr
   interval: 1h
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
@@ -192,9 +195,12 @@ metadata:
 spec:
   imageRepositoryRef:
     name: media-prowlarr
+  filterTags:
+    pattern: '^release-([0-9]+\.[0-9]+\.[0-9]+)\.([0-9]+)$'
+    extract: '$1-$2'
   policy:
     semver:
-      range: ">=0.0.1"
+      range: ">=0.0.1-0"
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
@@ -223,7 +229,7 @@ metadata:
   name: media-radarr
   namespace: flux-system
 spec:
-  image: lscr.io/linuxserver/radarr
+  image: ghcr.io/hotio/radarr
   interval: 1h
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
@@ -234,9 +240,12 @@ metadata:
 spec:
   imageRepositoryRef:
     name: media-radarr
+  filterTags:
+    pattern: '^release-([0-9]+\.[0-9]+\.[0-9]+)\.([0-9]+)$'
+    extract: '$1-$2'
   policy:
     semver:
-      range: ">=0.0.1"
+      range: ">=0.0.1-0"
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
