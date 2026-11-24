@@ -51,7 +51,7 @@ spec:
     postgresql:
       enabled: false
     externalDatabase:
-      host: keycloak-postgresql-rw
+      host: keycloak-pg-rw
       port: 5432
       user: keycloak
       database: keycloak
