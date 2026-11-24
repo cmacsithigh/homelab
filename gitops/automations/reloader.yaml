@@ -1,0 +1,46 @@
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: reloader-chart
+  namespace: flux-system
+spec:
+  image: ghcr.io/stakater/charts/reloader
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: reloader-chart
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: reloader-chart
+  policy:
+    semver:
+      range: ">=2.0.0 <3.0.0"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageUpdateAutomation
+metadata:
+  name: reloader-chart
+  namespace: flux-system
+spec:
+  interval: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  update:
+    strategy: Setters
+    path: ./gitops/apps/reloader/helm.yaml
+  git:
+    checkout:
+      ref:
+        branch: main
+    commit:
+      author:
+        email: fluxcdbot@users.noreply.github.com
+        name: fluxcdbot
+      messageTemplate: "chore(infra): {{ .Changed.Summary }}"
+    push:
+      branch: main
