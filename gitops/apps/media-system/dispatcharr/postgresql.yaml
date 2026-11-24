@@ -15,8 +15,6 @@ spec:
     initdb:
       database: dispatcharr
       owner: dispatcharr
-      secret:
-        name: dispatcharr-postgres-app
   storage:
     storageClass: nfs-internal-ssd
     size: 5Gi
