@@ -62,16 +62,15 @@ kubectl exec -n media-system dispatcharr-pg-1 -- psql -U postgres -d postgres -t
    - The entire `spec.externalClusters` section, including the source
      connection parameters and replication TLS secret references.
 
-   `spec.bootstrap.pg_basebackup` is only used to initialize an empty target;
-   it does not maintain replication or provide a backup. It can remain as
-   initialization history, but after removing `externalClusters` and the
-   source cluster it cannot bootstrap a fresh target. Recreating the Cluster
-   resource is only safe if its existing data PVCs are retained and reused, or
-   if you have a separate tested backup/restore procedure. The old source is
-   not a valid recovery copy after cutover because it stops receiving writes.
-   Replacing this stanza with `initdb` would not change the running database;
-   on empty storage it would create a new, empty database rather than restore
-   Dispatcharr's data.
+   Replace the target's `bootstrap.pg_basebackup` stanza with `bootstrap.initdb`,
+   keeping the same database, owner, and application-user secret. The existing
+   cluster is already initialized, so this declaration change does not
+   reinitialize its running data; it removes the bootstrap source reference
+   required by the admission webhook. If the Cluster is later recreated with
+   empty storage, `initdb` creates an empty database, not a restore. Recovery
+   still requires retained data PVCs or a separately tested backup/restore
+   procedure; the old source is not a valid recovery copy after cutover because
+   it stops receiving writes.
    Reconcile this change and wait for Flux to report it healthy.
 6. Remove the old `dispatcharr-postgres` Cluster resource only in a subsequent
    change.
