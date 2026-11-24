@@ -34,25 +34,6 @@ spec:
       secret:
         name: keycloak-postgresql-app
       source: keycloak-postgresql
-  replica:
-    enabled: true
-    source: keycloak-postgresql
-  externalClusters:
-  - name: keycloak-postgresql
-    connectionParameters:
-      host: keycloak-postgresql-rw.keycloak-system.svc
-      user: streaming_replica
-      dbname: postgres
-      sslmode: verify-full
-    sslKey:
-      name: keycloak-postgresql-replication
-      key: tls.key
-    sslCert:
-      name: keycloak-postgresql-replication
-      key: tls.crt
-    sslRootCert:
-      name: keycloak-postgresql-ca
-      key: ca.crt
   storage:
     storageClass: nfs-internal-ssd
     size: 1Gi
