@@ -15,7 +15,6 @@ LAN addresses are defined by the services in this directory:
 | Radarr       | `http://192.168.18.223:7878` |
 | Seerr        | `http://192.168.18.220:5055` |
 | Sonarr       | `http://192.168.18.224:8989` |
-| Transmission | `http://192.168.18.228`      |
 | Wizarr       | `http://192.168.18.226:5690` |
 
 Bazarr's config PVC uses `local-path` storage because its SQLite database is
@@ -23,7 +22,7 @@ not supported on NFS.
 
 ## VPN credentials
 
-Dispatcharr and Transmission use the `openvpn-user` and `openvpn-password`
+Dispatcharr use the `openvpn-user` and `openvpn-password`
 secrets in the `media-system` namespace.
 
 CloudNativePG creates the `dispatcharr` database and user and generates the
@@ -38,13 +37,3 @@ under **Settings > Extension Scripts** and set:
 
 - `NTFY_URL`: `http://ntfy.ntfy-system.svc.cluster.local`
 - `NTFY_TOPIC`: `homelab`
-
-## Transmission
-
-To access Transmission locally:
-
-```bash
-kubectl -n media-system port-forward service/transmission 9091:80
-```
-
-Then open `http://localhost:9091`.
