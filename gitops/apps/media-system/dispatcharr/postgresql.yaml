@@ -12,12 +12,9 @@ spec:
       gatus.home-operations.com/enabled: "false"
   instances: 1
   bootstrap:
-    pg_basebackup:
+    initdb:
       database: dispatcharr
       owner: dispatcharr
-      secret:
-        name: dispatcharr-postgres-app
-      source: dispatcharr-postgres
   storage:
     storageClass: nfs-internal-ssd
     size: 5Gi
