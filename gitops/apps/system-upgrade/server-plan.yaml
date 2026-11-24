@@ -17,13 +17,13 @@ spec:
   upgrade:
     image: rancher/k3s-upgrade
   channel: https://update.k3s.io/v1-release/channels/stable
-  # window:
-  #   days:
-  #   - monday
-  #   - tuesday
-  #   - wednesday
-  #   - thursday
-  #   - friday
-  #   startTime: 01:00
-  #   endTime: 05:00
-  #   timeZone: UTC
+  window:
+    days:
+    - monday
+    - tuesday
+    - wednesday
+    - thursday
+    - friday
+    startTime: 01:00
+    endTime: 05:00
+    timeZone: UTC
