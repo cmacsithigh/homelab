@@ -6,6 +6,9 @@ metadata:
 spec:
   interval: 120m
   url: oci://ghcr.io/cloudnative-pg/charts/cloudnative-pg
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy
   ref:
     tag: 0.29.2 # {"$imagepolicy": "flux-system:cloudnative-pg-chart:tag"}
 ---
