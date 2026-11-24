@@ -6,3 +6,5 @@ metadata:
 spec:
   type: generic
   address: https://ntfy.ciansheehy.co/homelab
+  secretRef:
+    name: ntfy-template-headers

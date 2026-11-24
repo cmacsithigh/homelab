@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ntfy-template-headers
+  namespace: flux-system
+type: Opaque
+stringData:
+  headers: |
+    X-Template: yes
+    X-Title: Flux image update: {{ .involvedObject.name }}
+    X-Message: {{- $lines := splitList "\n" .message -}}{{- if gt (len $lines) 1 -}}{{ index $lines 1 }}{{- else -}}{{ .message }}{{- end -}}
+    X-Priority: {{ if eq .severity "error" }}4{{ else }}3{{ end }}
+    X-Tags: {{ if eq .severity "error" }}warning{{ else }}heavy_check_mark{{ end }}
