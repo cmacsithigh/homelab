@@ -12,5 +12,5 @@ spec:
     name: '*'
   eventMetadata:
     summary: "Flux image update"
-  exclusionList:
-  - "(?i)renovate"
+  # exclusionList: # comment out while testing
+  # - "(?i)renovate"
