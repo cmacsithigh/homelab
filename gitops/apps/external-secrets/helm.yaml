@@ -8,6 +8,9 @@ metadata:
 spec:
   interval: 120m
   url: oci://ghcr.io/external-secrets/charts/external-secrets
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy
   ref:
     tag: 2.15.0 # {"$imagepolicy": "flux-system:external-secrets-chart:tag"}
 ---

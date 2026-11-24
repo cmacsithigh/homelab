@@ -6,6 +6,9 @@ metadata:
 spec:
   interval: 120m
   url: oci://ghcr.io/argoproj/argo-helm/argo-workflows
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy
   ref:
     tag: 2.0.18 # {"$imagepolicy": "flux-system:argo-workflows:tag"}
 ---
