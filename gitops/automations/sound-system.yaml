@@ -1,0 +1,88 @@
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: music-assistant
+  namespace: flux-system
+spec:
+  image: ghcr.io/music-assistant/server
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: music-assistant
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: music-assistant
+  policy:
+    semver:
+      range: ">=0.0.1 <3.0.0"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: snapserver
+  namespace: flux-system
+spec:
+  image: ghcr.io/cmacsithigh/snapserver
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: snapserver
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: snapserver
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: mpd
+  namespace: flux-system
+spec:
+  image: ghcr.io/cmacsithigh/mpd
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: mpd
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: mpd
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageUpdateAutomation
+metadata:
+  name: sound-system
+  namespace: flux-system
+spec:
+  interval: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  update:
+    strategy: Setters
+    path: ./gitops/apps/sound-system
+  git:
+    checkout:
+      ref:
+        branch: main
+    commit:
+      author:
+        email: fluxcdbot@users.noreply.github.com
+        name: fluxcdbot
+      messageTemplate: "chore(infra): {{ .Changed.Summary }}"
+    push:
+      branch: main

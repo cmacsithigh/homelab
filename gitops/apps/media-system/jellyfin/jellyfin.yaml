@@ -18,7 +18,7 @@ spec:
         kubernetes.io/hostname: rpi5-worker
       initContainers:
       - name: init-data-dirs
-        image: busybox:1.38.0 # {"$imagepolicy": "flux-system:media-busybox"}
+        image: busybox:1.38.0 # {"$imagepolicy": "flux-system:busybox"}
         command:
         - sh
         - -c

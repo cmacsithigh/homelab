@@ -20,7 +20,7 @@ spec:
         kubernetes.io/hostname: pi4-server
       containers:
       - name: server
-        image: ghcr.io/music-assistant/server:2.10.13
+        image: ghcr.io/music-assistant/server:2.10.13 # {"$imagepolicy": "flux-system:music-assistant"}
         securityContext:
           privileged: true
         volumeMounts:
