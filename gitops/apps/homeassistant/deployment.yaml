@@ -28,7 +28,7 @@ spec:
           cp -aL /tmp/homeassistant-config/. /config/;
           echo "Copy complete";
 
-          ehco "Permissions set to 777 for /config";
+          echo "Permissions set to 777 for /config";
           chmod -R 777 /config;
 
           echo "Config files in /config:";
