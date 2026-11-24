@@ -2,7 +2,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: keycloak-postgresql
+  name: keycloak-pg
   namespace: keycloak-system
 spec:
   inheritedMetadata:
@@ -13,27 +13,6 @@ spec:
     initdb:
       database: keycloak
       owner: keycloak
-  storage:
-    storageClass: nfs-storage
-    size: 1Gi
----
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
-metadata:
-  name: keycloak-pg
-  namespace: keycloak-system
-spec:
-  inheritedMetadata:
-    annotations:
-      gatus.home-operations.com/enabled: "false"
-  instances: 1
-  bootstrap:
-    pg_basebackup:
-      database: keycloak
-      owner: keycloak
-      secret:
-        name: keycloak-postgresql-app
-      source: keycloak-postgresql
   storage:
     storageClass: nfs-internal-ssd
     size: 1Gi
