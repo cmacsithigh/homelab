@@ -4,5 +4,5 @@ metadata:
   name: ntfy
   namespace: flux-system
 spec:
-  generic: ntfy
+  type: generic
   address: https://ntfy.ciansheehy.co/homelab
