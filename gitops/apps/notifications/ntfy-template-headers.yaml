@@ -9,5 +9,5 @@ stringData:
     X-Template: "yes"
     X-Title: '{{ .involvedObject.name }} image update'
     X-Message: '\n{{- $lines := splitList "\n" .message -}}{{- if gt (len $lines) 1 -}}{{ index $lines 1 }}{{- else -}}{{ .message }}{{- end -}}'
-    X-Priority: '{{ if eq .severity "error" }}5{{ else }}3{{ end }}'
+    X-Priority: '{{ if eq .severity "error" }}4{{ else }}3{{ end }}'
     X-Tags: 'rocket'

@@ -10,7 +10,7 @@ spec:
   eventSources:
   - kind: ImageUpdateAutomation
     name: '*'
+  exclusionList:
+  - "repository up-to-date"
   eventMetadata:
     summary: "Flux image update"
-  # exclusionList: # comment out while testing
-  # - "(?i)renovate"
