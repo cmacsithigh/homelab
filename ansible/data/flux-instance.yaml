@@ -17,6 +17,7 @@ spec:
   - helm-controller
   - image-reflector-controller
   - image-automation-controller
+  - notification-controller
   cluster:
     size: small
     networkPolicy: false
