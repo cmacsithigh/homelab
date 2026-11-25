@@ -13,5 +13,6 @@ spec:
   exclusionList:
   - "repository up-to-date"
   - "(?i)failed to checkout source"
+  - "(?i)renovate"
   eventMetadata:
     summary: "Flux image update"
