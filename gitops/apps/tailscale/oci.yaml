@@ -1,13 +1,18 @@
 # https://github.com/tailscale/tailscale/blob/main/cmd/k8s-operator/deploy/chart/values.yaml
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: OCIRepository
 metadata:
-  name: tailscale
+  name: tailscale-operator
   namespace: flux-system
 spec:
   interval: 120m
-  url: https://pkgs.tailscale.com/helmcharts
+  url: oci://ghcr.io/home-operations/charts-mirror/tailscale-operator
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy
+  ref:
+    tag: 1.104.7 # {"$imagepolicy": "flux-system:tailscale-operator-chart:tag"}
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -16,14 +21,10 @@ metadata:
   namespace: flux-system
 spec:
   releaseName: tailscale-operator
-  chart:
-    spec:
-      chart: tailscale-operator
-      version: 1.104.7
-      sourceRef:
-        kind: HelmRepository
-        name: tailscale
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: tailscale-operator
+    namespace: flux-system
   install:
     createNamespace: true
     remediation:

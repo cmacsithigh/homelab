@@ -1,20 +1,20 @@
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
 metadata:
-  name: headlamp
+  name: headlamp-chart
   namespace: flux-system
 spec:
-  image: ghcr.io/home-operations/headlamp
+  image: ghcr.io/home-operations/charts-mirror/headlamp
   interval: 1h
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImagePolicy
 metadata:
-  name: headlamp
+  name: headlamp-chart
   namespace: flux-system
 spec:
   imageRepositoryRef:
-    name: headlamp
+    name: headlamp-chart
   policy:
     semver:
       range: ">=0.0.1"
@@ -22,7 +22,7 @@ spec:
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageUpdateAutomation
 metadata:
-  name: headlamp
+  name: headlamp-chart
   namespace: flux-system
 spec:
   interval: 10m
