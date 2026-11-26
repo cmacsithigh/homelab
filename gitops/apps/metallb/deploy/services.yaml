@@ -8,10 +8,9 @@ metadata:
     gatus.home-operations.com/enabled: "false"
 spec:
   ports:
-    - name: healthz
-      port: 17472
-      targetPort: healthz
+  - name: healthz
+    port: 17472
+    targetPort: 17472
   selector:
-    app: metallb
-    component: controller
+    app.kubernetes.io/name: metallb
   type: ClusterIP
