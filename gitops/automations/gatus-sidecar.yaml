@@ -32,7 +32,7 @@ spec:
     namespace: flux-system
   update:
     strategy: Setters
-    path: ./gitops/apps/gatus/helm.yaml
+    path: ./gitops/apps/gatus/oci.yaml
   git:
     checkout:
       ref:

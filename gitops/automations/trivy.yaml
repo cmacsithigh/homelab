@@ -32,7 +32,7 @@ spec:
     namespace: flux-system
   update:
     strategy: Setters
-    path: ./gitops/apps/trivy/helm.yaml
+    path: ./gitops/apps/trivy/oci.yaml
   git:
     checkout:
       ref:

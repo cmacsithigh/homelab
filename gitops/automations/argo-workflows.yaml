@@ -32,7 +32,7 @@ spec:
     namespace: flux-system
   update:
     strategy: Setters
-    path: ./gitops/apps/argo-workflows/helm.yaml
+    path: ./gitops/apps/argo-workflows/oci.yaml
   git:
     checkout:
       ref:

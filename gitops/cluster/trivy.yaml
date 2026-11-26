@@ -2,13 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: reloader
+  name: trivy
   namespace: flux-system
 spec:
   interval: 10m0s
   dependsOn:
   - name: base
-  path: ./gitops/apps/reloader
+  path: ./gitops/apps/trivy
   prune: true
   retryInterval: 1m0s
   sourceRef:
