@@ -18,7 +18,7 @@ spec:
       namespace: kopiur-system
       key: KOPIA_PASSWORD
   concurrency:
-    maxConcurrentJobs: 3
+    maxConcurrentJobs: 2
   scheduleDefaults:
     timezone: Europe/Dublin
   create:

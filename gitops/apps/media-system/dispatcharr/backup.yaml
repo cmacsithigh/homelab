@@ -18,7 +18,7 @@ spec:
   verification:
     quick:
       schedule:
-        cron: "30 1 * * *"
+        cron: "0 2 * * *"
         jitter: 30m
     successExpr: "stats.files > 0 && stats.errors == 0"
   mover:
@@ -35,6 +35,6 @@ spec:
   policyRef:
     name: dispatcharr
   schedule:
-    cron: "10 0 * * *"
+    cron: "0 1 * * *"
     timezone: Etc/UTC
     runOnCreate: true
