@@ -16,6 +16,11 @@ spec:
     keepWeekly: 2
   credentialProjection:
     enabled: true
+  mover:
+    privilegedMode: true
+    securityContext:
+      runAsUser: 0
+      runAsNonRoot: false
   verification:
     quick:
       schedule:

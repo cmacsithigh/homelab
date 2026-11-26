@@ -15,12 +15,7 @@ spec:
     privilegedMode: true
     securityContext:
       runAsUser: 0
-      runAsGroup: 1000
       runAsNonRoot: false
-    podSecurityContext:
-      fsGroup: 1000
-      supplementalGroups:
-      - 65532
   policy:
     onMissingSnapshot: Fail
   credentialProjection:

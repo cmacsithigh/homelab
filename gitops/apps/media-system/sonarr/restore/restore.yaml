@@ -12,14 +12,10 @@ spec:
     pvcRef:
       name: sonarr-conf
   mover:
+    privilegedMode: true
     securityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      runAsNonRoot: true
-    podSecurityContext:
-      fsGroup: 1000
-      supplementalGroups:
-      - 65532
+      runAsUser: 0
+      runAsNonRoot: false
   policy:
     onMissingSnapshot: Fail
   credentialProjection:

@@ -12,12 +12,10 @@ spec:
     pvcRef:
       name: gatus-gatus-sidecar
   mover:
+    privilegedMode: true
     securityContext:
-      runAsUser: 65532
-      runAsGroup: 65532
-      runAsNonRoot: true
-    podSecurityContext:
-      fsGroup: 65532
+      runAsUser: 0
+      runAsNonRoot: false
   policy:
     onMissingSnapshot: Fail
   credentialProjection:

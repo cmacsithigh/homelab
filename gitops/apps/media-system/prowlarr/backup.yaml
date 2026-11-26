@@ -22,14 +22,10 @@ spec:
         jitter: 30m
     successExpr: "stats.files > 0 && stats.errors == 0"
   mover:
+    privilegedMode: true
     securityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      runAsNonRoot: true
-    podSecurityContext:
-      fsGroup: 1000
-      supplementalGroups:
-      - 65532
+      runAsUser: 0
+      runAsNonRoot: false
 ---
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: SnapshotSchedule
