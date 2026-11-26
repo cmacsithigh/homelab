@@ -26,7 +26,7 @@ data:
         target:
           area_id: bedroom
         data:
-          volume_level: 0.25
+          volume_level: 0.15
       mode: single
     - id: '1745318078223'
       alias: Lights - Turn off
@@ -78,6 +78,8 @@ data:
       - event: sunrise
         offset: -00:30:00
         trigger: sun
+      - at: 07:00:00
+        trigger: time
       conditions:
       - after: 06:00:00
         before: '22:00:00'
