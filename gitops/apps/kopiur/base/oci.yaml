@@ -33,3 +33,5 @@ spec:
     features:
       credentialProjection:
         enabled: true
+    logging:
+      level: "info,kopia=debug"

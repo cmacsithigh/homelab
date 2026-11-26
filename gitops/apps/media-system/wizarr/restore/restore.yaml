@@ -1,7 +1,7 @@
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: Restore
 metadata:
-  name: wizarr
+  name: wizarr-restore
   namespace: media-system
 spec:
   source:
@@ -19,3 +19,6 @@ spec:
     onMissingSnapshot: Fail
   credentialProjection:
     enabled: true
+  options:
+    overwriteFiles: true
+    overwriteDirectories: true
