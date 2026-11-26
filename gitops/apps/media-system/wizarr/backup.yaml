@@ -34,6 +34,6 @@ spec:
   policyRef:
     name: wizarr
   schedule:
-    cron: "25 * * * *"
+    cron: "0 1 * * *"
     timezone: Etc/UTC
     runOnCreate: false
