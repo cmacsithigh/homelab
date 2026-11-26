@@ -34,4 +34,4 @@ spec:
       credentialProjection:
         enabled: true
     logging:
-      level: debug
+      level: info
