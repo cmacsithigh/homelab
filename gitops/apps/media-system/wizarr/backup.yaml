@@ -18,7 +18,7 @@ spec:
   mover:
     securityContext:
       runAsUser: 1000
-      runAsGroup: 1000
+      runAsGroup: 65532
   verification:
     quick:
       schedule:
@@ -34,6 +34,6 @@ spec:
   policyRef:
     name: wizarr
   schedule:
-    cron: "0 1 * * *"
+    cron: "*/10 * * * *"
     timezone: Etc/UTC
-    runOnCreate: false
+    runOnCreate: true

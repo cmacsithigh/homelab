@@ -47,7 +47,16 @@
       state: directory
       owner: 65532
       group: 65532
-      mode: '0750'
+      mode: '2770'
+
+  - name: Make Kopiur repository contents writable by the mover group
+    ansible.builtin.file:
+      path: /mnt/nfs/kopiur
+      state: directory
+      owner: 65532
+      group: 65532
+      mode: 'g+rwX'
+      recurse: true
 
   - name: List block devices and mount paths
     ansible.builtin.command:

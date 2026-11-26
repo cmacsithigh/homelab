@@ -10,7 +10,7 @@ spec:
       offset: 0
   target:
     pvc:
-      name: wizarr-conf-restored
+      name: wizarr-conf
       storageClassName: nfs-internal-ssd
       capacity: 2Gi
       accessModes:
