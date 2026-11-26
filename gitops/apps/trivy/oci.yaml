@@ -28,4 +28,4 @@ spec:
   targetNamespace: trivy-system
   values:
     operator:
-      scanJobsConcurrentLimit: 3
+      scanJobsConcurrentLimit: 1
