@@ -1,12 +1,14 @@
 # https://github.com/kubernetes-sigs/headlamp/blob/main/charts/headlamp/values.yaml
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: OCIRepository
 metadata:
   name: headlamp
   namespace: flux-system
 spec:
   interval: 120m
-  url: https://kubernetes-sigs.github.io/headlamp/
+  url: oci://ghcr.io/home-operations/charts-mirror/headlamp
+  ref:
+    tag: 0.46.0 # {"$imagepolicy": "flux-system:headlamp-chart:tag"}
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -17,13 +19,10 @@ spec:
   releaseName: headlamp
   targetNamespace: headlamp-system
   interval: 60m
-  chart:
-    spec:
-      chart: headlamp
-      version: 0.46.0
-      sourceRef:
-        kind: HelmRepository
-        name: headlamp
+  chartRef:
+    kind: OCIRepository
+    name: headlamp
+    namespace: flux-system
   install:
     createNamespace: false
     remediation:
@@ -44,21 +43,21 @@ spec:
               values:
               - rc2
     initContainers:
-      - command:
-          - /bin/sh
-          - '-c'
-          - mkdir -p /build/plugins && cp -r /plugins/* /build/plugins/
-        image: ghcr.io/kubebeam/trivy-headlamp-plugin:v0.3.2
-        name: trivy-plugin
-        volumeMounts:
-          - mountPath: /build/plugins
-            name: headlamp-plugins
+    - command:
+      - /bin/sh
+      - '-c'
+      - mkdir -p /build/plugins && cp -r /plugins/* /build/plugins/
+      image: ghcr.io/kubebeam/trivy-headlamp-plugin:v0.3.2
+      name: trivy-plugin
+      volumeMounts:
+      - mountPath: /build/plugins
+        name: headlamp-plugins
     volumeMounts:
-      - name: headlamp-plugins
-        mountPath: /build/plugins
+    - name: headlamp-plugins
+      mountPath: /build/plugins
     volumes:
-      - name: headlamp-plugins
-        emptyDir: {}
+    - name: headlamp-plugins
+      emptyDir: {}
     config:
       inCluster: true
       pluginsDir: /build/plugins

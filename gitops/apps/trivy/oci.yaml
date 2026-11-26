@@ -29,3 +29,6 @@ spec:
   values:
     operator:
       scanJobsConcurrentLimit: 1
+    service:
+      annotations:
+        gatus.home-operations.com/enabled: "false"
