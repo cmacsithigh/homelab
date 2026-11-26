@@ -32,19 +32,6 @@
         "terraform",
         "flux"
     ],
-    "customManagers": [
-        {
-            "customType": "regex",
-            "managerFilePatterns": ["/^gitops\\/cluster\\/flux-instance\\.yaml$/"],
-            "matchStrings": [
-                "distribution:\\s*version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
-            ],
-            "datasourceTemplate": "github-releases",
-            "depNameTemplate": "fluxcd/flux2",
-            "extractVersionTemplate": "^v(?<version>.*)$",
-            "versioningTemplate": "semver"
-        }
-    ],
     "prBodyTemplate": "{{{header}}}{{{table}}}{{{warnings}}}{{{notes}}}{{{changelogs}}}",
     "prHourlyLimit": 0,
     "git-submodules": {

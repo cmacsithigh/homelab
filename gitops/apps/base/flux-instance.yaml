@@ -9,7 +9,7 @@ metadata:
     fluxcd.controlplane.io/reconcileTimeout: "5m"
 spec:
   distribution:
-    version: 2.10.1
+    version: 2.10.1 # {"$imagepolicy": "flux-system:flux-instance:tag"}
     registry: "ghcr.io/fluxcd"
   components:
   - source-controller
