@@ -29,3 +29,7 @@ spec:
       retries: 3
   interval: 1h
   targetNamespace: kopiur-system
+  values:
+    features:
+      credentialProjection:
+        enabled: true

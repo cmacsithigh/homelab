@@ -41,6 +41,14 @@
       passno: '2'
       state: mounted
 
+  - name: Ensure Kopiur repository directory exists
+    ansible.builtin.file:
+      path: /mnt/nfs/kopiur
+      state: directory
+      owner: 65532
+      group: 65532
+      mode: '0750'
+
   - name: List block devices and mount paths
     ansible.builtin.command:
       argv:
@@ -56,6 +64,13 @@
     ansible.builtin.lineinfile:
       path: /etc/exports
       line: '/mnt/nfs *(rw,async,no_subtree_check,no_root_squash)'
+      state: present
+    notify: Restart NFS Server
+
+  - name: Export Kopiur repository directory
+    ansible.builtin.lineinfile:
+      path: /etc/exports
+      line: '/mnt/nfs/kopiur *(rw,async,no_subtree_check,no_root_squash)'
       state: present
     notify: Restart NFS Server
 
