@@ -9,12 +9,18 @@ spec:
       name: wizarr
       offset: 0
   target:
-    pvc:
+    pvcRef:
       name: wizarr-conf
-      storageClassName: nfs-internal-ssd
-      capacity: 2Gi
-      accessModes:
-      - ReadWriteMany
+  mover:
+    privilegedMode: true
+    securityContext:
+      runAsUser: 0
+      runAsGroup: 1000
+      runAsNonRoot: false
+    podSecurityContext:
+      fsGroup: 1000
+      supplementalGroups:
+      - 65532
   policy:
     onMissingSnapshot: Fail
   credentialProjection:
