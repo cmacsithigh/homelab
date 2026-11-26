@@ -1,40 +1,42 @@
+---
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: SnapshotPolicy
 metadata:
-  name: music-assistant
+  name: music-assistant-data
 spec:
   repository:
     kind: ClusterRepository
     name: local-nfs
   sources:
   - pvc:
-      name: music-assistant-pvc
+      name: music-assistant-data
   copyMethod: Direct
   retention:
     keepDaily: 7
     keepWeekly: 2
   credentialProjection:
     enabled: true
-  mover:
-    privilegedMode: true
-    securityContext:
-      runAsUser: 0
-      runAsNonRoot: false
   verification:
     quick:
       schedule:
         cron: "30 1 * * *"
         jitter: 30m
     successExpr: "stats.files > 0 && stats.errors == 0"
+  mover:
+    privilegedMode: true
+    securityContext:
+      runAsUser: 0
+      runAsGroup: 0
+      runAsNonRoot: false
 ---
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: SnapshotSchedule
 metadata:
-  name: music-assistant-daily
+  name: music-assistant-data-daily
 spec:
   policyRef:
-    name: music-assistant
+    name: music-assistant-data
   schedule:
-    cron: "10 0 * * *"
+    cron: "55 0 * * *"
     timezone: Etc/UTC
     runOnCreate: true

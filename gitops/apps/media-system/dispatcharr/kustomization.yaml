@@ -7,3 +7,4 @@ resources:
 - pvc.yaml
 - redis.yaml
 - services.yaml
+- backup.yaml

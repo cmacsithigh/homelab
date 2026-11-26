@@ -1,0 +1,41 @@
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: dispatcharr
+spec:
+  repository:
+    kind: ClusterRepository
+    name: local-nfs
+  sources:
+  - pvc:
+      name: dispatcharr-conf
+  copyMethod: Direct
+  retention:
+    keepDaily: 7
+    keepWeekly: 2
+  credentialProjection:
+    enabled: true
+  verification:
+    quick:
+      schedule:
+        cron: "30 1 * * *"
+        jitter: 30m
+    successExpr: "stats.files > 0 && stats.errors == 0"
+  mover:
+    privilegedMode: true
+    securityContext:
+      runAsUser: 0
+      runAsGroup: 0
+      runAsNonRoot: false
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: dispatcharr-daily
+spec:
+  policyRef:
+    name: dispatcharr
+  schedule:
+    cron: "10 0 * * *"
+    timezone: Etc/UTC
+    runOnCreate: true
