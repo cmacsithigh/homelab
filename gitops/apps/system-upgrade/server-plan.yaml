@@ -24,6 +24,6 @@ spec:
     - wednesday
     - thursday
     - friday
-    startTime: 01:00
-    endTime: 05:00
+    startTime: 02:00
+    endTime: 04:00
     timeZone: UTC

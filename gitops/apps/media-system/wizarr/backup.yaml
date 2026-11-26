@@ -1,0 +1,29 @@
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: wizarr
+spec:
+  repository:
+    kind: ClusterRepository
+    name: local-nfs
+  sources:
+  - pvc:
+      name: wizarr-conf
+  copyMethod: Direct
+  retention:
+    keepDaily: 7
+    keepWeekly: 2
+  credentialProjection:
+    enabled: true
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: wizarr-daily
+spec:
+  policyRef:
+    name: wizarr
+  schedule:
+    cron: "0 1 * * *"
+    timezone: Etc/UTC
+    runOnCreate: false

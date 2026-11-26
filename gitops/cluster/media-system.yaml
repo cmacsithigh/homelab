@@ -8,6 +8,7 @@ spec:
   interval: 10m0s
   dependsOn:
     - name: base
+    - name: kopiur-deploy
   path: ./gitops/apps/media-system
   prune: true
   retryInterval: 1m0s

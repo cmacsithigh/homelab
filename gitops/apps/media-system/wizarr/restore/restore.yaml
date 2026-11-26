@@ -1,0 +1,21 @@
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: Restore
+metadata:
+  name: wizarr
+  namespace: media-system
+spec:
+  source:
+    fromPolicy:
+      name: wizarr
+      offset: 0
+  target:
+    pvc:
+      name: wizarr-conf-restored
+      storageClassName: nfs-internal-ssd
+      capacity: 2Gi
+      accessModes:
+      - ReadWriteMany
+  policy:
+    onMissingSnapshot: Fail
+  credentialProjection:
+    enabled: true
