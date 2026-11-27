@@ -61,13 +61,13 @@ spec:
       FULLNAME: ""
       EMAIL: ""
       HOSTNAME: https://pinepods.ciansheehy.co
-      # OIDC_PROVIDER_NAME: Pocket ID
-      # OIDC_CLIENT_ID: pinepods
-      # OIDC_DISCOVERY_URL: https://pocketid.ciansheehy.co/.well-known/openid-configuration
-      # OIDC_SCOPE: "openid email profile"
-      # OIDC_BUTTON_TEXT: Login with Pocket ID
-      # OIDC_BUTTON_COLOR: "#417598"
-      # OIDC_BUTTON_TEXT_COLOR: "#ffffff"
+      OIDC_PROVIDER_NAME: Pocket ID
+      OIDC_CLIENT_ID: pinepods
+      OIDC_DISCOVERY_URL: https://pocketid.ciansheehy.co/.well-known/openid-configuration
+      OIDC_SCOPE: "openid email profile"
+      OIDC_BUTTON_TEXT: Login with Pocket ID
+      OIDC_BUTTON_COLOR: "#417598"
+      OIDC_BUTTON_TEXT_COLOR: "#ffffff"
     extraEnv:
     - name: DB_TYPE
       value: postgresql
@@ -87,11 +87,11 @@ spec:
         secretKeyRef:
           name: pinepods-pg-app
           key: password
-    # - name: OIDC_CLIENT_SECRET
-    #   valueFrom:
-    #     secretKeyRef:
-    #       name: pinepods-oidc
-    #       key: client-secret
+    - name: OIDC_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: pinepods-oidc
+          key: client-secret
     backend:
       enabled: false
     podpeople:
