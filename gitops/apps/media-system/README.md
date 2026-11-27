@@ -26,8 +26,7 @@ Dispatcharr use the `openvpn-user` and `openvpn-password`
 secrets in the `media-system` namespace.
 
 CloudNativePG creates the `dispatcharr` database and user and generates the
-application password in `dispatcharr-pg-app`, following the same pattern
-as the Keycloak database cluster. Dispatcharr starts with a new database; its
+application password in `dispatcharr-pg-app`. Dispatcharr starts with a new database; its
 existing `/data` PVC is separate.
 
 ## NZBGet notifications

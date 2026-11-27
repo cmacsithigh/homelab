@@ -13,12 +13,6 @@ data:
         "protonItemName": "GITHUB_TOKEN"
       },
       {
-        "targetNamespace": "keycloak-system",
-        "secretName": "keycloak-credentials",
-        "secretKey": "password",
-        "protonItemName": "KEYCLOAK_TOKEN"
-      },
-      {
         "targetNamespace": "cloudflared",
         "secretName": "cloudflared-credentials",
         "secretKey": "token",
