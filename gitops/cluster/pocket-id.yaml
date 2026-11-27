@@ -17,7 +17,3 @@ spec:
     name: flux-system
   timeout: 5m0s
   wait: true
-  postBuild:
-    substituteFrom:
-    - kind: Secret
-      name: pocket-id-bootstrap
