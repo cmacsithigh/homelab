@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: protonpass-config
 data:
-  sync-interval: 5m
+  sync-interval: 10m
   secrets.json: |
     [
       {
@@ -74,25 +74,41 @@ data:
     CONFIG_FILE=/etc/protonpass/secrets.json
     SYNC_INTERVAL=${SYNC_INTERVAL:?SYNC_INTERVAL must be set}
 
+    log() {
+      local level=$1
+      shift
+      printf '%s %-5s %s\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" "$level" "$*"
+    }
+
     if ! jq -e 'type == "array" and length > 0 and all(.[]; .targetNamespace and .secretName and .secretKey and .protonItemName)' "$CONFIG_FILE" >/dev/null; then
-      echo "Invalid secret mapping configuration in $CONFIG_FILE" >&2
+      log ERROR "Invalid secret mapping configuration in $CONFIG_FILE"
       exit 1
     fi
 
     sync_secrets() {
-      echo "Logging into Proton Pass..."
-      if ! pass-cli login; then
-        echo "Proton Pass login failed." >&2
+      local cycle=$1
+      local mapping_count succeeded failed
+      mapping_count=$(jq 'length' "$CONFIG_FILE")
+      succeeded=0
+      failed=0
+
+      log INFO "Starting sync cycle $cycle ($mapping_count mappings)"
+      log INFO "Logging into Proton Pass..."
+      local login_output
+      if ! login_output=$(pass-cli login 2>&1); then
+        log ERROR "Proton Pass login failed: ${login_output:-no error output}"
         return 1
       fi
 
       local vault_json
-      if ! vault_json=$(pass-cli item list --vault-name "homelab" --output json); then
-        echo "Unable to list items in the Proton Pass vault." >&2
+      local vault_output
+      if ! vault_output=$(pass-cli item list --vault-name "homelab" --output json 2>&1); then
+        log ERROR "Unable to list items in the Proton Pass vault: ${vault_output:-no error output}"
         return 1
       fi
+      vault_json=$vault_output
+      unset vault_output
 
-      local failed=0
       while IFS= read -r mapping; do
         local target_namespace secret_name secret_key proton_item_name item_metadata item_id share_id item_ref secret_value secret_file
         target_namespace=$(jq -r '.targetNamespace' <<< "$mapping")
@@ -100,58 +116,79 @@ data:
         secret_key=$(jq -r '.secretKey' <<< "$mapping")
         proton_item_name=$(jq -r '.protonItemName' <<< "$mapping")
 
-        echo "Syncing Proton Pass item '$proton_item_name' to secret '$target_namespace/$secret_name'..."
+        log INFO "Syncing item '$proton_item_name' to secret '$target_namespace/$secret_name'"
         if ! item_metadata=$(jq -er --arg title "$proton_item_name" '[.items[] | select(.title == $title)] | if length == 1 then .[0] | [.id, .share_id] | @tsv else error("expected exactly one matching item") end' <<< "$vault_json"); then
-          echo "Unable to resolve Proton Pass item '$proton_item_name'." >&2
-          failed=1
+          log ERROR "Unable to resolve item '$proton_item_name': expected exactly one match in the vault"
+          ((failed += 1))
           continue
         fi
 
         IFS=$'\t' read -r item_id share_id <<< "$item_metadata"
         if [[ -z "$item_id" || "$item_id" == "null" || -z "$share_id" || "$share_id" == "null" ]]; then
-          echo "Proton Pass item '$proton_item_name' is missing its ID or share ID." >&2
-          failed=1
+          log ERROR "Unable to sync item '$proton_item_name': vault result is missing item or share ID"
+          ((failed += 1))
           continue
         fi
 
         item_ref="pass://${share_id}/${item_id}"
-        if ! secret_value=$(pass-cli item view "$item_ref" --output json | jq -er '[.. | objects | .password? | select(type == "string" and length > 0)] | first'); then
-          echo "Unable to extract a password from Proton Pass item '$proton_item_name'." >&2
-          failed=1
+        local item_output
+        if ! item_output=$(pass-cli item view "$item_ref" --output json 2>&1); then
+          log ERROR "Unable to retrieve item '$proton_item_name': ${item_output:-no error output}"
+          ((failed += 1))
           continue
         fi
+        if ! secret_value=$(jq -er '[.. | objects | .password? | select(type == "string" and length > 0)] | first' <<< "$item_output"); then
+          log ERROR "Unable to extract a password from item '$proton_item_name'"
+          unset item_output
+          ((failed += 1))
+          continue
+        fi
+        unset item_output
 
         if ! secret_file=$(mktemp); then
-          echo "Unable to create a temporary file for '$target_namespace/$secret_name'." >&2
-          failed=1
+          log ERROR "Unable to create a temporary file for secret '$target_namespace/$secret_name'"
+          ((failed += 1))
           continue
         fi
         if ! printf '%s' "$secret_value" > "$secret_file"; then
-          echo "Unable to write the temporary secret file for '$target_namespace/$secret_name'." >&2
+          log ERROR "Unable to write the temporary secret file for '$target_namespace/$secret_name'"
           rm -f -- "$secret_file"
-          failed=1
+          ((failed += 1))
           continue
         fi
         unset secret_value
 
-        if kubectl create secret generic "$secret_name" \
+        local apply_output
+        if apply_output=$(kubectl create secret generic "$secret_name" \
           --namespace "$target_namespace" \
           --from-file="$secret_key=$secret_file" \
-          --dry-run=client -o yaml | kubectl apply -f -; then
-          echo "Synced '$target_namespace/$secret_name'."
+          --dry-run=client -o yaml 2>&1 | kubectl apply -f - 2>&1); then
+          log INFO "Synced secret '$target_namespace/$secret_name' (${apply_output:-kubectl apply completed})"
+          ((succeeded += 1))
         else
-          echo "Failed to sync '$target_namespace/$secret_name'." >&2
-          failed=1
+          log ERROR "Failed to sync secret '$target_namespace/$secret_name': ${apply_output:-kubectl apply failed}"
+          ((failed += 1))
         fi
         rm -f -- "$secret_file"
       done < <(jq -c '.[]' "$CONFIG_FILE")
 
+      if [[ "$failed" -eq 0 ]]; then
+        log INFO "Sync cycle $cycle complete: $succeeded/$mapping_count secrets synchronized"
+      else
+        log WARN "Sync cycle $cycle complete: $succeeded/$mapping_count secrets synchronized, $failed failed"
+      fi
+
       return "$failed"
     }
 
+    cycle=0
+    log INFO "Starting Proton Pass secret sync (interval: $SYNC_INTERVAL)"
     while true; do
-      if ! sync_secrets; then
-        echo "One or more secrets failed to sync; retrying after $SYNC_INTERVAL." >&2
+      ((cycle += 1))
+      if ! sync_secrets "$cycle"; then
+        log WARN "One or more secrets failed to sync; retrying after $SYNC_INTERVAL"
+      else
+        log INFO "All secrets synchronized; next sync in $SYNC_INTERVAL"
       fi
       sleep "$SYNC_INTERVAL"
     done
