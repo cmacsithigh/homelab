@@ -48,8 +48,8 @@ spec:
         callbackURL: https://headlamp.ciansheehy.co/oidc-callback
         clientID: headlamp
         clientSecret: "${secret}"
-        issuerURL: https://keycloak.ciansheehy.co/realms/homelab
-        scopes: "profile,email"
+        issuerURL: https://pocketid.ciansheehy.co
+        scopes: "openid profile email groups"
         autoLogin: true
         secret:
           create: false

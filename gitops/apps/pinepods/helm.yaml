@@ -94,6 +94,8 @@ spec:
       value: regular
     - name: OIDC_ADMIN_ROLE
       value: admins
+    - name: OIDC_DISABLE_STANDARD_LOGIN
+      value: "true"
     - name: OIDC_BUTTON_TEXT
       value: Login with Pocket ID
     - name: OIDC_BUTTON_COLOR

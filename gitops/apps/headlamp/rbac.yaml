@@ -7,9 +7,9 @@ roleRef:
   kind: ClusterRole
   name: cluster-admin
 subjects:
-  - kind: Group
-    name: headlamp-admins
-    apiGroup: rbac.authorization.k8s.io
+- kind: Group
+  name: admins
+  apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -21,5 +21,5 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 subjects:
 - kind: Group
-  name: headlamp-readers
+  name: readers
   apiGroup: rbac.authorization.k8s.io
