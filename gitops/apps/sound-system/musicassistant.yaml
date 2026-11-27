@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -20,7 +19,7 @@ spec:
         kubernetes.io/hostname: pi4-server
       containers:
       - name: server
-        image: ghcr.io/music-assistant/server:2.10.13 # {"$imagepolicy": "flux-system:music-assistant"}
+        image: ghcr.io/music-assistant/server:2.10.14 # {"$imagepolicy": "flux-system:music-assistant"}
         securityContext:
           privileged: true
         volumeMounts:
