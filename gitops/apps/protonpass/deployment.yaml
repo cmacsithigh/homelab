@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: protonpass
+  labels:
+    app: protonpass
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: protonpass
+  template:
+    metadata:
+      labels:
+        app: protonpass
+    spec:
+      serviceAccountName: protonpass
+      containers:
+      - name: protonpass
+        image: ghcr.io/cmacsithigh/protonpass:1.11.0 # {"$imagepolicy": "flux-system:protonpass"}
+        imagePullPolicy: Always
+        command: [ "/bin/bash", "/etc/protonpass/sync-secrets.sh" ]
+        env:
+        - name: SYNC_INTERVAL
+          valueFrom:
+            configMapKeyRef:
+              name: protonpass-config
+              key: sync-interval
+        envFrom:
+        - secretRef:
+            name: protonpass-credentials
+        volumeMounts:
+        - name: config
+          mountPath: /etc/protonpass
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: protonpass-config

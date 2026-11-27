@@ -1,0 +1,163 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: protonpass-config
+data:
+  sync-interval: 5m
+  secrets.json: |
+    [
+      {
+        "targetNamespace": "renovate",
+        "secretName": "renovate-token",
+        "secretKey": "token",
+        "protonItemName": "GITHUB_TOKEN"
+      },
+      {
+        "targetNamespace": "keycloak-system",
+        "secretName": "keycloak-credentials",
+        "secretKey": "password",
+        "protonItemName": "KEYCLOAK_TOKEN"
+      },
+      {
+        "targetNamespace": "cloudflared",
+        "secretName": "cloudflared-credentials",
+        "secretKey": "token",
+        "protonItemName": "CLOUDFLARED_TUNNEL_TOKEN"
+      },
+      {
+        "targetNamespace": "cert-manager",
+        "secretName": "cloudflare-dns-token",
+        "secretKey": "token",
+        "protonItemName": "CLOUDFLARE_DNS_TOKEN"
+      },
+      {
+        "targetNamespace": "flux-system",
+        "secretName": "headlamp-client",
+        "secretKey": "secret",
+        "protonItemName": "HEADLAMP_CLIENT_SECRET"
+      },
+      {
+        "targetNamespace": "media-system",
+        "secretName": "openvpn-user",
+        "secretKey": "OPENVPN_USER",
+        "protonItemName": "OPENVPN_USER"
+      },
+      {
+        "targetNamespace": "media-system",
+        "secretName": "openvpn-password",
+        "secretKey": "OPENVPN_PASSWORD",
+        "protonItemName": "OPENVPN_PASSWORD"
+      },
+      {
+        "targetNamespace": "tailscale",
+        "secretName": "tailscale-auth",
+        "secretKey": "TS_AUTHKEY",
+        "protonItemName": "TAILSCALE_AUTH_KEY"
+      },
+      {
+        "targetNamespace": "kopiur-system",
+        "secretName": "kopiur-repository-secret",
+        "secretKey": "KOPIA_PASSWORD",
+        "protonItemName": "KOPIUR_REPOSITORY_SECRET"
+      },
+      {
+        "targetNamespace": "pocket-id-system",
+        "secretName": "pocket-id-encryption-key",
+        "secretKey": "ENCRYPTION_KEY",
+        "protonItemName": "POCKET_ID_ENCRYPTION_KEY"
+      },
+      {
+        "targetNamespace": "pinepods",
+        "secretName": "pinepods-oidc",
+        "secretKey": "client-secret",
+        "protonItemName": "PINEPODS_CLIENT_SECRET"
+      }
+    ]
+  sync-secrets.sh: |
+    #!/bin/bash
+    set -euo pipefail
+
+    CONFIG_FILE=/etc/protonpass/secrets.json
+    SYNC_INTERVAL=${SYNC_INTERVAL:?SYNC_INTERVAL must be set}
+
+    if ! jq -e 'type == "array" and length > 0 and all(.[]; .targetNamespace and .secretName and .secretKey and .protonItemName)' "$CONFIG_FILE" >/dev/null; then
+      echo "Invalid secret mapping configuration in $CONFIG_FILE" >&2
+      exit 1
+    fi
+
+    sync_secrets() {
+      echo "Logging into Proton Pass..."
+      if ! pass-cli login; then
+        echo "Proton Pass login failed." >&2
+        return 1
+      fi
+
+      local vault_json
+      if ! vault_json=$(pass-cli item list --vault-name "homelab" --output json); then
+        echo "Unable to list items in the Proton Pass vault." >&2
+        return 1
+      fi
+
+      local failed=0
+      while IFS= read -r mapping; do
+        local target_namespace secret_name secret_key proton_item_name item_metadata item_id share_id item_ref secret_value secret_file
+        target_namespace=$(jq -r '.targetNamespace' <<< "$mapping")
+        secret_name=$(jq -r '.secretName' <<< "$mapping")
+        secret_key=$(jq -r '.secretKey' <<< "$mapping")
+        proton_item_name=$(jq -r '.protonItemName' <<< "$mapping")
+
+        echo "Syncing Proton Pass item '$proton_item_name' to secret '$target_namespace/$secret_name'..."
+        if ! item_metadata=$(jq -er --arg title "$proton_item_name" '[.items[] | select(.title == $title)] | if length == 1 then .[0] | [.id, .share_id] | @tsv else error("expected exactly one matching item") end' <<< "$vault_json"); then
+          echo "Unable to resolve Proton Pass item '$proton_item_name'." >&2
+          failed=1
+          continue
+        fi
+
+        IFS=$'\t' read -r item_id share_id <<< "$item_metadata"
+        if [[ -z "$item_id" || "$item_id" == "null" || -z "$share_id" || "$share_id" == "null" ]]; then
+          echo "Proton Pass item '$proton_item_name' is missing its ID or share ID." >&2
+          failed=1
+          continue
+        fi
+
+        item_ref="pass://${share_id}/${item_id}"
+        if ! secret_value=$(pass-cli item view "$item_ref" --output json | jq -er '[.. | objects | .password? | select(type == "string" and length > 0)] | first'); then
+          echo "Unable to extract a password from Proton Pass item '$proton_item_name'." >&2
+          failed=1
+          continue
+        fi
+
+        if ! secret_file=$(mktemp); then
+          echo "Unable to create a temporary file for '$target_namespace/$secret_name'." >&2
+          failed=1
+          continue
+        fi
+        if ! printf '%s' "$secret_value" > "$secret_file"; then
+          echo "Unable to write the temporary secret file for '$target_namespace/$secret_name'." >&2
+          rm -f -- "$secret_file"
+          failed=1
+          continue
+        fi
+        unset secret_value
+
+        if kubectl create secret generic "$secret_name" \
+          --namespace "$target_namespace" \
+          --from-file="$secret_key=$secret_file" \
+          --dry-run=client -o yaml | kubectl apply -f -; then
+          echo "Synced '$target_namespace/$secret_name'."
+        else
+          echo "Failed to sync '$target_namespace/$secret_name'." >&2
+          failed=1
+        fi
+        rm -f -- "$secret_file"
+      done < <(jq -c '.[]' "$CONFIG_FILE")
+
+      return "$failed"
+    }
+
+    while true; do
+      if ! sync_secrets; then
+        echo "One or more secrets failed to sync; retrying after $SYNC_INTERVAL." >&2
+      fi
+      sleep "$SYNC_INTERVAL"
+    done
