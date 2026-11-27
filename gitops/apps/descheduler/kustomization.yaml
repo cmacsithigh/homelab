@@ -2,67 +2,64 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: descheduler
 resources:
-  - https://github.com/kubernetes-sigs/descheduler/kubernetes/cronjob
-  - namespace.yaml
+- https://github.com/kubernetes-sigs/descheduler/kubernetes/cronjob
+- namespace.yaml
 
 patches:
-  - target:
-      kind: CronJob
-    patch: |-
-      apiVersion: batch/v1
-      kind: CronJob
-      metadata:
-        name: descheduler-cronjob
-      spec:
-        schedule: "0 3 * * *"
-  - target:
-      kind: ConfigMap
+- target:
+    kind: CronJob
+  patch: |-
+    apiVersion: batch/v1
+    kind: CronJob
+    metadata:
+      name: descheduler-cronjob
+    spec:
+      schedule: "0 3 * * *"
+- target:
+    kind: ConfigMap
+    name: descheduler-policy-configmap
+  patch: |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
       name: descheduler-policy-configmap
-    patch: |-
-      apiVersion: v1
-      kind: ConfigMap
-      metadata:
-        name: descheduler-policy-configmap
-      data:
-        policy.yaml: |
-          apiVersion: "descheduler/v1alpha2"
-          kind: "DeschedulerPolicy"
-          profiles:
-            - name: default
-              pluginConfig:
-              - name: "DefaultEvictor"
-                args:
-                  ignorePvcPods: true
-                  nodeFit: true
-              - name: "RemoveDuplicates"
-              - name: "RemovePodsViolatingInterPodAntiAffinity"
-              - name: "RemovePodsHavingTooManyRestarts"
-                args:
-                  podRestartThreshold: 10
-                  includingInitContainers: true
-                  states:
-                    - "Running"
-              - name: "RemoveFailedPods"
-                args:
-                  minPodLifetimeSeconds: 600
-                  includingInitContainers: true
-              - name: "LowNodeUtilization"
-                args:
-                  thresholds:
-                    "cpu": 30
-                    "memory": 50
-                    "pods": 30
-                  targetThresholds:
-                    "cpu": 50
-                    "memory": 60
-                    "pods": 50
-              plugins:
-                balance:
-                  enabled:
-                    - "RemoveDuplicates"
-                    - "LowNodeUtilization"
-                deschedule:
-                  enabled:
-                    - "RemovePodsViolatingInterPodAntiAffinity"
-                    - "RemovePodsHavingTooManyRestarts"
-                    - "RemoveFailedPods"
+    data:
+      policy.yaml: |
+        apiVersion: "descheduler/v1alpha2"
+        kind: "DeschedulerPolicy"
+        profiles:
+          - name: default
+            pluginConfig:
+            - name: "DefaultEvictor"
+            - name: "RemoveDuplicates"
+            - name: "RemovePodsViolatingInterPodAntiAffinity"
+            - name: "RemovePodsHavingTooManyRestarts"
+              args:
+                podRestartThreshold: 10
+                includingInitContainers: true
+                states:
+                  - "Running"
+            - name: "RemoveFailedPods"
+              args:
+                minPodLifetimeSeconds: 600
+                includingInitContainers: true
+            - name: "LowNodeUtilization"
+              args:
+                thresholds:
+                  "cpu": 30
+                  "memory": 50
+                  "pods": 30
+                targetThresholds:
+                  "cpu": 50
+                  "memory": 60
+                  "pods": 50
+            plugins:
+              balance:
+                enabled:
+                  - "RemoveDuplicates"
+                  - "LowNodeUtilization"
+              deschedule:
+                enabled:
+                  - "RemovePodsViolatingInterPodAntiAffinity"
+                  - "RemovePodsHavingTooManyRestarts"
+                  - "RemoveFailedPods"
