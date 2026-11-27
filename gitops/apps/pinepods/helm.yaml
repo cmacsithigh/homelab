@@ -64,7 +64,10 @@ spec:
       OIDC_PROVIDER_NAME: Pocket ID
       OIDC_CLIENT_ID: pinepods
       OIDC_DISCOVERY_URL: https://pocketid.ciansheehy.co/.well-known/openid-configuration
-      OIDC_SCOPE: "openid email profile"
+      OIDC_SCOPE: "openid email profile groups"
+      OIDC_ROLES_CLAIM: groups
+      OIDC_USER_ROLE: regular
+      OIDC_ADMIN_ROLE: admins
       OIDC_BUTTON_TEXT: Login with Pocket ID
       OIDC_BUTTON_COLOR: "#417598"
       OIDC_BUTTON_TEXT_COLOR: "#ffffff"
