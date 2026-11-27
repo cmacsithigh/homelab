@@ -56,4 +56,4 @@ spec:
         size: 2Gi
     secret:
       create: false
-      name: pocket-id-secrets
+      name: pocket-id-encryption-key
