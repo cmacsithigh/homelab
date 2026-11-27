@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pinepods-web
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.18.231
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8040
+    name: http
+  selector:
+    app.kubernetes.io/name: pinepods

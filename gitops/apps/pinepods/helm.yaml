@@ -1,0 +1,87 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: pinepods
+  namespace: flux-system
+spec:
+  interval: 120m
+  url: https://helm.pinepods.online
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pinepods
+  namespace: flux-system
+spec:
+  releaseName: pinepods
+  chart:
+    spec:
+      chart: pinepods
+      sourceRef:
+        kind: HelmRepository
+        name: pinepods
+        namespace: flux-system
+      version: 0.9.2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  interval: 60m
+  targetNamespace: pinepods
+  values:
+    service:
+      type: ClusterIP
+      port: 8040
+    ingress:
+      enabled: false
+    persistence:
+      enabled: true
+      downloads:
+        storageClass: nfs-internal-ssd
+        accessMode: ReadWriteMany
+        size: 10Gi
+      backups:
+        storageClass: nfs-internal-ssd
+        accessMode: ReadWriteMany
+        size: 5Gi
+    postgresql:
+      enabled: false
+    externalDatabase:
+      type: postgresql
+      host: pinepods-pg-rw
+      port: 5432
+      database: pinepods_database
+      manuallyProvide: true
+    valkey:
+      enabled: true
+    env:
+      USERNAME: ""
+      PASSWORD: ""
+      FULLNAME: ""
+      EMAIL: ""
+    extraEnv:
+    - name: DB_TYPE
+      value: postgresql
+    - name: DB_HOST
+      value: pinepods-pg-rw
+    - name: DB_PORT
+      value: "5432"
+    - name: DB_NAME
+      value: pinepods_database
+    - name: DB_USER
+      valueFrom:
+        secretKeyRef:
+          name: pinepods-pg-app
+          key: username
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: pinepods-pg-app
+          key: password
+    backend:
+      enabled: false
+    podpeople:
+      enabled: false
+    ai:
+      enabled: false

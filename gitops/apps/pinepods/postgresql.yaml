@@ -1,0 +1,14 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pinepods-pg
+spec:
+  instances: 1
+  bootstrap:
+    initdb:
+      database: pinepods_database
+      owner: pinepods
+  storage:
+    storageClass: nfs-internal-ssd
+    size: 5Gi
