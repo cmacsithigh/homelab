@@ -41,13 +41,8 @@ spec:
     ingress:
       enabled: false
     extraEnvFrom:
-    - name: DB_CONNECTION_STRING
-      value: "postgresql://pocket_id:${DB_PASSWORD}@pocket-id-pg-rw:5432/pocket_id"
-    - name: DB_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: pocket-id-pg-app
-          key: password
+    - secretRef:
+        name: pocket-id-database-credentials
     persistence:
       data:
         enabled: true

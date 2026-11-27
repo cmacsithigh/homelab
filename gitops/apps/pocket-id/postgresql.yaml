@@ -13,6 +13,8 @@ spec:
     initdb:
       database: pocket_id
       owner: pocket_id
+      secret:
+        name: pocket-id-database-credentials
   storage:
     storageClass: nfs-internal-ssd
     size: 5Gi
