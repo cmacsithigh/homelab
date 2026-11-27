@@ -3,6 +3,7 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: pinepods-pg
+  namespace: pinepods
 spec:
   instances: 1
   bootstrap:
