@@ -56,8 +56,24 @@
       state: directory
       owner: 65532
       group: "{{ kopiur_nfs_gid }}"
-      mode: 'g+rwX'
+      mode: 'g+rwX,o-rwx'
       recurse: true
+
+  - name: Find Kopiur repository directories
+    ansible.builtin.find:
+      paths: /mnt/nfs/kopiur
+      recurse: true
+      hidden: true
+      file_type: directory
+    register: kopiur_repository_directories
+
+  - name: Set the Kopiur repository group inheritance bit
+    ansible.builtin.file:
+      path: "{{ item.path }}"
+      mode: 'g+s'
+    loop: "{{ kopiur_repository_directories.files }}"
+    loop_control:
+      label: "{{ item.path }}"
 
   - name: List block devices and mount paths
     ansible.builtin.command:
@@ -80,7 +96,8 @@
   - name: Export Kopiur repository directory
     ansible.builtin.lineinfile:
       path: /etc/exports
-      line: '/mnt/nfs/kopiur *(rw,async,no_subtree_check,no_root_squash)'
+      regexp: '^/mnt/nfs/kopiur '
+      line: '/mnt/nfs/kopiur *(rw,async,no_subtree_check,root_squash)'
       state: present
     notify: Restart NFS Server
 

@@ -23,10 +23,12 @@ spec:
     timezone: Europe/Dublin
   create:
     enabled: true
+  deletionProtection:
+    threshold: 30
   moverDefaults:
     podSecurityContext:
       supplementalGroups:
-        - 65532
+      - 65532
     securityContext:
       runAsUser: 65532
       runAsGroup: 65532
