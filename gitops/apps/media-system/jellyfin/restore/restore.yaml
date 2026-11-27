@@ -11,6 +11,8 @@ spec:
   target:
     pvcRef:
       name: jellyfin-conf
+  mover:
+    privilegedMode: true
   policy:
     onMissingSnapshot: Fail
   credentialProjection:

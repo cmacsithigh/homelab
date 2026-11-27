@@ -12,10 +12,7 @@ spec:
     pvcRef:
       name: maintainerr-conf
   mover:
-    securityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      runAsNonRoot: true
+    privilegedMode: true
   policy:
     onMissingSnapshot: Fail
   credentialProjection:

@@ -11,6 +11,8 @@ spec:
   target:
     pvcRef:
       name: ntfy-ntfy-data
+  mover:
+    privilegedMode: true
   policy:
     onMissingSnapshot: Fail
   credentialProjection:

@@ -4,7 +4,6 @@
   become: yes
   vars:
     nfs_storage_device: /dev/sdb1
-    kopiur_nfs_gid: 65532
   tasks:
   - name: Install nfs-kernel-server
     ansible.builtin.apt:
@@ -46,34 +45,14 @@
     ansible.builtin.file:
       path: /mnt/nfs/kopiur
       state: directory
-      owner: 65532
-      group: "{{ kopiur_nfs_gid }}"
-      mode: '2770'
+      mode: '0777'
 
-  - name: Make Kopiur repository contents writable by the mover group
+  - name: Make Kopiur repository contents accessible to everyone
     ansible.builtin.file:
       path: /mnt/nfs/kopiur
       state: directory
-      owner: 65532
-      group: "{{ kopiur_nfs_gid }}"
-      mode: 'g+rwX,o-rwx'
+      mode: '0777'
       recurse: true
-
-  - name: Find Kopiur repository directories
-    ansible.builtin.find:
-      paths: /mnt/nfs/kopiur
-      recurse: true
-      hidden: true
-      file_type: directory
-    register: kopiur_repository_directories
-
-  - name: Set the Kopiur repository group inheritance bit
-    ansible.builtin.file:
-      path: "{{ item.path }}"
-      mode: 'g+s'
-    loop: "{{ kopiur_repository_directories.files }}"
-    loop_control:
-      label: "{{ item.path }}"
 
   - name: List block devices and mount paths
     ansible.builtin.command:

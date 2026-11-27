@@ -11,6 +11,8 @@ spec:
   target:
     pvcRef:
       name: seerr-conf
+  mover:
+    privilegedMode: true
   policy:
     onMissingSnapshot: Fail
   credentialProjection:

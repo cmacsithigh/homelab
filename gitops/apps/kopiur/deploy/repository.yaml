@@ -26,12 +26,9 @@ spec:
   deletionProtection:
     threshold: 30
   moverDefaults:
-    podSecurityContext:
-      supplementalGroups:
-      - 65532
     securityContext:
-      runAsUser: 65532
-      runAsGroup: 65532
-      runAsNonRoot: true
+      runAsUser: 0
+      runAsGroup: 0
+      runAsNonRoot: false
   credentialProjection:
     allowed: true
