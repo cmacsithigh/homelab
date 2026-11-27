@@ -11,11 +11,6 @@ spec:
   target:
     pvcRef:
       name: gatus-gatus-sidecar
-  mover:
-    privilegedMode: true
-    securityContext:
-      runAsUser: 0
-      runAsNonRoot: false
   policy:
     onMissingSnapshot: Fail
   credentialProjection:

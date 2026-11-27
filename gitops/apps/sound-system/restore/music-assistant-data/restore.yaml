@@ -11,11 +11,6 @@ spec:
   target:
     pvcRef:
       name: music-assistant-data
-  mover:
-    privilegedMode: true
-    securityContext:
-      runAsUser: 0
-      runAsNonRoot: false
   policy:
     onMissingSnapshot: Fail
   credentialProjection:

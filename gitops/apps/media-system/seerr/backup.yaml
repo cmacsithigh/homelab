@@ -11,8 +11,7 @@ spec:
       name: seerr-conf
   copyMethod: Direct
   retention:
-    keepDaily: 7
-    keepWeekly: 2
+    keepDaily: 14
   credentialProjection:
     enabled: true
   verification:
@@ -21,11 +20,6 @@ spec:
         cron: "0 2 * * *"
         jitter: 30m
     successExpr: "stats.files > 0 && stats.errors == 0"
-  mover:
-    privilegedMode: true
-    securityContext:
-      runAsUser: 0
-      runAsNonRoot: false
 ---
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: SnapshotSchedule
@@ -36,5 +30,4 @@ spec:
     name: seerr
   schedule:
     cron: "0 1 * * *"
-    timezone: Etc/UTC
     runOnCreate: true

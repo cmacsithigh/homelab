@@ -12,15 +12,9 @@ spec:
       name: gatus-gatus-sidecar
   copyMethod: Direct
   retention:
-    keepDaily: 7
-    keepWeekly: 2
+    keepDaily: 14
   credentialProjection:
     enabled: true
-  mover:
-    privilegedMode: true
-    securityContext:
-      runAsUser: 0
-      runAsNonRoot: false
   verification:
     quick:
       schedule:
@@ -38,5 +32,4 @@ spec:
     name: gatus
   schedule:
     cron: "0 1 * * *"
-    timezone: Etc/UTC
     runOnCreate: true

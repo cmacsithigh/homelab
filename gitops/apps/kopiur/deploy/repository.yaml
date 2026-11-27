@@ -23,5 +23,13 @@ spec:
     timezone: Europe/Dublin
   create:
     enabled: true
+  moverDefaults:
+    podSecurityContext:
+      supplementalGroups:
+        - 65532
+    securityContext:
+      runAsUser: 65532
+      runAsGroup: 65532
+      runAsNonRoot: true
   credentialProjection:
     allowed: true

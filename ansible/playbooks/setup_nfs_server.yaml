@@ -4,6 +4,7 @@
   become: yes
   vars:
     nfs_storage_device: /dev/sdb1
+    kopiur_nfs_gid: 65532
   tasks:
   - name: Install nfs-kernel-server
     ansible.builtin.apt:
@@ -46,7 +47,7 @@
       path: /mnt/nfs/kopiur
       state: directory
       owner: 65532
-      group: 65532
+      group: "{{ kopiur_nfs_gid }}"
       mode: '2770'
 
   - name: Make Kopiur repository contents writable by the mover group
@@ -54,7 +55,7 @@
       path: /mnt/nfs/kopiur
       state: directory
       owner: 65532
-      group: 65532
+      group: "{{ kopiur_nfs_gid }}"
       mode: 'g+rwX'
       recurse: true
 
