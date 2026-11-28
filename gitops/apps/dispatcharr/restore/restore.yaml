@@ -2,7 +2,7 @@ apiVersion: kopiur.home-operations.com/v1alpha1
 kind: Restore
 metadata:
   name: dispatcharr-restore
-  namespace: media-system
+  namespace: dispatcharr
 spec:
   source:
     fromPolicy:
