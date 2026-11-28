@@ -4,55 +4,58 @@
   gather_facts: yes
   become: yes
   tasks:
-    - name: Check that K3s is installed
-      ansible.builtin.stat:
-        path: /usr/local/bin/k3s
-      register: k3s_binary
+  - name: Check that K3s is installed
+    ansible.builtin.stat:
+      path: /usr/local/bin/k3s
+    register: k3s_binary
 
-    - name: Require K3s to be installed before configuring it
-      ansible.builtin.assert:
-        that:
-          - k3s_binary.stat.exists
-        fail_msg: Run k3s_server_version.yaml before configuring the K3s server.
+  - name: Require K3s to be installed before configuring it
+    ansible.builtin.assert:
+      that:
+      - k3s_binary.stat.exists
+      fail_msg: Run k3s_server_version.yaml before configuring the K3s server.
 
-    - name: Set K3s configuration in config.yaml
-      ansible.builtin.blockinfile:
-        path: /etc/rancher/k3s/config.yaml
-        create: yes
-        mode: '0644'
-        block: |
-          disable:
-            - servicelb
-            - traefik
-          kube-proxy-arg:
-            - ipvs-strict-arp=true
-          kube-apiserver-arg:
-            - oidc-issuer-url=https://pocketid.ciansheehy.co
-            - oidc-client-id=headlamp
-            - oidc-username-claim=preferred_username
-            - oidc-groups-claim=groups
-      register: k3s_config
+  - name: Set K3s configuration in config.yaml
+    ansible.builtin.blockinfile:
+      path: /etc/rancher/k3s/config.yaml
+      create: yes
+      mode: '0644'
+      block: |
+        disable:
+          - servicelb
+          - traefik
+        flannel-backend: none
+        disable-network-policy: true
+        disable-kube-proxy: true
+        kube-proxy-arg:
+          - ipvs-strict-arp=true
+        kube-apiserver-arg:
+          - oidc-issuer-url=https://pocketid.ciansheehy.co
+          - oidc-client-id=headlamp
+          - oidc-username-claim=preferred_username
+          - oidc-groups-claim=groups
+    register: k3s_config
 
-    - name: Restart K3s to apply configuration changes
-      ansible.builtin.systemd:
-        name: k3s
-        state: restarted
-      when: k3s_config is changed
+  - name: Restart K3s to apply configuration changes
+    ansible.builtin.systemd:
+      name: k3s
+      state: restarted
+    when: k3s_config is changed
 
-    - name: Wait for the K3s server kubeconfig
-      ansible.builtin.wait_for:
-        path: /etc/rancher/k3s/k3s.yaml
-        state: present
-        timeout: 120
+  - name: Wait for the K3s server kubeconfig
+    ansible.builtin.wait_for:
+      path: /etc/rancher/k3s/k3s.yaml
+      state: present
+      timeout: 120
 
-    - name: Set permissions for K3s kubeconfig
-      ansible.builtin.file:
-        path: /etc/rancher/k3s/k3s.yaml
-        owner: root
-        group: root
-        mode: '0644'
+  - name: Set permissions for K3s kubeconfig
+    ansible.builtin.file:
+      path: /etc/rancher/k3s/k3s.yaml
+      owner: root
+      group: root
+      mode: '0644'
 
-    - name: Verify the K3s service is active
-      ansible.builtin.command:
-        cmd: systemctl is-active --quiet k3s
-      changed_when: false
+  - name: Verify the K3s service is active
+    ansible.builtin.command:
+      cmd: systemctl is-active --quiet k3s
+    changed_when: false
