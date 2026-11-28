@@ -4,9 +4,8 @@ metadata:
   name: protonpass
   labels:
     app: protonpass
-  metadata:
-    annotations:
-      reloader.stakater.com/auto: "true"
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   selector:
