@@ -3,7 +3,7 @@
   gather_facts: yes
   become: yes
   vars:
-    nfs_storage_device: /dev/sdb1
+    nfs_storage_device: /dev/sda1
   tasks:
   - name: Install nfs-kernel-server
     ansible.builtin.apt:
