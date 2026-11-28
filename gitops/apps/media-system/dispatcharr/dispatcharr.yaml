@@ -50,8 +50,11 @@ spec:
             memory: 128Mi
           limits:
             memory: 256Mi
+
+      # downgrade dispatchar until bug is fixed.
+      #  # {"$imagepolicy": "flux-system:media-dispatcha"}
       - name: dispatcharr-web
-        image: ghcr.io/dispatcharr/dispatcharr:0.34.1 # {"$imagepolicy": "flux-system:media-dispatcharr"}
+        image: ghcr.io/dispatcharr/dispatcharr:0.33.0
         envFrom:
         - configMapRef:
             name: dispatcharr-config
