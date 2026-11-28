@@ -7,7 +7,6 @@ LAN addresses are defined by the services in this directory:
 | App          | URL                          |
 | ------------ | ---------------------------- |
 | Bazarr       | `http://192.168.18.230`      |
-| Dispatcharr  | `http://192.168.18.227`      |
 | Jellyfin     | `http://192.168.18.221:8096` |
 | Maintainerr  | `http://192.168.18.225:6246` |
 | NZBGet       | `http://192.168.18.229:6789` |
@@ -19,15 +18,6 @@ LAN addresses are defined by the services in this directory:
 
 Bazarr's config PVC uses `local-path` storage because its SQLite database is
 not supported on NFS.
-
-## VPN credentials
-
-Dispatcharr use the `openvpn-user` and `openvpn-password`
-secrets in the `media-system` namespace.
-
-CloudNativePG creates the `dispatcharr` database and user and generates the
-application password in `dispatcharr-pg-app`. Dispatcharr starts with a new database; its
-existing `/data` PVC is separate.
 
 ## NZBGet notifications
 

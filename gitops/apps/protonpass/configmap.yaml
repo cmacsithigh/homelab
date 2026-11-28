@@ -31,13 +31,13 @@ data:
         "protonItemName": "HEADLAMP_CLIENT_SECRET"
       },
       {
-        "targetNamespace": "media-system",
+        "targetNamespace": "dispatcharr",
         "secretName": "openvpn-user",
         "secretKey": "OPENVPN_USER",
         "protonItemName": "OPENVPN_USER"
       },
       {
-        "targetNamespace": "media-system",
+        "targetNamespace": "dispatcharr",
         "secretName": "openvpn-password",
         "secretKey": "OPENVPN_PASSWORD",
         "protonItemName": "OPENVPN_PASSWORD"
