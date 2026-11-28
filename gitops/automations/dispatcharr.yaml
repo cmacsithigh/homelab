@@ -1,3 +1,23 @@
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: gluetun
+  namespace: flux-system
+spec:
+  image: qmcgaw/gluetun
+  interval: 1h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: gluetun
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: gluetun
+  policy:
+    semver:
+      range: ">=0.0.1"
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
