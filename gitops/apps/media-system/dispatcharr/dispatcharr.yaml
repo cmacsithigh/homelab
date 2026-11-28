@@ -71,7 +71,7 @@ spec:
           limits:
             memory: 2000Mi
       - name: dispatcharr-celery
-        image: ghcr.io/dispatcharr/dispatcharr:0.34.1 # {"$imagepolicy": "flux-system:media-dispatcharr"}
+        image: ghcr.io/dispatcharr/dispatcharr:0.33.0
         command:
         - /app/docker/entrypoint.celery.sh
         envFrom:
